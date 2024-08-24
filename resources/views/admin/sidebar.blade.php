@@ -390,7 +390,7 @@
                     </li>
                 @endif --}}
 
-                @if ($permissions->nav_expense_group)
+                {{-- @if ($permissions->nav_expense_group)
                     <li class="nav-item">
                         @php
                             $active = $show = '';
@@ -432,9 +432,9 @@
                             </ul>
                         </div>
                     </li>
-                @endif
+                @endif --}}
 
-                @if ($permissions->nav_revenue_group)
+                {{-- @if ($permissions->nav_revenue_group)
                     <li class="nav-item">
                         @php
                             $active = $show = '';
@@ -472,7 +472,7 @@
                             </ul>
                         </div>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- @if ($permissions->nav_payment_group)
                     <li class="nav-item">
@@ -536,7 +536,7 @@
                     </li>
                 @endif
 
-                @if ($permissions->nav_account_group)
+                {{-- @if ($permissions->nav_account_group)
                     <li class="nav-item">
                         @php
                             $active = $show = '';
@@ -670,7 +670,7 @@
                             </ul>
                         </div>
                     </li>
-                @endif
+                @endif --}}
 
                 {{-- @if ($permissions->nav_report_group)
                     <li class="nav-item">

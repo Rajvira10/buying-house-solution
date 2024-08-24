@@ -1507,316 +1507,316 @@ class PermissionSeeder extends Seeder
 
         // PERMISSION GROUP - EXPENSE
 
-        $permission = Permission::where('name', '=', 'expense_categories.index')->first();
+        // $permission = Permission::where('name', '=', 'expense_categories.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense_categories.index";
-            $permission->alias = "View Expense Categories";
-            $permission->description = "To view the list of expense categories";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense_categories.index";
+        //     $permission->alias = "View Expense Categories";
+        //     $permission->description = "To view the list of expense categories";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense_categories.create')->first();
+        // $permission = Permission::where('name', '=', 'expense_categories.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense_categories.create";
-            $permission->alias = "Create Expense Categories";
-            $permission->description = "To create a new expense category";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense_categories.create";
+        //     $permission->alias = "Create Expense Categories";
+        //     $permission->description = "To create a new expense category";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense_categories.edit')->first();
+        // $permission = Permission::where('name', '=', 'expense_categories.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense_categories.edit";
-            $permission->alias = "Edit Expense Categories";
-            $permission->description = "To edit an expense category";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense_categories.edit";
+        //     $permission->alias = "Edit Expense Categories";
+        //     $permission->description = "To edit an expense category";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense_categories.delete')->first();
+        // $permission = Permission::where('name', '=', 'expense_categories.delete')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense_categories.delete";
-            $permission->alias = "Delete Expense Categories";
-            $permission->description = "To delete a new expense category";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense_categories.delete";
+        //     $permission->alias = "Delete Expense Categories";
+        //     $permission->description = "To delete a new expense category";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.index')->first();
+        // $permission = Permission::where('name', '=', 'expense.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.index";
-            $permission->alias = "View Expenses";
-            $permission->description = "To view the list of expenses";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.index";
+        //     $permission->alias = "View Expenses";
+        //     $permission->description = "To view the list of expenses";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.create')->first();
+        // $permission = Permission::where('name', '=', 'expense.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.create";
-            $permission->alias = "Create Expenses";
-            $permission->description = "To create a new expense";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.create";
+        //     $permission->alias = "Create Expenses";
+        //     $permission->description = "To create a new expense";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.edit')->first();
+        // $permission = Permission::where('name', '=', 'expense.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.edit";
-            $permission->alias = "Edit Expenses";
-            $permission->description = "To edit an expense";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.edit";
+        //     $permission->alias = "Edit Expenses";
+        //     $permission->description = "To edit an expense";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.payment.index')->first();
+        // $permission = Permission::where('name', '=', 'expense.payment.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.payment.index";
-            $permission->alias = "View Expense Payments";
-            $permission->description = "To view the list of expense payments";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.payment.index";
+        //     $permission->alias = "View Expense Payments";
+        //     $permission->description = "To view the list of expense payments";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.payment.create')->first();
+        // $permission = Permission::where('name', '=', 'expense.payment.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.payment.create";
-            $permission->alias = "Create Expense Payments";
-            $permission->description = "To create a new expense payment";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.payment.create";
+        //     $permission->alias = "Create Expense Payments";
+        //     $permission->description = "To create a new expense payment";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.payment.edit')->first();
+        // $permission = Permission::where('name', '=', 'expense.payment.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.payment.edit";
-            $permission->alias = "Edit Expense Payments";
-            $permission->description = "To edit an expense payment";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.payment.edit";
+        //     $permission->alias = "Edit Expense Payments";
+        //     $permission->description = "To edit an expense payment";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.print')->first();
+        // $permission = Permission::where('name', '=', 'expense.print')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.print";
-            $permission->alias = "Print Expenses";
-            $permission->description = "To print an expense";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.print";
+        //     $permission->alias = "Print Expenses";
+        //     $permission->description = "To print an expense";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'expense.delete')->first();
+        // $permission = Permission::where('name', '=', 'expense.delete')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "expense.delete";
-            $permission->alias = "Delete Expenses";
-            $permission->description = "To delete an expense";
-            $permission->permission_group = "Expense";
+        //     $permission->name = "expense.delete";
+        //     $permission->alias = "Delete Expenses";
+        //     $permission->description = "To delete an expense";
+        //     $permission->permission_group = "Expense";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
         
 
-        // PERMISSION GROUP - REVENUE
+        // // PERMISSION GROUP - REVENUE
 
-        $permission = Permission::where('name', '=', 'revenue_categories.index')->first();
+        // $permission = Permission::where('name', '=', 'revenue_categories.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue_categories.index";
-            $permission->alias = "View Revenue Categories";
-            $permission->description = "To view the list of revenue categories";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue_categories.index";
+        //     $permission->alias = "View Revenue Categories";
+        //     $permission->description = "To view the list of revenue categories";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue_categories.create')->first();
+        // $permission = Permission::where('name', '=', 'revenue_categories.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue_categories.create";
-            $permission->alias = "Create Revenue Categories";
-            $permission->description = "To create a new revenue category";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue_categories.create";
+        //     $permission->alias = "Create Revenue Categories";
+        //     $permission->description = "To create a new revenue category";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue_categories.edit')->first();
+        // $permission = Permission::where('name', '=', 'revenue_categories.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue_categories.edit";
-            $permission->alias = "Edit Revenue Categories";
-            $permission->description = "To edit a revenue category";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue_categories.edit";
+        //     $permission->alias = "Edit Revenue Categories";
+        //     $permission->description = "To edit a revenue category";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.index')->first();
+        // $permission = Permission::where('name', '=', 'revenue.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.index";
-            $permission->alias = "View Revenues";
-            $permission->description = "To view the list of revenues";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.index";
+        //     $permission->alias = "View Revenues";
+        //     $permission->description = "To view the list of revenues";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.create')->first();
+        // $permission = Permission::where('name', '=', 'revenue.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.create";
-            $permission->alias = "Create Revenues";
-            $permission->description = "To create a new revenue";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.create";
+        //     $permission->alias = "Create Revenues";
+        //     $permission->description = "To create a new revenue";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.edit')->first();
+        // $permission = Permission::where('name', '=', 'revenue.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.edit";
-            $permission->alias = "Edit Revenues";
-            $permission->description = "To edit a revenue";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.edit";
+        //     $permission->alias = "Edit Revenues";
+        //     $permission->description = "To edit a revenue";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.payment.index')->first();
+        // $permission = Permission::where('name', '=', 'revenue.payment.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.payment.index";
-            $permission->alias = "View Revenue Payments";
-            $permission->description = "To view the list of revenue payments";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.payment.index";
+        //     $permission->alias = "View Revenue Payments";
+        //     $permission->description = "To view the list of revenue payments";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.payment.create')->first();
+        // $permission = Permission::where('name', '=', 'revenue.payment.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.payment.create";
-            $permission->alias = "Create Revenue Payments";
-            $permission->description = "To create a new revenue payment";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.payment.create";
+        //     $permission->alias = "Create Revenue Payments";
+        //     $permission->description = "To create a new revenue payment";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.payment.edit')->first();
+        // $permission = Permission::where('name', '=', 'revenue.payment.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.payment.edit";
-            $permission->alias = "Edit Revenue Payments";
-            $permission->description = "To edit a revenue payment";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.payment.edit";
+        //     $permission->alias = "Edit Revenue Payments";
+        //     $permission->description = "To edit a revenue payment";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'revenue.delete')->first();
+        // $permission = Permission::where('name', '=', 'revenue.delete')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "revenue.delete";
-            $permission->alias = "Delete Revenues";
-            $permission->description = "To delete a revenue";
-            $permission->permission_group = "Revenue";
+        //     $permission->name = "revenue.delete";
+        //     $permission->alias = "Delete Revenues";
+        //     $permission->description = "To delete a revenue";
+        //     $permission->permission_group = "Revenue";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
 
         // PERMISSION GROUP - PAYMENT
@@ -1879,375 +1879,375 @@ class PermissionSeeder extends Seeder
 
         // PERMISSION GROUP - ACCOUNT
 
-        $permission = Permission::where('name', '=', 'account_category.index')->first();
+        // $permission = Permission::where('name', '=', 'account_category.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account_category.index";
-            $permission->alias = "View Account Categories";
-            $permission->description = "To view the list of account categories";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account_category.index";
+        //     $permission->alias = "View Account Categories";
+        //     $permission->description = "To view the list of account categories";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account_category.create')->first();
+        // $permission = Permission::where('name', '=', 'account_category.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account_category.create";
-            $permission->alias = "Create Account Categories";
-            $permission->description = "To create a new account category";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account_category.create";
+        //     $permission->alias = "Create Account Categories";
+        //     $permission->description = "To create a new account category";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account_category.edit')->first();
+        // $permission = Permission::where('name', '=', 'account_category.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account_category.edit";
-            $permission->alias = "Edit Account Categories";
-            $permission->description = "To edit an account category";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account_category.edit";
+        //     $permission->alias = "Edit Account Categories";
+        //     $permission->description = "To edit an account category";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account.index')->first();
+        // $permission = Permission::where('name', '=', 'account.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account.index";
-            $permission->alias = "View Accounts";
-            $permission->description = "To view the list of accounts";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account.index";
+        //     $permission->alias = "View Accounts";
+        //     $permission->description = "To view the list of accounts";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account.create')->first();
+        // $permission = Permission::where('name', '=', 'account.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account.create";
-            $permission->alias = "Create Accounts";
-            $permission->description = "To create a new account";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account.create";
+        //     $permission->alias = "Create Accounts";
+        //     $permission->description = "To create a new account";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account.edit')->first();
+        // $permission = Permission::where('name', '=', 'account.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account.edit";
-            $permission->alias = "Edit Accounts";
-            $permission->description = "To edit an account";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account.edit";
+        //     $permission->alias = "Edit Accounts";
+        //     $permission->description = "To edit an account";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'account_statement.index')->first();
+        // $permission = Permission::where('name', '=', 'account_statement.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "account_statement.index";
-            $permission->alias = "View Account Statements";
-            $permission->description = "To view the list of account statements";
-            $permission->permission_group = "Account";
+        //     $permission->name = "account_statement.index";
+        //     $permission->alias = "View Account Statements";
+        //     $permission->description = "To view the list of account statements";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'add_withdraw_money.index')->first();
+        // $permission = Permission::where('name', '=', 'add_withdraw_money.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "add_withdraw_money.index";
-            $permission->alias = "View Add/Withdraw Money";
-            $permission->description = "To view the list of add/withdraw money";
-            $permission->permission_group = "Account";
+        //     $permission->name = "add_withdraw_money.index";
+        //     $permission->alias = "View Add/Withdraw Money";
+        //     $permission->description = "To view the list of add/withdraw money";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'add_withdraw_money.create')->first();
+        // $permission = Permission::where('name', '=', 'add_withdraw_money.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "add_withdraw_money.create";
-            $permission->alias = "Create Add/Withdraw Money";
-            $permission->description = "To create a new add/withdraw money";
-            $permission->permission_group = "Account";
+        //     $permission->name = "add_withdraw_money.create";
+        //     $permission->alias = "Create Add/Withdraw Money";
+        //     $permission->description = "To create a new add/withdraw money";
+        //     $permission->permission_group = "Account";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        // PERMISSION GROUP - FINANCIAL
+        // // PERMISSION GROUP - FINANCIAL
 
-        $permission = Permission::where('name', '=', 'money_transfer.index')->first();
+        // $permission = Permission::where('name', '=', 'money_transfer.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "money_transfer.index";
-            $permission->alias = "View Money Transfers";
-            $permission->description = "To view the list of money transfers";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "money_transfer.index";
+        //     $permission->alias = "View Money Transfers";
+        //     $permission->description = "To view the list of money transfers";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'money_transfer.create')->first();
+        // $permission = Permission::where('name', '=', 'money_transfer.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "money_transfer.create";
-            $permission->alias = "Create Money Transfers";
-            $permission->description = "To create a new money transfer";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "money_transfer.create";
+        //     $permission->alias = "Create Money Transfers";
+        //     $permission->description = "To create a new money transfer";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'money_transfer.edit')->first();
+        // $permission = Permission::where('name', '=', 'money_transfer.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "money_transfer.edit";
-            $permission->alias = "Edit Money Transfers";
-            $permission->description = "To edit a money transfer";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "money_transfer.edit";
+        //     $permission->alias = "Edit Money Transfers";
+        //     $permission->description = "To edit a money transfer";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'money_transfer.delete')->first();
+        // $permission = Permission::where('name', '=', 'money_transfer.delete')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "money_transfer.delete";
-            $permission->alias = "Delete Money Transfers";
-            $permission->description = "To delete a money transfer";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "money_transfer.delete";
+        //     $permission->alias = "Delete Money Transfers";
+        //     $permission->description = "To delete a money transfer";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'loan.index')->first();
+        // $permission = Permission::where('name', '=', 'loan.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "loan.index";
-            $permission->alias = "View Loans";
-            $permission->description = "To view the list of loans";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "loan.index";
+        //     $permission->alias = "View Loans";
+        //     $permission->description = "To view the list of loans";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'loan.create')->first();
+        // $permission = Permission::where('name', '=', 'loan.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "loan.create";
-            $permission->alias = "Create Loans";
-            $permission->description = "To create a new loan";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "loan.create";
+        //     $permission->alias = "Create Loans";
+        //     $permission->description = "To create a new loan";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'investment.index')->first();
+        // $permission = Permission::where('name', '=', 'investment.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "investment.index";
-            $permission->alias = "View Investments";
-            $permission->description = "To view the list of investments";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "investment.index";
+        //     $permission->alias = "View Investments";
+        //     $permission->description = "To view the list of investments";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'investment.create')->first();
+        // $permission = Permission::where('name', '=', 'investment.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "investment.create";
-            $permission->alias = "Create Investments";
-            $permission->description = "To create a new investment";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "investment.create";
+        //     $permission->alias = "Create Investments";
+        //     $permission->description = "To create a new investment";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'investor.index')->first();
+        // $permission = Permission::where('name', '=', 'investor.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "investor.index";
-            $permission->alias = "View Investors";
-            $permission->description = "To view the list of investors";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "investor.index";
+        //     $permission->alias = "View Investors";
+        //     $permission->description = "To view the list of investors";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'investor.create')->first();
+        // $permission = Permission::where('name', '=', 'investor.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "investor.create";
-            $permission->alias = "Create Investors";
-            $permission->description = "To create a new investor";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "investor.create";
+        //     $permission->alias = "Create Investors";
+        //     $permission->description = "To create a new investor";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'investor.edit')->first();
+        // $permission = Permission::where('name', '=', 'investor.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "investor.edit";
-            $permission->alias = "Edit Investors";
-            $permission->description = "To edit an investor";
-            $permission->permission_group = "Financial";
+        //     $permission->name = "investor.edit";
+        //     $permission->alias = "Edit Investors";
+        //     $permission->description = "To edit an investor";
+        //     $permission->permission_group = "Financial";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
         
-        // PERMISSION GROUP - TRANSACTION POOL
+        // // PERMISSION GROUP - TRANSACTION POOL
 
-        $permission = Permission::where('name', '=', 'transaction_pool.ignore')->first();
+        // $permission = Permission::where('name', '=', 'transaction_pool.ignore')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "transaction_pool.ignore";
-            $permission->alias = "Ignore Transaction Pool";
-            $permission->description = "To ignore the Transaction Pool when making payments";
-            $permission->permission_group = "Transaction Pool";
+        //     $permission->name = "transaction_pool.ignore";
+        //     $permission->alias = "Ignore Transaction Pool";
+        //     $permission->description = "To ignore the Transaction Pool when making payments";
+        //     $permission->permission_group = "Transaction Pool";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'transaction_pool.index')->first();
+        // $permission = Permission::where('name', '=', 'transaction_pool.index')->first();
         
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "transaction_pool.index";
-            $permission->alias = "View Transaction Pool";
-            $permission->description = "To view the list of transactions in the pool";
-            $permission->permission_group = "Transaction Pool";
+        //     $permission->name = "transaction_pool.index";
+        //     $permission->alias = "View Transaction Pool";
+        //     $permission->description = "To view the list of transactions in the pool";
+        //     $permission->permission_group = "Transaction Pool";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'transaction_pool.check')->first();
+        // $permission = Permission::where('name', '=', 'transaction_pool.check')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "transaction_pool.check";
-            $permission->alias = "Check Transaction Pool";
-            $permission->description = "To check the transactions in the pool";
-            $permission->permission_group = "Transaction Pool";
+        //     $permission->name = "transaction_pool.check";
+        //     $permission->alias = "Check Transaction Pool";
+        //     $permission->description = "To check the transactions in the pool";
+        //     $permission->permission_group = "Transaction Pool";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'transaction_pool.approve')->first();
+        // $permission = Permission::where('name', '=', 'transaction_pool.approve')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "transaction_pool.approve";
-            $permission->alias = "Approve Transaction Pool";
-            $permission->description = "To approve the transactions in the pool";
-            $permission->permission_group = "Transaction Pool";
+        //     $permission->name = "transaction_pool.approve";
+        //     $permission->alias = "Approve Transaction Pool";
+        //     $permission->description = "To approve the transactions in the pool";
+        //     $permission->permission_group = "Transaction Pool";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'transaction_pool.reject')->first();
+        // $permission = Permission::where('name', '=', 'transaction_pool.reject')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "transaction_pool.reject";
-            $permission->alias = "Reject Transaction Pool";
-            $permission->description = "To reject the transactions in the pool";
-            $permission->permission_group = "Transaction Pool";
+        //     $permission->name = "transaction_pool.reject";
+        //     $permission->alias = "Reject Transaction Pool";
+        //     $permission->description = "To reject the transactions in the pool";
+        //     $permission->permission_group = "Transaction Pool";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        // PERMISSION GROUP - REPORT
+        // // PERMISSION GROUP - REPORT
 
-        $permission = Permission::where('name', '=', 'report.index')->first();
+        // $permission = Permission::where('name', '=', 'report.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "report.index";
-            $permission->alias = "View Reports";
-            $permission->description = "To view the list of reports";
-            $permission->permission_group = "Report";
+        //     $permission->name = "report.index";
+        //     $permission->alias = "View Reports";
+        //     $permission->description = "To view the list of reports";
+        //     $permission->permission_group = "Report";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
         // PERMISSION GROUP - CONFIG
         // $permission = Permission::where('name', '=', 'config.index')->first();
