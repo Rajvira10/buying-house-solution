@@ -37,6 +37,10 @@ class BuyerController extends Controller
                                             <i class="ri-more-fill align-middle"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">';
+
+                    $edit_button .= '<li><a href="'.route('buyers.show', $category->id).'" class
+                    ="dropdown-item"><i class="ri-eye-fill me-2"></i> View</a></li>';
+                    
                     if(in_array('buyer.edit', session('user_permissions')))
                     {
                         $edit_button .= '<li><a href="'.route('buyers.edit', $category->id).'" class
