@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('query_id')->references('id')->on('queries')->onDelete('cascade');
             $table->text('product_name');
             $table->text('details');
-            $table->integer('approximate_quantity');
+            $table->bigInteger('approximate_quantity');
             $table->timestamps();
         });
     }
