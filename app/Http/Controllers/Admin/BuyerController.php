@@ -40,7 +40,7 @@ class BuyerController extends Controller
 
                     $edit_button .= '<li><a href="'.route('buyers.show', $category->id).'" class
                     ="dropdown-item"><i class="ri-eye-fill me-2"></i> View</a></li>';
-                    
+
                     if(in_array('buyer.edit', session('user_permissions')))
                     {
                         $edit_button .= '<li><a href="'.route('buyers.edit', $category->id).'" class
@@ -94,6 +94,26 @@ class BuyerController extends Controller
         else{
             return redirect()->route('buyers.index')->with('error', 'Buyer Not Found');
         }
+    }
+
+    public function show(Request $request, $buyer_id)
+    {
+        if(!in_array('buyer.index', session('user_permissions')))
+        {
+            return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
+        }
+
+        $request->session()->now('view_name', 'admin.crm.buyer.index');
+    
+        $buyer = Buyer::find($buyer_id);
+
+        if($buyer != null){
+            return view('admin.crm.buyer.show', compact('buyer'));
+        }
+        else{
+            return redirect()->route('buyers.index')->with('error', 'Buyer Not Found');
+        }
+
     }
 
     public function store(Request $request)

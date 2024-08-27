@@ -30,17 +30,12 @@
                 </div>
                 <div class="pt-4 mb-4 mb-lg-3 pb-lg-4">
                     <div class="row g-4">
-                        <div class="col-auto">
-                            <div class="avatar-lg">
-                                <img src={{ asset('public/admin-assets/images/user-dummy-img.jpg') }} alt="user-img"
-                                    class="img-thumbnail rounded-circle" />
-                            </div>
-                        </div>
+
                         <div class="col">
                             <div class="p-2">
                                 <h3 class="text-white mb-1">{{ $buyer->user->first_name . ' ' . $buyer->user->last_name }}
                                 </h3>
-                                <p class="text-white-75">User Official</p>
+                                <p class="text-white-75">Buyer</p>
                             </div>
                         </div>
                     </div>
