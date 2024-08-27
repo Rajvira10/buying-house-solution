@@ -412,6 +412,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::get('index', 'QueryController@index')->name('queries.index');
 
+            Route::post('change-status', 'QueryController@changeStatus')->name('queries.change_status');
+
             Route::get('history/{query_id}', 'QueryController@history')->name('queries.history');
 
             Route::get('create', 'QueryController@create')->name('queries.create');

@@ -1617,6 +1617,20 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', "=", 'query.change_status')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.change_status";
+            $permission->alias = "Change Query Status";
+            $permission->description = "To change the status of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
         $permission = Permission::where('name', '=', 'query.history')->first();
 
         if($permission == null)

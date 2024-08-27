@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('queries');
             $table->dateTime('query_date');
             $table->string('query_no')->nullable();
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

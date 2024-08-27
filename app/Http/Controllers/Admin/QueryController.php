@@ -45,6 +45,23 @@ class QueryController extends Controller
             ->get();
 
             return DataTables::of($queries)
+                ->addColumn('status', function ($category) {
+                    if($category->status == 'Pending')
+                    {
+                        return '<span class="badge bg-soft-warning text-warning">Pending</span>';
+                    }
+                    elseif($category->status == 'Approved')
+                    {
+                        return '<span class="badge bg-soft-success text-success">Approved</span>';
+                    }
+                    elseif($category->status == 'Rejected')
+                    {
+                        return '<span class="badge bg-soft-danger text-danger">Rejected</span>';
+                    }
+                    else{
+                        return '<span class="badge bg-soft-info text-info">Updated</span>';
+                    }
+                })
                 ->addColumn('buyer', function ($category) {
                     return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
                 })
@@ -70,6 +87,13 @@ class QueryController extends Controller
                     $edit_button .= '<li><a href="'.route('queries.show', $category->id).'" class
                     ="dropdown-item"><i class="ri-eye-fill me-2"></i> Show</a></li>';
 
+                    if(in_array('query.change_status', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->id . ')">
+                                            <i class="ri-checkbox-circle-fill me-2"></i> Change Status
+                                        </button></li>';
+                    }
+
                     if(in_array('query.history', session('user_permissions')))
                     {
                         $edit_button .= '<li><a href="'.route('queries.history', $category->id).'" class
@@ -94,7 +118,7 @@ class QueryController extends Controller
                     return $edit_button;
                 })
                 ->addIndexColumn()
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'status'])
                 ->make(true);
         }
 
@@ -456,5 +480,19 @@ class QueryController extends Controller
         }
     }
 
+    public function changeStatus(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Query::find($request->query_id);
 
+            if ($query != null) {
+                $query->status = $request->status;
+                $query->save();
+
+                return response()->json(['success' => 'Query Status Changed Successfully']);
+            } else {
+                return response()->json(['error' => 'Query Not Found']);
+            }
+        }
+    }
 }

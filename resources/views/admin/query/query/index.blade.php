@@ -43,6 +43,7 @@
                                                     <th>{{ __('Buyer') }}</th>
                                                     <th>{{ __('Product Names') }}</th>
                                                     <th>{{ __('Quantity') }}</th>
+                                                    <th>{{ __('Status') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -203,6 +204,12 @@
                         searchable: true
                     },
                     {
+                        data: 'status',
+                        name: 'Status',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -247,6 +254,56 @@
                     });
                 }
             })
+        }
+
+        const changeQueryStatus = (id) => {
+            Swal.fire({
+                title: 'Change Query Status',
+                html: `
+            <select id="queryStatus" class="form-control">
+                <option value="Pending">Pending</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Approved">Approved</option>
+            </select>
+        `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#f46a6a',
+                confirmButtonText: 'Yes, change it!',
+                preConfirm: () => {
+                    const status = document.getElementById('queryStatus').value;
+                    return status;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const selectedStatus = result.value;
+                    $.ajax({
+                        url: "{{ route('queries.change_status') }}",
+                        method: 'POST',
+                        data: {
+                            query_id: id,
+                            status: selectedStatus,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#expenseCategoryTable').DataTable().ajax.reload();
+                                toaster('Query Status Changed Successfully', 'success');
+                            } else {
+                                toaster(response.error, 'danger');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                            toaster('Something went wrong', 'danger');
+                        }
+                    });
+                }
+            });
         }
     </script>
 @endsection
