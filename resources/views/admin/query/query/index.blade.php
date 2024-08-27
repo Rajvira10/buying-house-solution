@@ -39,7 +39,10 @@
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
                                                     <th>{{ __('Date') }}</th>
-                                                    <th>{{ __('Product Name') }}</th>
+                                                    <th>{{ __('Query No') }}</th>
+                                                    <th>{{ __('Buyer') }}</th>
+                                                    <th>{{ __('Product Names') }}</th>
+                                                    <th>{{ __('Quantity') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -176,8 +179,26 @@
                         searchable: true
                     },
                     {
-                        data: 'product_name',
-                        name: 'Product Name',
+                        data: 'query_no',
+                        name: 'Query No',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'buyer',
+                        name: 'Buyer',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'product_names',
+                        name: 'Product Names',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'quantity',
+                        name: 'Quantity',
                         orderable: true,
                         searchable: true
                     },

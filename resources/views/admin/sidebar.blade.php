@@ -159,21 +159,13 @@
                     </li>
                 @endif
 
-                {{-- @if ($permissions->nav_crm_group)
+                @if ($permissions->nav_crm_group)
 
                     <li class="nav-item">
 
                         @php
                             $active = $show = '';
-                            if (
-                                in_array(session('view_name'), [
-                                    'admin.crm.client_source.index',
-                                    'admin.crm.business_category.index',
-                                    'admin.crm.interested_in.index',
-                                    'admin.crm.client_status.index',
-                                    'admin.crm.client.index',
-                                ])
-                            ) {
+                            if (in_array(session('view_name'), ['admin.crm.buyer.index', 'admin.crm.factory.index'])) {
                                 $active = 'active';
                                 $show = 'show';
                             }
@@ -186,50 +178,26 @@
                         <div class="collapse menu-dropdown {{ $show }}" id="sidebarCRM">
                             <ul class="nav nav-sm flex-column">
 
-                                @if ($permissions->nav_client_source_option)
+                                @if ($permissions->nav_buyer_option)
                                     <li class="nav-item">
-                                        <a href="{{ route('client_sources.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.client_source.index' ? 'active' : '' }}"
-                                            data-key="t-client-source">Client Source</a>
+                                        <a href="{{ route('buyers.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.buyer.index' ? 'active' : '' }}"
+                                            data-key="t-buyer">Buyer</a>
                                     </li>
                                 @endif
 
-                                @if ($permissions->nav_business_categories_option)
+                                @if ($permissions->nav_factory_option)
                                     <li class="nav-item">
-                                        <a href="{{ route('business_categories.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.business_category.index' ? 'active' : '' }}"
-                                            data-key="t-business-category">Business Category</a>
-                                    </li>
-                                @endif
-
-                                @if ($permissions->nav_interested_in_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('interested_ins.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.interested_in.index' ? 'active' : '' }}"
-                                            data-key="t-interested-in">Interested In</a>
-                                    </li>
-                                @endif
-
-                                @if ($permissions->nav_client_status_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('client_statuses.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.client_status.index' ? 'active' : '' }}"
-                                            data-key="t-client-status">Client Status</a>
-                                    </li>
-                                @endif
-
-                                @if ($permissions->nav_client_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('clients.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.client.index' ? 'active' : '' }}"
-                                            data-key="t-client">Clients</a>
+                                        <a href="{{ route('factories.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.factory.index' ? 'active' : '' }}"
+                                            data-key="t-factory">Factory</a>
                                     </li>
                                 @endif
 
                             </ul>
                         </div>
                     </li>
-                @endif --}}
+                @endif
 
                 {{-- @if ($permissions->nav_call_group)
                     <li class="nav-item">
@@ -500,7 +468,7 @@
                     </li>
                 @endif --}}
 
-                @if($permissions->nav_query_group)
+                @if ($permissions->nav_query_group)
                     <li class="nav-item">
                         @php
                             $active = $show = '';
@@ -516,21 +484,21 @@
                         </a>
                         <div class="collapse menu-dropdown {{ $show }}" id="sidebarQuery">
                             <ul class="nav nav-sm flex-column">
-                                @if($permissions->nav_trim_option)
+                                @if ($permissions->nav_trim_option)
                                     <li class="nav-item">
                                         <a href="{{ route('trims.index') }}" target="_self"
                                             class="nav-link {{ session('view_name') == 'admin.query.trim.index' ? 'active' : '' }}"
                                             data-key="t-trim">Trim</a>
                                     </li>
                                 @endif
-                                @if($permissions->nav_query_option)
+                                @if ($permissions->nav_query_option)
                                     <li class="nav-item">
                                         <a href="{{ route('queries.index') }}" target="_self"
                                             class="nav-link {{ session('view_name') == 'admin.query.query.index' ? 'active' : '' }}"
                                             data-key="t-query">Queries</a>
                                     </li>
                                 @endif
-                                
+
                             </ul>
                         </div>
                     </li>

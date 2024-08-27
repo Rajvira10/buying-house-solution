@@ -234,6 +234,20 @@ class PermissionSeeder extends Seeder
 
             $permission->save();
         }
+        
+        $permission = Permission::where('name', '=', 'employee.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "employee.delete";
+            $permission->alias = "Delete Employees";
+            $permission->description = "To delete an employee";
+            $permission->permission_group = "HRM";
+
+            $permission->save();
+        }
 
         $permission = Permission::where('name', '=', 'employee.print')->first();
 
@@ -249,119 +263,287 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
-        $permission = Permission::where('name', '=', 'job_duration.toggle')->first();
+        // $permission = Permission::where('name', '=', 'job_duration.toggle')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "job_duration.toggle";
-            $permission->alias = "Toggle Job Duration";
-            $permission->description = "To toggle job duration of an employee";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "job_duration.toggle";
+        //     $permission->alias = "Toggle Job Duration";
+        //     $permission->description = "To toggle job duration of an employee";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'salary_structure.index')->first();
+        // $permission = Permission::where('name', '=', 'salary_structure.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "salary_structure.index";
-            $permission->alias = "View Salary Structure";
-            $permission->description = "To view the list of salary structures";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "salary_structure.index";
+        //     $permission->alias = "View Salary Structure";
+        //     $permission->description = "To view the list of salary structures";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'salary_structure.create')->first();
+        // $permission = Permission::where('name', '=', 'salary_structure.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "salary_structure.create";
-            $permission->alias = "Create Salary Structure";
-            $permission->description = "To create a new salary structure";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "salary_structure.create";
+        //     $permission->alias = "Create Salary Structure";
+        //     $permission->description = "To create a new salary structure";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'salary_sheet.index')->first();
+        // $permission = Permission::where('name', '=', 'salary_sheet.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "salary_sheet.index";
-            $permission->alias = "View Salary Sheets";
-            $permission->description = "To view the list of monthly salary sheets";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "salary_sheet.index";
+        //     $permission->alias = "View Salary Sheets";
+        //     $permission->description = "To view the list of monthly salary sheets";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'salary_sheet.create')->first();
+        // $permission = Permission::where('name', '=', 'salary_sheet.create')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "salary_sheet.create";
-            $permission->alias = "Create Salary Sheet";
-            $permission->description = "To create a new monthly salary sheet";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "salary_sheet.create";
+        //     $permission->alias = "Create Salary Sheet";
+        //     $permission->description = "To create a new monthly salary sheet";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'salary_sheet.payroll_details')->first();
+        // $permission = Permission::where('name', '=', 'salary_sheet.payroll_details')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "salary_sheet.payroll_details";
-            $permission->alias = "View Salary Sheet Details";
-            $permission->description = "To view the details of a monthly salary sheet";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "salary_sheet.payroll_details";
+        //     $permission->alias = "View Salary Sheet Details";
+        //     $permission->description = "To view the details of a monthly salary sheet";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'payroll.index')->first();
+        // $permission = Permission::where('name', '=', 'payroll.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "payroll.index";
-            $permission->alias = "View Salary Sheet of an Employee";
-            $permission->description = "To view the list of monthly salary sheets of Employees";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "payroll.index";
+        //     $permission->alias = "View Salary Sheet of an Employee";
+        //     $permission->description = "To view the list of monthly salary sheets of Employees";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
         
-        $permission = Permission::where('name', '=', 'payroll.payroll.disburse')->first();
+        // $permission = Permission::where('name', '=', 'payroll.payroll.disburse')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "payroll.payroll.disburse";
-            $permission->alias = "Disburse Salary Sheet of Employees";
-            $permission->description = "To disburse the monthly salary sheet of Employees";
-            $permission->permission_group = "HRM";
+        //     $permission->name = "payroll.payroll.disburse";
+        //     $permission->alias = "Disburse Salary Sheet of Employees";
+        //     $permission->description = "To disburse the monthly salary sheet of Employees";
+        //     $permission->permission_group = "HRM";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
         // PERMISSION GROUP - CRM
+
+        $permission = Permission::where('name', '=', 'buyer.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "buyer.index";
+            $permission->alias = "View Buyers";
+            $permission->description = "To view the list of buyers";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "buyer.create";
+            $permission->alias = "Create Buyers";
+            $permission->description = "To create a new buyer";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "buyer.edit";
+            $permission->alias = "Edit Buyers";
+            $permission->description = "To edit a buyer";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "buyer.delete";
+            $permission->alias = "Delete Buyers";
+            $permission->description = "To delete a buyer";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.show')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "buyer.show";
+            $permission->alias = "View Buyer Details";
+            $permission->description = "To view the details of a buyer";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.index";
+            $permission->alias = "View Factories";
+            $permission->description = "To view the list of factories";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.create";
+            $permission->alias = "Create Factories";
+            $permission->description = "To create a new factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.edit";
+            $permission->alias = "Edit Factories";
+            $permission->description = "To edit a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.delete";
+            $permission->alias = "Delete Factories";
+            $permission->description = "To delete a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.show')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.show";
+            $permission->alias = "View Factory Details";
+            $permission->description = "To view the details of a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.add_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.add_contact_person";
+            $permission->alias = "Add Contact Person";
+            $permission->description = "To add a new contact person to a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.edit_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.edit_contact_person";
+            $permission->alias = "Edit Contact Person";
+            $permission->description = "To edit a contact person of a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'factory.delete_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "factory.delete_contact_person";
+            $permission->alias = "Delete Contact Person";
+            $permission->description = "To delete a contact person of a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+
 
         // $permission = Permission::where('name', '=', 'client_source.index')->first();
 

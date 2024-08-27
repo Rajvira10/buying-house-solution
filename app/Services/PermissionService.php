@@ -26,16 +26,9 @@ class PermissionService
 
     public $nav_crm_group = false;
 
-    public $nav_client_source_option = false;
+    public $nav_factory_option = false;
 
-    public $nav_client_status_option = false;
-
-    public $nav_business_categories_option = false;
-
-    public $nav_interested_in_option = false;
-
-    public $nav_client_option = false;
-
+    public $nav_buyer_option = false;
 
     public $nav_call_group = false;
 
@@ -183,35 +176,19 @@ class PermissionService
 
         // CRM Group
 
-        if(in_array('client_source.index', $permissions) || in_array('client_status.index', $permissions) || in_array('business_category.index', $permissions) || in_array('interested_in.index', $permissions) || in_array('client.index', $permissions))
+        if(in_array('factory.index', $permissions) || in_array('buyer.index', $permissions))
         {
             $this->nav_crm_group = true;
         }
 
-        if(in_array('client_source.index', $permissions))
+        if(in_array('factory.index', $permissions))
         {
-            $this->nav_client_source_option = true;
-        }
-        
-
-        if(in_array('client_status.index', $permissions))
-        {
-            $this->nav_client_status_option = true;
+            $this->nav_factory_option = true;
         }
 
-        if(in_array('business_category.index', $permissions))
+        if(in_array('buyer.index', $permissions))
         {
-            $this->nav_business_categories_option = true;
-        }
-
-        if(in_array('interested_in.index', $permissions))
-        {
-            $this->nav_interested_in_option = true;
-        }
-
-        if(in_array('client.index', $permissions))
-        {
-            $this->nav_client_option = true;
+            $this->nav_buyer_option = true;
         }
 
         // Call Group
@@ -439,15 +416,9 @@ class PermissionService
 
         $this->nav_crm_group =  true;
 
-        $this->nav_client_source_option =  true;
+        $this->nav_factory_option =  true;
 
-        $this->nav_client_status_option =  true;
-
-        $this->nav_business_categories_option =  true;
-
-        $this->nav_interested_in_option =  true;
-
-        $this->nav_client_option =  true;
+        $this->nav_buyer_option =  true;
 
         $this->nav_call_group =  true;
 

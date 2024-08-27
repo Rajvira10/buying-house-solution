@@ -39,7 +39,7 @@
                             <div class="p-2">
                                 <h3 class="text-white mb-1">{{ $employee->name }}</h3>
                                 <p class="text-white-75">Employee</p>
-                                <p class="text-white-75"><strong>Warehouse:</strong> {{ $employee->warehouse->name }}</p>
+                                {{-- <p class="text-white-75"><strong>Warehouse:</strong> {{ $employee->warehouse->name }}</p> --}}
                             </div>
                         </div>
                     </div>

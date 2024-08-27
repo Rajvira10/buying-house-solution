@@ -26,7 +26,7 @@ class Employee extends Model
 
     public function payroll()
     {
-        return $this->belongsToMany(Payroll::class);
+        return $this->belongsToMany(Payroll::class, 'payroll_details', 'employee_id', 'payroll_id');
     }
 
     public function warehouse()

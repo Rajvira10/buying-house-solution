@@ -6,7 +6,9 @@ use DataTables;
 use Carbon\Carbon;
 use App\Models\File;
 use App\Models\Trim;
+use App\Models\Buyer;
 use App\Models\Query;
+use App\Models\QueryItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -25,13 +27,38 @@ class QueryController extends Controller
         
         if($request->ajax()){
 
-            $queries = Query::orderBy('created_at', 'desc')
-            ->where('parent_id', null)
+            $queries = Query::where(function ($query) {
+            $query->whereNull('parent_id')
+                    ->whereNotExists(function ($subquery) {
+                        $subquery->select(DB::raw(1))
+                                ->from('queries as children')
+                                ->whereColumn('children.parent_id', 'queries.id');
+                    });
+            })
+            ->orWhereIn('id', function ($query) {
+                $query->selectRaw('MAX(id)')
+                    ->from('queries')
+                    ->whereNotNull('parent_id')
+                    ->groupBy('parent_id');
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
 
             return DataTables::of($queries)
+                ->addColumn('buyer', function ($category) {
+                    return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
+                })
+                ->addColumn('product_names', function ($category) {
+                    return $category->items->pluck('product_name')->implode(', ');
+                })
+                ->addColumn('quantity', function ($category) {
+                    return $category->items->pluck('approximate_quantity')->implode(', ');
+                })
                 ->addColumn('date', function ($category) {
                     return Carbon::parse($category->query_date)->format('d/m/Y');
+                })
+                ->addColumn('buyer', function ($category) {
+                    return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
                 })
                 ->addColumn('action', function ($category) {
                     $edit_button = '<div class="dropdown d-inline-block">
@@ -87,14 +114,36 @@ class QueryController extends Controller
 
         if($request->ajax()){
 
-            $queries = Query::where('parent_id', $query_id)->orWhere('id', $query_id)
-            ->latest()->get();
-
+            if($query->parent_id != null)
+            {
+                $queries = Query::with('buyer', 'items', 'items.trims', 'items.images', 'items.measurements')
+                ->where('parent_id', $query->parent_id)
+                ->orWhere('id', $query->parent_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            }
+            else{
+                $queries = Query::with('buyer', 'items', 'items.trims', 'items.images', 'items.measurements')
+                ->where('parent_id', $query->id)
+                ->orWhere('id', $query->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            }
+            
             return DataTables::of($queries)
                 ->addColumn('date', function ($category) {
                     return Carbon::parse($category->query_date)->format('d/m/Y');
                 })
-
+                ->addColumn('buyer', function ($category) {
+                    return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
+                })
+                ->addColumn('product_names', function ($category) {
+                    return $category->items->pluck('product_name')->implode(', ');
+                })
+                ->addColumn('quantity', function ($category) {
+                    return $category->items->pluck('approximate_quantity')->implode(', ');
+                })
+                
                 ->addColumn('action', function ($category) {
                     $edit_button = '<div class="dropdown d-inline-block">
                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -137,7 +186,17 @@ class QueryController extends Controller
 
         $trims = Trim::select('id', 'name')->get();
 
-        return view('admin.query.query.create', compact('trims'));
+        $logged_in_user_is_buyer = Buyer::where('user_id', auth()->user()->id)->first();
+
+        if($logged_in_user_is_buyer != null)
+        {
+            $buyers = Buyer::where('user_id', auth()->user()->id)->with('user')->get();
+        }
+        else{
+            $buyers = Buyer::with('user')->get();
+        }
+
+        return view('admin.query.query.create', compact('trims', 'buyers', 'logged_in_user_is_buyer'));
     }
 
     public function edit(Request $request, $query_id)
@@ -149,11 +208,21 @@ class QueryController extends Controller
         
         $request->session()->now('view_name', 'admin.query.query.index');
 
-        $query = Query::find($query_id);
+        $query = Query::with('items', 'items.trims', 'items.images', 'items.measurements')->find($query_id);
 
         if($query != null){
             $trims = Trim::select('id', 'name')->get();
-            return view('admin.query.query.edit', compact('query', 'trims'));
+
+            $logged_in_user_is_buyer = Buyer::where('user_id', auth()->user()->id)->first();
+
+            if($logged_in_user_is_buyer != null)
+            {
+                $buyers = Buyer::where('user_id', auth()->user()->id)->with('user')->get();
+            }
+            else{
+                $buyers = Buyer::with('user')->get();
+            }
+            return view('admin.query.query.edit', compact('query', 'trims', 'buyers', 'logged_in_user_is_buyer'));
         }
         else{
             return redirect()->route('queries.index')->with('error', 'Query Not Found');
@@ -164,60 +233,68 @@ class QueryController extends Controller
     {
         
         $request->validate([
-            'product_name' => 'required',
-            'trim_ids' => 'required',
-            'details' => 'required',
-            'approximate_quantity' => 'required|numeric',
-            'query_images' => 'required',
-            'query_measurements' => 'required',
+            'buyer_id' => 'required',
+            'products' => 'required',
+            'products.*.product_name' => 'required',
+            'products.*.trim_ids' => 'required',
+            'products.*.details' => 'required',
+            'products.*.approximate_quantity' => 'required|numeric',
+            'products.*.query_images' => 'nullable',
+            'products.*.query_measurements' => 'nullable',
         ]);
 
         try {
             DB::beginTransaction();
             
             $query = new Query();
-            $query->product_name = $request->product_name;
-            $query->details = $request->details;
-            $query->approximate_quantity = $request->approximate_quantity;
-            $query->user_id = auth()->user()->id;
             $query->query_date = Carbon::now();
+            $query->buyer_id = $request->buyer_id;
             $query->save();
 
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
             $query->save();
 
-            $query->trims()->attach($request->trim_ids);
+            foreach ($request->products as $product) {
+                $query_item = new QueryItem();
+                $query_item->query_id = $query->id;
+                $query_item->product_name = $product['product_name'];
+                $query_item->details = $product['details'];
+                $query_item->approximate_quantity = $product['approximate_quantity'];
+                $query_item->save();
 
-            foreach ($request->file('query_images') as $image) {
-                $image_name = $image->hashName();
+                $query_item->trims()->attach($product['trim_ids']);
 
-                $image_path = $image->storeAs('public/query_images', $image_name);
+                foreach ($product['query_images'] as $image) {
+                    $image_name = $image->hashName();
 
-                $absolute_path = asset('public' . Storage::url($image_path));
+                    $image_path = $image->storeAs('public/query_images', $image_name);
 
-                $image_file = new File();
-                $image_file->file_type = 'Image';
-                $image_file->file_path = $image_path;
-                $image_file->absolute_path = $absolute_path;
-                $image_file->save();
+                    $absolute_path = asset('public' . Storage::url($image_path));
 
-                $query->images()->attach($image_file->id);
-            }
+                    $image_file = new File();
+                    $image_file->file_type = 'Image';
+                    $image_file->file_path = $image_path;
+                    $image_file->absolute_path = $absolute_path;
+                    $image_file->save();
 
-            foreach ($request->file('query_measurements') as $measurement) {
-                $measurement_name = $measurement->hashName();
+                    $query_item->images()->attach($image_file->id);
+                }
 
-                $measurement_path = $measurement->storeAs('public/query_measurements', $measurement_name);
+                foreach ($product['query_measurements'] as $measurement) {
+                    $measurement_name = $measurement->hashName();
 
-                $absolute_path = asset('public' . Storage::url($measurement_path));
+                    $measurement_path = $measurement->storeAs('public/query_measurements', $measurement_name);
 
-                $measurement_file = new File();
-                $measurement_file->file_type = 'Measurement';
-                $measurement_file->file_path = $measurement_path;
-                $measurement_file->absolute_path = $absolute_path;
-                $measurement_file->save();
+                    $absolute_path = asset('public' . Storage::url($measurement_path));
 
-                $query->measurements()->attach($measurement_file->id);
+                    $measurement_file = new File();
+                    $measurement_file->file_type = 'Measurement';
+                    $measurement_file->file_path = $measurement_path;
+                    $measurement_file->absolute_path = $absolute_path;
+                    $measurement_file->save();
+
+                    $query_item->measurements()->attach($measurement_file->id);
+                }
             }
 
             DB::commit();
@@ -240,7 +317,7 @@ class QueryController extends Controller
         
         $request->session()->now('view_name', 'admin.query.query.index');
 
-        $query = Query::find($query_id);
+        $query = Query::with('items', 'items.trims', 'items.images', 'items.measurements')->find($query_id);
 
         if($query != null){
             return view('admin.query.query.show', compact('query'));
@@ -253,13 +330,16 @@ class QueryController extends Controller
 
     public function update(Request $request, $query_id)
     {
+
         $request->validate([
-            'product_name' => 'required',
-            'trim_ids' => 'required',
-            'details' => 'required',
-            'approximate_quantity' => 'required|numeric',
-            'query_images' => 'nullable',
-            'query_measurements' => 'nullable',
+            'buyer_id' => 'required',
+            'products' => 'required',
+            'products.*.product_name' => 'required',
+            'products.*.trim_ids' => 'required',
+            'products.*.details' => 'required',
+            'products.*.approximate_quantity' => 'required|numeric',
+            'products.*.query_images' => 'nullable',
+            'products.*.query_measurements' => 'nullable',
         ]);
 
         try {
@@ -267,64 +347,70 @@ class QueryController extends Controller
             $old_query = Query::find($query_id);
 
             $query = new Query();
-            $query->parent_id = $query_id;
-            $query->product_name = $request->product_name;
-            $query->details = $request->details;
-            $query->approximate_quantity = $request->approximate_quantity;
-            $query->user_id = auth()->user()->id;
+            $query->parent_id = $old_query->parent_id ?? $old_query->id;
             $query->query_date = Carbon::now();
+            $query->buyer_id = $request->buyer_id;
             $query->save();
 
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
             $query->save();
 
-            $query->trims()->sync($request->trim_ids);
+            foreach ($request->products as $product) {
+                $query_item = new QueryItem();
+                $query_item->query_id = $query->id;
+                $query_item->product_name = $product['product_name'];
+                $query_item->details = $product['details'];
+                $query_item->approximate_quantity = $product['approximate_quantity'];
+                $query_item->save();
 
-            if($request->hasFile('query_images'))
-            {
-                foreach ($request->file('query_images') as $image) {
-                    $image_name = $image->hashName();
+                $query_item->trims()->attach($product['trim_ids']);
 
-                    $image_path = $image->storeAs('public/query_images', $image_name);
+                if(array_key_exists('query_images', $product))
+                {
+                    foreach ($product['query_images'] as $image) {
+                        $image_name = $image->hashName();
 
-                    $absolute_path = asset('public' . Storage::url($image_path));
+                        $image_path = $image->storeAs('public/query_images', $image_name);
 
-                    $image_file = new File();
-                    $image_file->file_type = 'Image';
-                    $image_file->file_path = $image_path;
-                    $image_file->absolute_path = $absolute_path;
-                    $image_file->save();
+                        $absolute_path = asset('public' . Storage::url($image_path));
 
-                    $query->images()->attach($image_file->id);
+                        $image_file = new File();
+                        $image_file->file_type = 'Image';
+                        $image_file->file_path = $image_path;
+                        $image_file->absolute_path = $absolute_path;
+                        $image_file->save();
+
+                        $query_item->images()->attach($image_file->id);
+                    }
                 }
-            }
-            else{
-                foreach ($old_query->images as $image) {
-                    $query->images()->attach($image->id);
+                else{
+                    foreach ($old_query->items as $item) {
+                        $query_item->images()->attach($item->images->pluck('id'));
+                    }
                 }
-            }
 
-            if($request->hasFile('query_measurements'))
-            {
-                foreach ($request->file('query_measurements') as $measurement) {
-                    $measurement_name = $measurement->hashName();
+                if(array_key_exists('query_measurements', $product))
+                {
+                    foreach ($product['query_measurements'] as $measurement) {
+                        $measurement_name = $measurement->hashName();
 
-                    $measurement_path = $measurement->storeAs('public/query_measurements', $measurement_name);
+                        $measurement_path = $measurement->storeAs('public/query_measurements', $measurement_name);
 
-                    $absolute_path = asset('public' . Storage::url($measurement_path));
+                        $absolute_path = asset('public' . Storage::url($measurement_path));
 
-                    $measurement_file = new File();
-                    $measurement_file->file_type = 'Measurement';
-                    $measurement_file->file_path = $measurement_path;
-                    $measurement_file->absolute_path = $absolute_path;
-                    $measurement_file->save();
+                        $measurement_file = new File();
+                        $measurement_file->file_type = 'Measurement';
+                        $measurement_file->file_path = $measurement_path;
+                        $measurement_file->absolute_path = $absolute_path;
+                        $measurement_file->save();
 
-                    $query->measurements()->attach($measurement_file->id);
+                        $query_item->measurements()->attach($measurement_file->id);
+                    }
                 }
-            }
-            else{
-                foreach ($old_query->measurements as $measurement) {
-                    $query->measurements()->attach($measurement->id);
+                else{
+                    foreach ($old_query->items as $item) {
+                        $query_item->measurements()->attach($item->measurements->pluck('id'));
+                    }
                 }
             }
 
@@ -340,23 +426,35 @@ class QueryController extends Controller
 
     public function destroy(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             $query = Query::find($request->query_id);
 
-            if($query != null)
-            {
-                $query->images()->detach();
-                $query->measurements()->detach();
-                $query->trims()->detach();
-                $query->children()->delete();
+            if ($query != null) {
+                $query->items()->each(function ($item) {
+                    $item->trims()->detach();
+                    $item->images()->detach();
+                    $item->measurements()->detach();
+                    $item->delete(); 
+                });
+
+                $query->children()->each(function ($child) {
+                    $child->items()->each(function ($item) {
+                        $item->trims()->detach();
+                        $item->images()->detach();
+                        $item->measurements()->detach();
+                        $item->delete();
+                    });
+                    $child->delete(); 
+                });
+
                 $query->delete();
+
                 return response()->json(['success' => 'Query Deleted Successfully']);
-            }
-            else{
+            } else {
                 return response()->json(['error' => 'Query Not Found']);
             }
         }
     }
+
 
 }

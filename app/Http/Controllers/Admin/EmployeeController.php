@@ -63,8 +63,21 @@ class EmployeeController extends Controller
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a href="'.route('employees.show', $employee->id).'" class="dropdown-item"><i class="ri-eye-fill eye-icon align-bottom me-2 text-muted"></i>View</a></li>
-                                            </ul>
-                                        </div>';
+                                            ';
+                    if(in_array('employee.edit', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><a href="'.route('employees.edit', $employee->id).'" class="dropdown-item"><i class="ri-pencil-line me-2"></i>Edit</a></li>';
+                    }
+
+                    // if(in_array('employee.delete', session('user_permissions')))
+                    // {
+                        $edit_button .= '<li>
+                                            <button type="submit" class="dropdown-item delete-item-btn" onclick="deleteEmployee(' . $employee->id . ')">
+                                                <i class="ri-delete-bin-6-fill align-bottom me-2 text-danger"></i> Delete
+                                            </button>
+                                        </li>';
+                    // }
+
                     return $edit_button;
                 })
                 ->addIndexColumn()
@@ -557,6 +570,26 @@ class EmployeeController extends Controller
             $employees = Employee::where('warehouse_id', $request->warehouse_id)->get();
 
             return response()->json($employees);
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        if($request->ajax())
+        {
+            $employee = Employee::find($request->employee_id);
+
+            if($employee != null)
+            {
+                $employee->job_durations()->delete();
+                $employee->salary_structures()->delete();
+                $employee->payroll()->detach();
+                $employee->delete();
+                return response()->json(['success' => 'Employee Deleted Successfully']);
+            }
+            else{
+                return response()->json(['error' => 'Employee Not Found']);
+            }
         }
     }
 

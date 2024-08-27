@@ -54,7 +54,9 @@
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
                                                     <th>{{ __('Date') }}</th>
-                                                    <th>{{ __('Product Name') }}</th>
+                                                    <th>{{ __('Query No') }}</th>
+                                                    <th>{{ __('Product Names') }}</th>
+                                                    <th>{{ __('Quantity') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -186,13 +188,25 @@
                     },
                     {
                         data: 'date',
-                        name: 'Date',
+                        name: 'date',
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: 'product_name',
-                        name: 'Product Name',
+                        data: 'query_no',
+                        name: 'query_no',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'product_names',
+                        name: 'product_names',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'quantity',
+                        name: 'quantity',
                         orderable: true,
                         searchable: true
                     },
@@ -201,7 +215,7 @@
                         name: 'action',
                         orderable: false,
                         searchable: false
-                    }
+                    },
                 ],
             });
         });
@@ -228,6 +242,7 @@
                         },
                         success: function(response) {
                             if (response.success) {
+                                window.location.href = "{{ route('queries.index') }}";
                                 $('#expenseCategoryTable').DataTable().ajax.reload();
                                 toaster('Query Deleted Successfully', 'success');
                             } else {

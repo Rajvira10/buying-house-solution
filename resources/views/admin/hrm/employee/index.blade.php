@@ -230,5 +230,40 @@
                 ],
             });
         });
+
+        const deleteEmployee = (employeeId) => {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#f46a6a',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('employees.destroy') }}",
+                        method: 'POST',
+                        data: {
+                            employee_id: employeeId,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            $('#employeeTable').DataTable().ajax.reload();
+                            toaster('Employee Deleted Successfully', 'success');
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                            toaster('Something went wrong', 'danger');
+                        }
+                    });
+                }
+            })
+        }
     </script>
 @endsection

@@ -101,6 +101,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             Route::get('edit/{employee_id}', 'EmployeeController@edit')->name('employees.edit');
 
             Route::post('update/{employee_id}', 'EmployeeController@update')->name('employees.update');
+            
+            Route::post('delete', 'EmployeeController@destroy')->name('employees.destroy');
 
             Route::get('print/{employee_id}', 'EmployeeController@print')->name('employees.print');
 
@@ -347,6 +349,47 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('delete', 'PaymentController@destroy')->name('payments.destroy');
 
+        });
+
+        Route::group(['prefix' => 'buyer'], function(){
+
+            Route::get('index', 'BuyerController@index')->name('buyers.index');
+
+            Route::get('create', 'BuyerController@create')->name('buyers.create');
+
+            Route::post('store', 'BuyerController@store')->name('buyers.store');
+
+            Route::get('{buyer_id}', 'BuyerController@show')->name('buyers.show');
+
+            Route::get('edit/{buyer_id}', 'BuyerController@edit')->name('buyers.edit');
+
+            Route::post('update/{buyer_id}', 'BuyerController@update')->name('buyers.update');
+
+            Route::post('delete', 'BuyerController@destroy')->name('buyers.destroy');
+
+        });
+
+        Route::group(['prefix' => 'factory'], function(){
+
+            Route::get('index', 'FactoryController@index')->name('factories.index');
+
+            Route::get('create', 'FactoryController@create')->name('factories.create');
+
+            Route::post('store', 'FactoryController@store')->name('factories.store');
+
+            Route::get('{factory_id}', 'FactoryController@show')->name('factories.show');
+
+            Route::get('edit/{factory_id}', 'FactoryController@edit')->name('factories.edit');
+
+            Route::post('update/{factory_id}', 'FactoryController@update')->name('factories.update');
+
+            Route::post('delete', 'FactoryController@destroy')->name('factories.destroy');
+
+            Route::post('store-contact-person', 'FactoryController@storeContactPerson')->name('factories.store_contact_person');
+
+            Route::post('update-contact-person', 'FactoryController@updateContactPerson')->name('factories.update_contact_person');
+
+            Route::post('delete-contact-person', 'FactoryController@deleteContactPerson')->name('factories.delete_contact_person');
         });
 
         Route::group(['prefix' => 'trim'], function(){

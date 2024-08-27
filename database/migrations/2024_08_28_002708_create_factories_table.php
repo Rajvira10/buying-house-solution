@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('query_images', function (Blueprint $table) {
+        Schema::create('factories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('query_item_id');
-            $table->foreign('query_item_id')->references('id')->on('query_items');
-            $table->unsignedInteger('file_id');
-            $table->foreign('file_id')->references('id')->on('files');
+            $table->string('name');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('query_images');
+        Schema::dropIfExists('factories');
     }
 };

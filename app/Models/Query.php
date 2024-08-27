@@ -4,13 +4,19 @@ namespace App\Models;
 
 use App\Models\File;
 use App\Models\Trim;
+use App\Models\Buyer;
 use App\Models\Query;
+use App\Models\QueryItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Query extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'query_date' => 'datetime',
+    ];
 
     public function children()
     {
@@ -22,23 +28,13 @@ class Query extends Model
         return $this->belongsTo(Query::class, 'parent_id');
     }
 
-    public function images()
+    public function buyer()
     {
-        return $this->belongsToMany(File::class, 'query_images');
+        return $this->belongsTo(Buyer::class);
     }
 
-    public function measurements()
+    public function items()
     {
-        return $this->belongsToMany(File::class, 'query_measurements');
-    }
-
-    public function trims()
-    {
-        return $this->belongsToMany(Trim::class, 'query_trims');
-    }
-
-    public function getTrimIds()
-    {
-        return $this->trims->pluck('id')->toArray();
+        return $this->hasMany(QueryItem::class);
     }
 }

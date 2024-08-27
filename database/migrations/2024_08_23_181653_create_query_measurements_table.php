@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('query_measurements', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('query_id');
-            $table->foreign('query_id')->references('id')->on('queries');
+            $table->unsignedInteger('query_item_id');
+            $table->foreign('query_item_id')->references('id')->on('query_items');
             $table->unsignedInteger('file_id');
             $table->foreign('file_id')->references('id')->on('files');
             $table->timestamps();

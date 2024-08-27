@@ -15,15 +15,12 @@ return new class extends Migration
     {
         Schema::create('queries', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('buyer_id');
+            $table->foreign('buyer_id')->references('id')->on('buyers')->onDelete('cascade');
             $table->unsignedInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('queries');
             $table->dateTime('query_date');
             $table->string('query_no')->nullable();
-            $table->text('product_name');
-            $table->text('details');
-            $table->integer('approximate_quantity');
             $table->timestamps();
         });
     }

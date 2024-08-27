@@ -5,7 +5,7 @@
 @endphp
 
 @extends('admin.layout')
-@section('title', 'Clients')
+@section('title', 'Factories')
 @section('content')
 
     <div class="main-content">
@@ -17,11 +17,11 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title mb-0">Clients</h4>
+                                        <h4 class="card-title mb-0">Factories</h4>
                                     </div>
                                     <div class="col-sm-auto">
-                                        @if (in_array('client.create', session('user_permissions')))
-                                            <a href="{{ route('clients.create') }}">
+                                        @if (in_array('factory.create', session('user_permissions')))
+                                            <a href="{{ route('factories.create') }}">
                                                 <button type="button" class="btn btn-success add-btn">
                                                     <i class="ri-add-line align-bottom me-1"></i> Add
                                                 </button>
@@ -32,18 +32,14 @@
                             </div>
 
                             <div class="card-body">
-                                <div id="businessCategoryList">
+                                <div id="expenseCategoryList">
                                     <div class="card-body">
-                                        <table id="businessCategoryTable" class="table">
+                                        <table id="expenseCategoryTable" class="table">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
-                                                    <th>{{ __('Company Name') }}</th>
-                                                    <th>{{ __('Contact Number') }}</th>
-                                                    <th>{{ __('Client Source') }}</th>
-                                                    <th>{{ __('Business Category') }}</th>
-                                                    <th>{{ __('Interested In') }}</th>
-                                                    <th>{{ __('Client Status') }}</th>
+                                                    <th>{{ __('Name') }}</th>
+                                                    <th>{{ __('Phone') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -63,53 +59,6 @@
             </div>
         </div>
     </div>
-    <!-- Modal HTML -->
-    <!-- Modal HTML -->
-    <div class="modal fade" id="addContactPersonModal" tabindex="-1" role="dialog" aria-labelledby="addContactPersonLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form id="addContactPersonForm">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addContactPersonLabel">Add Contact Person</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="contact_name">Contact Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="contact_name" name="contact_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact_designation">Designation <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="contact_designation" name="contact_designation"
-                                required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact_email">Contact Email</label>
-                            <input type="email" class="form-control" id="contact_email" name="contact_email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact_phone">Contact Phone <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="contact_phone" name="contact_phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="contact_dob">Date of Birth</label>
-                            <input type="date" class="form-control" id="contact_dob" name="contact_dob" required>
-                        </div>
-                        <input type="hidden" id="client_id" name="client_id">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Contact Person</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 
 @endsection
 
@@ -126,7 +75,7 @@
                 }
             });
 
-            var dTable = $('#businessCategoryTable').DataTable({
+            var dTable = $('#expenseCategoryTable').DataTable({
                 order: [],
                 lengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -134,7 +83,7 @@
                 ],
                 processing: true,
                 responsive: true,
-                serverSide: true,
+                serverSide: false,
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'collection',
@@ -211,7 +160,7 @@
                 },
                 pagingType: "full_numbers",
                 ajax: {
-                    url: "{{ route('clients.index') }}",
+                    url: "{{ route('factories.index') }}",
                     type: "get"
                 },
                 columns: [{
@@ -221,38 +170,14 @@
                         searchable: false
                     },
                     {
-                        data: 'company_name',
-                        name: 'company_name',
+                        data: 'name',
+                        name: 'Name',
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: 'contact_no',
-                        name: 'contact_no',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'client_source',
-                        name: 'client_source',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'business_category',
-                        name: 'business_category',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'interested_in',
-                        name: 'interested_in',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'client_status',
-                        name: 'client_status',
+                        data: 'phone',
+                        name: 'Phone',
                         orderable: true,
                         searchable: true
                     },
@@ -261,11 +186,11 @@
                         name: 'action',
                         orderable: false,
                         searchable: false
-                    },
+                    }
                 ],
             });
         });
-        const deleteClient = (id) => {
+        const deleteFactory = (id) => {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -277,10 +202,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('clients.destroy') }}",
+                        url: "{{ route('factories.destroy') }}",
                         method: 'POST',
                         data: {
-                            client_id: id,
+                            factory_id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
@@ -288,8 +213,8 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                $('#businessCategoryTable').DataTable().ajax.reload();
-                                toaster('Client Deleted Successfully', 'success');
+                                $('#expenseCategoryTable').DataTable().ajax.reload();
+                                toaster('Factory Deleted Successfully', 'success');
                             } else {
                                 toaster(response.error, 'danger');
                             }
@@ -302,36 +227,5 @@
                 }
             })
         }
-
-        function showAddContactPersonModal(clientId) {
-            $('#client_id').val(clientId);
-            $('#addContactPersonModal').modal('show');
-        }
-
-        $('#addContactPersonForm').on('submit', function(e) {
-            e.preventDefault();
-
-            var formData = $(this).serialize();
-
-            $.ajax({
-                url: "{{ route('clients.add_contact_person') }}",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        $('#addContactPersonModal').modal('hide');
-                        $('#addContactPersonForm')[0].reset();
-                        $('#businessCategoryTable').DataTable().ajax.reload();
-                        toaster('Contact Person Added Successfully', 'success');
-                    } else {
-                        toaster(response.error, 'danger');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                    toaster('Something went wrong', 'danger');
-                }
-            });
-        });
     </script>
 @endsection

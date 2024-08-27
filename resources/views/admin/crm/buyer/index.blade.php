@@ -5,7 +5,7 @@
 @endphp
 
 @extends('admin.layout')
-@section('title', 'Client Statuses')
+@section('title', 'Buyers')
 @section('content')
 
     <div class="main-content">
@@ -17,11 +17,11 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title mb-0">Client Statuses</h4>
+                                        <h4 class="card-title mb-0">Buyers</h4>
                                     </div>
                                     <div class="col-sm-auto">
-                                        @if (in_array('client_status.create', session('user_permissions')))
-                                            <a href="{{ route('client_statuses.create') }}">
+                                        @if (in_array('buyer.create', session('user_permissions')))
+                                            <a href="{{ route('buyers.create') }}">
                                                 <button type="button" class="btn btn-success add-btn">
                                                     <i class="ri-add-line align-bottom me-1"></i> Add
                                                 </button>
@@ -32,9 +32,9 @@
                             </div>
 
                             <div class="card-body">
-                                <div id="businessCategoryList">
+                                <div id="expenseCategoryList">
                                     <div class="card-body">
-                                        <table id="businessCategoryTable" class="table">
+                                        <table id="expenseCategoryTable" class="table">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
@@ -74,7 +74,7 @@
                 }
             });
 
-            var dTable = $('#businessCategoryTable').DataTable({
+            var dTable = $('#expenseCategoryTable').DataTable({
                 order: [],
                 lengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -159,7 +159,7 @@
                 },
                 pagingType: "full_numbers",
                 ajax: {
-                    url: "{{ route('client_statuses.index') }}",
+                    url: "{{ route('buyers.index') }}",
                     type: "get"
                 },
                 columns: [{
@@ -183,7 +183,7 @@
                 ],
             });
         });
-        const deleteClientStatus = (id) => {
+        const deleteBuyer = (id) => {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -195,10 +195,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('client_statuses.destroy') }}",
+                        url: "{{ route('buyers.destroy') }}",
                         method: 'POST',
                         data: {
-                            client_status_id: id,
+                            buyer_id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
@@ -206,8 +206,8 @@
                         },
                         success: function(response) {
                             if (response.success) {
-                                $('#businessCategoryTable').DataTable().ajax.reload();
-                                toaster('Client Status Deleted Successfully', 'success');
+                                $('#expenseCategoryTable').DataTable().ajax.reload();
+                                toaster('Buyer Deleted Successfully', 'success');
                             } else {
                                 toaster(response.error, 'danger');
                             }
