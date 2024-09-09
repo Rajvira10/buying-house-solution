@@ -8,7 +8,9 @@ use App\Models\File;
 use App\Models\Trim;
 use App\Models\Buyer;
 use App\Models\Query;
+use App\Models\Product;
 use App\Models\QueryItem;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -66,7 +68,7 @@ class QueryController extends Controller
                     return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
                 })
                 ->addColumn('product_names', function ($category) {
-                    return $category->items->pluck('product_name')->implode(', ');
+                    return $category->items->pluck('product.name')->implode(', ');
                 })
                 ->addColumn('quantity', function ($category) {
                     return $category->items->pluck('approximate_quantity')->implode(', ');
@@ -162,7 +164,7 @@ class QueryController extends Controller
                     return $category->buyer->user->first_name . ' ' . $category->buyer->user->last_name;
                 })
                 ->addColumn('product_names', function ($category) {
-                    return $category->items->pluck('product_name')->implode(', ');
+                    return $category->items->pluck('product.name')->implode(', ');
                 })
                 ->addColumn('quantity', function ($category) {
                     return $category->items->pluck('approximate_quantity')->implode(', ');
@@ -220,7 +222,11 @@ class QueryController extends Controller
             $buyers = Buyer::with('user')->get();
         }
 
-        return view('admin.query.query.create', compact('trims', 'buyers', 'logged_in_user_is_buyer'));
+        $products = Product::all();
+
+        $product_types = ProductType::all();
+
+        return view('admin.query.query.create', compact('trims', 'buyers', 'logged_in_user_is_buyer', 'products', 'product_types'));
     }
 
     public function edit(Request $request, $query_id)
@@ -246,7 +252,12 @@ class QueryController extends Controller
             else{
                 $buyers = Buyer::with('user')->get();
             }
-            return view('admin.query.query.edit', compact('query', 'trims', 'buyers', 'logged_in_user_is_buyer'));
+
+            $products = Product::all();
+
+            $product_types = ProductType::all();
+
+            return view('admin.query.query.edit', compact('query', 'trims', 'buyers', 'logged_in_user_is_buyer', 'products', 'product_types'));
         }
         else{
             return redirect()->route('queries.index')->with('error', 'Query Not Found');
@@ -255,11 +266,15 @@ class QueryController extends Controller
 
     public function store(Request $request)
     {
-        
         $request->validate([
             'buyer_id' => 'required',
             'products' => 'required',
-            'products.*.product_name' => 'required',
+            'products.*.product_id' => 'required',
+            'products.*.product_type_id' => 'required',
+            'products.*.target_price' => 'required|numeric',
+            'products.*.price_submission_date' => 'required',
+            'products.*.sample_submission_date' => 'nullable',
+            'products.*.product_model' => 'required',
             'products.*.trim_ids' => 'required',
             'products.*.details' => 'required',
             'products.*.approximate_quantity' => 'required|numeric',
@@ -281,7 +296,12 @@ class QueryController extends Controller
             foreach ($request->products as $product) {
                 $query_item = new QueryItem();
                 $query_item->query_id = $query->id;
-                $query_item->product_name = $product['product_name'];
+                $query_item->product_id = $product['product_id'];
+                $query_item->product_type_id = $product['product_type_id'];
+                $query_item->target_price = $product['target_price'];
+                $query_item->price_submission_date = Carbon::createFromFormat('d/m/Y', $product['price_submission_date'])->toDateTimeString();
+                $query_item->sample_submission_date = $product['sample_submission_date'] ? Carbon::createFromFormat('d/m/Y', $product['sample_submission_date'])->toDateTimeString() : null;
+                $query_item->product_model = $product['product_model'];
                 $query_item->details = $product['details'];
                 $query_item->approximate_quantity = $product['approximate_quantity'];
                 $query_item->save();
@@ -358,13 +378,19 @@ class QueryController extends Controller
         $request->validate([
             'buyer_id' => 'required',
             'products' => 'required',
-            'products.*.product_name' => 'required',
+            'products.*.product_id' => 'required',
+            'products.*.product_type_id' => 'required',
+            'products.*.target_price' => 'required|numeric',
+            'products.*.price_submission_date' => 'required',
+            'products.*.sample_submission_date' => 'nullable',
+            'products.*.product_model' => 'required',
             'products.*.trim_ids' => 'required',
             'products.*.details' => 'required',
             'products.*.approximate_quantity' => 'required|numeric',
             'products.*.query_images' => 'nullable',
             'products.*.query_measurements' => 'nullable',
         ]);
+
 
         try {
             DB::beginTransaction();
@@ -382,7 +408,12 @@ class QueryController extends Controller
             foreach ($request->products as $product) {
                 $query_item = new QueryItem();
                 $query_item->query_id = $query->id;
-                $query_item->product_name = $product['product_name'];
+                $query_item->product_id = $product['product_id'];
+                $query_item->product_type_id = $product['product_type_id'];
+                $query_item->target_price = $product['target_price'];
+                $query_item->price_submission_date = Carbon::createFromFormat('d/m/Y', $product['price_submission_date'])->toDateTimeString();
+                $query_item->sample_submission_date = $product['sample_submission_date'] ? Carbon::createFromFormat('d/m/Y', $product['sample_submission_date'])->toDateTimeString() : null;
+                $query_item->product_model = $product['product_model'];
                 $query_item->details = $product['details'];
                 $query_item->approximate_quantity = $product['approximate_quantity'];
                 $query_item->save();
@@ -409,7 +440,7 @@ class QueryController extends Controller
                 }
                 else{
                     foreach ($old_query->items as $item) {
-                        $query_item->images()->attach($item->images->pluck('id'));
+                        $query_item->images()->sync($item->images->pluck('id'));
                     }
                 }
 
@@ -433,7 +464,7 @@ class QueryController extends Controller
                 }
                 else{
                     foreach ($old_query->items as $item) {
-                        $query_item->measurements()->attach($item->measurements->pluck('id'));
+                        $query_item->measurements()->sync($item->measurements->pluck('id'));
                     }
                 }
             }

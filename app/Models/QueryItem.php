@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\File;
+use App\Models\Trim;
 use App\Models\Query;
+use App\Models\Product;
 use App\Models\QueryTrim;
 use App\Models\QueryImage;
+use App\Models\ProductType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -33,5 +36,15 @@ class QueryItem extends Model
     public function getTrimIds()
     {
         return $this->trims->pluck('id')->toArray();
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
     }
 }

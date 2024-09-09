@@ -5,155 +5,219 @@
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}"><i class="ri-home-5-line"></i>
+                                Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('queries.index') }}">Queries</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Query</li>
+                    </ol>
+                </nav>
+
+                <!-- Main Content -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Queries</h4>
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}"><i
-                                                class="ri-home-5-fill"></i></a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('queries.index') }}">Queries</a></li>
-                                    <li class="breadcrumb-item active">Edit Query</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>{{ __('Edit Query') }}</h3>
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0 text-white">{{ __('Edit Query') }}</h3>
                             </div>
                             <div class="card-body">
                                 <form action="{{ route('queries.update', $query->id) }}" method="post" class="form-group"
                                     onsubmit="return disableOnSubmit()" enctype="multipart/form-data">
                                     @csrf
-                                    @method('POST')
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="buyer_id">
-                                                    {{ __('Select Buyer') }}
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <select class="form-control select-category" name="buyer_id" id="buyer_id"
-                                                    required>
-                                                    @if ($logged_in_user_is_buyer != null)
-                                                        <option value="{{ $logged_in_user_is_buyer->id }}" selected>
-                                                            {{ $logged_in_user_is_buyer->user->first_name }}
-                                                            {{ $logged_in_user_is_buyer->user->last_name }}</option>
-                                                    @else
-                                                        <option value="" disabled selected>Select a Buyer</option>
-                                                        @foreach ($buyers as $buyer)
-                                                            <option value="{{ $buyer->id }}">
-                                                                {{ $buyer->user->first_name }}
-                                                                {{ $buyer->user->last_name }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                        </div>
+
+                                    <!-- Buyer Selection -->
+                                    <div class="mb-4">
+                                        <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }} <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select" name="buyer_id" id="buyer_id" required>
+                                            @if ($logged_in_user_is_buyer != null)
+                                                <option value="{{ $logged_in_user_is_buyer->id }}" selected>
+                                                    {{ $logged_in_user_is_buyer->user->first_name }}
+                                                    {{ $logged_in_user_is_buyer->user->last_name }}
+                                                </option>
+                                            @else
+                                                <option value="" disabled>Select a Buyer</option>
+                                                @foreach ($buyers as $buyer)
+                                                    <option value="{{ $buyer->id }}"
+                                                        {{ $query->buyer_id == $buyer->id ? 'selected' : '' }}>
+                                                        {{ $buyer->user->first_name }} {{ $buyer->user->last_name }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
                                     </div>
+
+                                    <!-- Products Container -->
                                     <div id="products-container">
                                         @foreach ($query->items as $index => $item)
                                             <div class="product-item mb-4">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">Product {{ $index + 1 }}
+                                                <div class="card shadow-sm">
+                                                    <div class="card-header bg-light">
+                                                        <h5 class="card-title mb-0">
+                                                            Product <span
+                                                                class="product-number badge bg-primary">{{ $loop->iteration }}</span>
                                                             <button type="button"
-                                                                class="btn btn-danger btn-sm float-end remove-product">Remove</button>
+                                                                class="btn btn-danger btn-sm float-end remove-product">
+                                                                <i class="ri-delete-bin-line"></i> Remove
+                                                            </button>
                                                         </h5>
-                                                        <div class="row mb-3 mt-2">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="product_name">
-                                                                        {{ __('Product Name') }}
-                                                                        <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <input type="text" class="form-control"
-                                                                        name="products[{{ $index }}][product_name]"
-                                                                        value="{{ $item->product_name }}" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="trim_ids">
-                                                                        {{ __('Trim') }}
-                                                                        <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <select class="form-control multiple-select-category"
-                                                                        name="products[{{ $index }}][trim_ids][]"
-                                                                        multiple required>
-                                                                        <option value="" disabled>Select a category
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row g-3">
+                                                            <!-- Product Type and Product -->
+                                                            <div class="col-md-6">
+                                                                <label for="product_type_id"
+                                                                    class="form-label">{{ __('Product Type') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <select class="form-select select-category"
+                                                                    name="products[{{ $index }}][product_type_id]"
+                                                                    required>
+                                                                    <option value="" selected disabled>Select a
+                                                                        product type</option>
+                                                                    @foreach ($product_types as $product_type)
+                                                                        <option value="{{ $product_type->id }}"
+                                                                            {{ $item->product_type_id == $product_type->id ? 'selected' : '' }}>
+                                                                            {{ $product_type->name }}
                                                                         </option>
-                                                                        @foreach ($trims as $trim)
-                                                                            <option value="{{ $trim->id }}"
-                                                                                {{ in_array($trim->id, $item->trims->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                                                                {{ $trim->name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="details">
-                                                                        {{ __('Details') }}
-                                                                        <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <textarea class="form-control" name="products[{{ $index }}][details]" rows="4" required>{{ $item->details }}</textarea>
-                                                                </div>
+                                                            <div class="col-md-6">
+                                                                <label for="product_id"
+                                                                    class="form-label">{{ __('Product') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <select class="form-select select-category"
+                                                                    name="products[{{ $index }}][product_id]"
+                                                                    required>
+                                                                    <option value="" selected disabled>Select a
+                                                                        product</option>
+                                                                    @foreach ($products as $product)
+                                                                        <option value="{{ $product->id }}"
+                                                                            {{ $item->product_id == $product->id ? 'selected' : '' }}>
+                                                                            {{ $product->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="approximate_quantity">
-                                                                        {{ __('Approximate Quantity') }}
-                                                                        <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <input type="number" class="form-control"
-                                                                        name="products[{{ $index }}][approximate_quantity]"
-                                                                        value="{{ $item->approximate_quantity }}" required>
-                                                                </div>
+
+                                                            <!-- Quantity and Price -->
+                                                            <div class="col-md-6">
+                                                                <label for="approximate_quantity"
+                                                                    class="form-label">{{ __('Approximate Quantity') }}
+                                                                    <span class="text-danger">*</span></label>
+                                                                <input type="number" class="form-control"
+                                                                    name="products[{{ $index }}][approximate_quantity]"
+                                                                    value="{{ $item->approximate_quantity }}" required>
                                                             </div>
-                                                        </div>
-                                                        <div class="row mb-3">
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="query_images">
-                                                                        {{ __('Query Images') }}
-                                                                    </label>
-                                                                    <input type="file" class="form-control"
-                                                                        name="products[{{ $index }}][query_images][]"
-                                                                        multiple>
+                                                            <div class="col-md-6">
+                                                                <label for="target_price"
+                                                                    class="form-label">{{ __('Target Price') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="number" class="form-control"
+                                                                    name="products[{{ $index }}][target_price]"
+                                                                    value="{{ $item->target_price }}" required>
+                                                            </div>
+
+                                                            <!-- Dates -->
+                                                            <div class="col-md-6">
+                                                                <label for="price_submission_date"
+                                                                    class="form-label">{{ __('Price Submission Date') }}
+                                                                    <span class="text-danger">*</span></label>
+                                                                <input data-provider="flatpickr" data-date-format="d/m/Y"
+                                                                    data-default-date={{ date('d/m/Y', strtotime($item->price_submission_date)) }}"
+                                                                    type="date"
+                                                                    class="form-control price_submission_date"
+                                                                    name="products[{{ $index }}][price_submission_date]"
+                                                                    value="{{ $item->price_submission_date ? date('d/m/Y', strtotime($item->price_submission_date)) : date('d/m/Y') }}"
+                                                                    required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="sample_submission_date"
+                                                                    class="form-label">{{ __('Sample Submission Date') }}</label>
+                                                                <input data-provider="flatpickr" data-date-format="d/m/Y"
+                                                                    data-default-date={{ $item->sample_submission_date ? date('d/m/Y', strtotime($item->sample_submission_date)) : '' }}"
+                                                                    type="date"
+                                                                    class="form-control sample_submission_date"
+                                                                    name="products[{{ $index }}][sample_submission_date]"
+                                                                    value="{{ $item->sample_submission_date ? date('d/m/Y', strtotime($item->sample_submission_date)) : '' }}">
+                                                            </div>
+
+                                                            <!-- Model and Trim -->
+                                                            <div class="col-md-6">
+                                                                <label for="product_model"
+                                                                    class="form-label">{{ __('Product Model') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control"
+                                                                    name="products[{{ $index }}][product_model]"
+                                                                    value="{{ $item->product_model }}" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="trim_ids"
+                                                                    class="form-label">{{ __('Trim') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <select class="form-select multiple-select-category"
+                                                                    name="products[{{ $index }}][trim_ids][]"
+                                                                    multiple required>
+                                                                    @foreach ($trims as $trim)
+                                                                        <option value="{{ $trim->id }}"
+                                                                            {{ in_array($trim->id, $item->trims->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                                            {{ $trim->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+
+                                                            <!-- Images and Measurements -->
+                                                            <div class="col-md-6">
+                                                                <label for="query_images"
+                                                                    class="form-label">{{ __('Query Images') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="file" class="form-control"
+                                                                    name="products[{{ $index }}][query_images][]"
+                                                                    multiple>
+                                                                <!-- Existing images logic (optional) -->
+                                                                @if ($item->images->isNotEmpty())
                                                                     <div class="mt-2">
-                                                                        @foreach ($item->images as $image)
-                                                                            <a href="{{ $image->absolute_path }}"> <img
-                                                                                    src="{{ $image->absolute_path }}"
-                                                                                    alt="Query Image" width="100">
-                                                                            </a>
-                                                                        @endforeach
+                                                                        <strong>Current Images:</strong>
+                                                                        <ul>
+                                                                            @foreach ($item->images as $image)
+                                                                                <li><a href="{{ asset($image->absolute_path) }}"
+                                                                                        target="_blank">{{ $image->absolute_path }}</a>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
                                                                     </div>
-                                                                </div>
+                                                                @endif
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <label for="query_measurements">
-                                                                        {{ __('Query Measurements') }}
-                                                                    </label>
-                                                                    <input type="file" class="form-control"
-                                                                        name="products[{{ $index }}][query_measurements][]"
-                                                                        multiple>
+                                                            <div class="col-md-6">
+                                                                <label for="query_measurements"
+                                                                    class="form-label">{{ __('Query Measurements') }}
+                                                                    <span class="text-danger">*</span></label>
+                                                                <input type="file" class="form-control"
+                                                                    name="products[{{ $index }}][query_measurements][]"
+                                                                    multiple>
+                                                                <!-- Existing measurements logic (optional) -->
+                                                                @if ($item->measurements->isNotEmpty())
                                                                     <div class="mt-2">
-                                                                        @foreach ($item->measurements as $measurement)
-                                                                            <a href="{{ $measurement->absolute_path }}"
-                                                                                target="_blank">View File</a><br>
-                                                                        @endforeach
+                                                                        <strong>Current Measurements:</strong>
+                                                                        <ul>
+                                                                            @foreach ($item->measurements as $measurement)
+                                                                                <li><a href="{{ asset($measurement->absolute_path) }}"
+                                                                                        target="_blank">{{ $measurement->absolute_path }}</a>
+                                                                                </li>
+                                                                            @endforeach
+                                                                        </ul>
                                                                     </div>
-                                                                </div>
+                                                                @endif
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <label for="details"
+                                                                    class="form-label">{{ __('Details') }} <span
+                                                                        class="text-danger">*</span></label>
+                                                                <textarea class="form-control" name="products[{{ $index }}][details]" rows="4" required>{{ $item->details }}</textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -161,37 +225,33 @@
                                             </div>
                                         @endforeach
                                     </div>
-                                    <div class="row mb-3">
+
+                                    <div class="row mt-3">
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-secondary" id="add-product">Add
-                                                Product</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button id="submit" type="submit"
-                                                class="btn btn-primary waves-effect waves-light">Update</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                id="submitBtn">{{ __('Update Query') }}</button>
+                                            <button type="button" id="add-more" class="btn btn-success"><i
+                                                    class="ri-add-line align-bottom me-1"></i> Add More</button>
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
             </div>
         </div>
     </div>
 
-    <!-- Product template (hidden) -->
-    <template id="product-template">
-        <!-- ... (template content remains the same) ... -->
-    </template>
 @endsection
 
 @section('custom-script')
     <script>
         const disableOnSubmit = () => {
-            const button = document.querySelector('#submit');
+            const button = document.querySelector('#submitBtn');
+            document.querySelectorAll('select').forEach(select => {
+                select.removeAttribute('aria-hidden');
+            });
             button.disabled = true;
             button.innerHTML =
                 `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
@@ -200,47 +260,137 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             const selectCategory = document.querySelectorAll(".select-category");
-
-            selectCategory.forEach((select) => {
-                const selectr = new Selectr(select);
+            selectCategory.forEach(select => {
+                new Selectr(select);
             });
-
-            const productsContainer = document.getElementById('products-container');
-            const addProductButton = document.getElementById('add-product');
-            const productTemplate = document.getElementById('product-template');
-            let productCount = {{ $query->items->count() }};
-
-            function initializeSelectr(element) {
-                new Selectr(element, {
+            const selectMultipleCategory = document.querySelectorAll(".multiple-select-category");
+            selectMultipleCategory.forEach(select => {
+                new Selectr(select, {
                     multiple: true,
                     placeholder: 'Select a category'
                 });
+            });
+
+            const productsContainer = document.getElementById('products-container');
+            const addProductButton = document.getElementById('add-more');
+            let productCount = {{ count($query->items) }};
+
+            function initializeSelectr(element, multiple = false) {
+                if (multiple) {
+                    new Selectr(element, {
+                        multiple: true,
+                        placeholder: 'Select a category'
+                    });
+                } else {
+                    new Selectr(element, {
+                        placeholder: 'Select a category'
+                    });
+                }
             }
 
-            function addProduct(productData = null) {
+            function addProduct() {
                 productCount++;
-                const productClone = document.importNode(productTemplate.content, true);
-                productClone.querySelector('.product-number').textContent = productCount;
+                const productTemplate = `
+                    <div class="product-item mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title mb-0">
+                                    Product <span class="product-number badge bg-primary">${productCount}</span>
+                                    <button type="button" class="btn btn-danger btn-sm float-end remove-product">
+                                        <i class="ri-delete-bin-line"></i> Remove
+                                    </button>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <!-- Similar HTML structure as existing products -->
+                                    <div class="col-md-6">
+                                        <label for="product_type_id" class="form-label">{{ __('Product Type') }} <span class="text-danger">*</span></label>
+                                        <select class="form-select select-category" name="products[${productCount - 1}][product_type_id]" required>
+                                            <option value="" selected disabled>Select a product type</option>
+                                            @foreach ($product_types as $product_type)
+                                                <option value="{{ $product_type->id }}">{{ $product_type->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="product_id" class="form-label">{{ __('Product') }} <span class="text-danger">*</span></label>
+                                        <select class="form-select select-category" name="products[${productCount - 1}][product_id]" required>
+                                            <option value="" selected disabled>Select a product</option>
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="approximate_quantity" class="form-label">{{ __('Approximate Quantity') }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" name="products[${productCount - 1}][approximate_quantity]" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="target_price" class="form-label">{{ __('Target Price') }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" name="products[${productCount - 1}][target_price]" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="price_submission_date" class="form-label">{{ __('Price Submission Date') }} <span class="text-danger">*</span></label>
+                                        <input data-provider="flatpickr" data-date-format="d/m/Y" type="date" class="form-control price_submission_date" name="products[${productCount - 1}][price_submission_date]" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="sample_submission_date" class="form-label
+                                        ">{{ __('Sample Submission Date') }}</label>
+                                        <input data-provider="flatpickr" data-date-format="d/m/Y" type="date" class="form-control sample_submission_date" name="products[${productCount - 1}][sample_submission_date]">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="product_model" class="form-label
+                                        ">{{ __('Product Model') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="products[${productCount - 1}][product_model]" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="trim_ids" class="form-label">{{ __('Trim') }} <span class="text-danger">*</span></label>
+                                        <select class="form-select multiple-select-category" name="products[${productCount - 1}][trim_ids][]" multiple required>
+                                            @foreach ($trims as $trim)
+                                                <option value="{{ $trim->id }}">{{ $trim->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                // Update name attributes
-                productClone.querySelectorAll('input, select, textarea').forEach(element => {
-                    if (element.name) {
-                        element.name = element.name.replace('products[0]', `products[${productCount - 1}]`);
-                    }
+                                    <div class="col-md-6">
+                                        <label for="query_images" class="form-label">{{ __('Query Images') }} <span class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" name="products[${productCount - 1}][query_images][]" multiple>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="query_measurements" class="form-label">{{ __('Query Measurements') }} <span class="text-danger">*</span></label>
+                                        <input type="file" class="form-control" name="products[${productCount - 1}][query_measurements][]" multiple>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="details" class="form-label">{{ __('Details') }} <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="products[${productCount - 1}][details]" rows="4" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                productsContainer.insertAdjacentHTML('beforeend', productTemplate);
+
+                const newProduct = productsContainer.lastElementChild;
+
+                newProduct.querySelectorAll('.select-category').forEach(select => {
+                    initializeSelectr(select);
+                });
+                initializeSelectr(newProduct.querySelector('.multiple-select-category'), true);
+
+                flatpickr(newProduct.querySelector('.price_submission_date'), {
+                    dateFormat: 'd/m/Y',
+                    defaultDate: new Date()
                 });
 
-                const removeButton = productClone.querySelector('.remove-product');
-                removeButton.addEventListener('click', function() {
-                    this.closest('.product-item').remove();
+                flatpickr(newProduct.querySelector('.sample_submission_date'), {
+                    dateFormat: 'd/m/Y',
+                });
+
+                newProduct.querySelector('.remove-product').addEventListener('click', function() {
+                    newProduct.remove();
                     updateProductNumbers();
                 });
-
-                productsContainer.appendChild(productClone);
-
-                const newSelect = productsContainer.lastElementChild.querySelector('.multiple-select-category');
-                initializeSelectr(newSelect);
-
-                updateProductNumbers();
             }
 
             function updateProductNumbers() {
@@ -258,25 +408,10 @@
                 });
             }
 
-            addProductButton.addEventListener('click', () => addProduct());
+            addProductButton.addEventListener('click', addProduct);
 
-            // Initialize Selectr for existing products
-            document.querySelectorAll('.multiple-select-category').forEach(select => {
-                initializeSelectr(select);
-            });
-
-            // Add event listeners to existing remove buttons
-            document.querySelectorAll('.remove-product').forEach(button => {
-                button.addEventListener('click', function() {
-                    this.closest('.product-item').remove();
-                    updateProductNumbers();
-                });
-            });
-
-            // If no products exist, add one empty product form
-            if (productCount === 0) {
-                addProduct();
-            }
+            // If there are no existing products, add one by default
+            if (productCount === 0) addProduct();
         });
     </script>
 @endsection

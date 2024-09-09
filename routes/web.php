@@ -392,6 +392,38 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             Route::post('delete-contact-person', 'FactoryController@deleteContactPerson')->name('factories.delete_contact_person');
         });
 
+        Route::group(['prefix' => 'product-type'], function(){
+
+            Route::get('index', 'ProductTypeController@index')->name('product_types.index');
+
+            Route::get('create', 'ProductTypeController@create')->name('product_types.create');
+
+            Route::post('store', 'ProductTypeController@store')->name('product_types.store');
+
+            Route::get('edit/{product_type_id}', 'ProductTypeController@edit')->name('product_types.edit');
+
+            Route::post('update/{product_type_id}', 'ProductTypeController@update')->name('product_types.update');
+
+            Route::post('delete', 'ProductTypeController@destroy')->name('product_types.destroy');
+
+        });
+
+        Route::group(['prefix' => 'product'], function(){
+
+            Route::get('index', 'ProductController@index')->name('products.index');
+
+            Route::get('create', 'ProductController@create')->name('products.create');
+
+            Route::post('store', 'ProductController@store')->name('products.store');
+
+            Route::get('edit/{product_id}', 'ProductController@edit')->name('products.edit');
+
+            Route::post('update/{product_id}', 'ProductController@update')->name('products.update');
+
+            Route::post('delete', 'ProductController@destroy')->name('products.destroy');
+
+        });
+
         Route::group(['prefix' => 'trim'], function(){
 
             Route::get('index', 'TrimController@index')->name('trims.index');

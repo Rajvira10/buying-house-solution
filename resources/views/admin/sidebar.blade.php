@@ -472,7 +472,14 @@
                     <li class="nav-item">
                         @php
                             $active = $show = '';
-                            if (in_array(session('view_name'), ['admin.query.trim.index', 'admin.query.query.index'])) {
+                            if (
+                                in_array(session('view_name'), [
+                                    'admin.query.trim.index',
+                                    'admin.query.query.index',
+                                    'admin.query.product.index',
+                                    'admin.query.product_type.index',
+                                ])
+                            ) {
                                 $active = 'active';
                                 $show = 'show';
                             }
@@ -484,6 +491,20 @@
                         </a>
                         <div class="collapse menu-dropdown {{ $show }}" id="sidebarQuery">
                             <ul class="nav nav-sm flex-column">
+                                @if ($permissions->nav_product_type_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('product_types.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.query.product_type.index' ? 'active' : '' }}"
+                                            data-key="t-product-type">Product Type</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_product_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('products.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.query.product.index' ? 'active' : '' }}"
+                                            data-key="t-product">Product</a>
+                                    </li>
+                                @endif
                                 @if ($permissions->nav_trim_option)
                                     <li class="nav-item">
                                         <a href="{{ route('trims.index') }}" target="_self"

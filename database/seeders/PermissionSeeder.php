@@ -542,6 +542,21 @@ class PermissionSeeder extends Seeder
             $permission->permission_group = "CRM";
             $permission->save();
         }
+        
+        $permission = Permission::where('name', '=', 'product_type.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.index";
+            $permission->alias = "View Product Types";
+            $permission->description = "To view the list of product types";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
 
 
 
@@ -1546,6 +1561,105 @@ class PermissionSeeder extends Seeder
         // }
          
         // PERMISSION GROUP - QUERY
+
+        
+        $permission = Permission::where('name', '=', 'product_type.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.create";
+            $permission->alias = "Create Product Types";
+            $permission->description = "To create a new product type";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product_type.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.edit";
+            $permission->alias = "Edit Product Types";
+            $permission->description = "To edit a product type";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product_type.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.delete";
+            $permission->alias = "Delete Product Types";
+            $permission->description = "To delete a product type";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product.index";
+            $permission->alias = "View Products";
+            $permission->description = "To view the list of products";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product.create";
+            $permission->alias = "Create Products";
+            $permission->description = "To create a new product";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product.edit";
+            $permission->alias = "Edit Products";
+            $permission->description = "To edit a product";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product.delete";
+            $permission->alias = "Delete Products";
+            $permission->description = "To delete a product";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
 
         $permission = Permission::where('name', '=', 'trim.index')->first();
 

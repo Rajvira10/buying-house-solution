@@ -61,6 +61,10 @@ class PermissionService
 
     public $nav_query_group = false;
 
+    public $nav_product_type_option = false;
+
+    public $nav_product_option = false;
+
     public $nav_trim_option = false;
 
     public $nav_query_option = false;
@@ -265,9 +269,22 @@ class PermissionService
 
         // Query Group
 
-        if(in_array('query.index', $permissions) || in_array('trim.index', $permissions))
+        if(in_array('query.index', $permissions) || in_array('trim.index', $permissions) || in_array('product.index', $permissions) || in_array('product_type.index', $permissions))
         {
             $this->nav_query_group = true;
+        }
+        {
+            $this->nav_query_group = true;
+        }
+
+        if(in_array('product_type.index', $permissions))
+        {
+            $this->nav_product_type_option = true;
+        }
+
+        if(in_array('product.index', $permissions))
+        {
+            $this->nav_product_option = true;
         }
 
         if(in_array('trim.index', $permissions))
