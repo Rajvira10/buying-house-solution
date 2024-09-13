@@ -162,7 +162,7 @@
             <div class="col-4 ">
                 <div class="ps-3 mt-4">
                     <p class="approved_by"> </p>
-                    {{-- {{ $expense->finalizedBy->first_name . ' ' . $expense->finalizedBy->last_name }}</p> --}}
+                    {{-- {{ $expense->finalizedBy->username }}</p> --}}
                     <span class="">Created By</span>
                 </div>
             </div>

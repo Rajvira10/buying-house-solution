@@ -111,6 +111,10 @@ class RoleController extends Controller
 
         if($role != null){
 
+            if($role->editable == false){
+                return redirect()->route('roles.index')->with('error', 'This Role is not editable');
+            }
+
             return view('admin.users.role.edit', compact('role'));
         
         }

@@ -77,7 +77,7 @@ class AccountStatementService
                         'reference' => $expense->expense_id,
                         'expense_category' => $expense->expenseCategory->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -95,7 +95,7 @@ class AccountStatementService
                         'reference' => $revenue->revenue_id,
                         'revenue_category' => $revenue->revenueCategory->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -111,7 +111,7 @@ class AccountStatementService
                         'reference' => $loan->loan_id,
                         'loan_client' => $loan->loanClient->name,
                         'note' => $loan->note,
-                        'finalized_by' => $loan->finalizedBy->first_name,
+                        'finalized_by' => $loan->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -126,7 +126,7 @@ class AccountStatementService
                     $reference_data = [
                         'reference' => $loan_payback->loan_id,
                         'note' => $loan_payback->note,
-                        'finalized_by' => $loan_payback->finalizedBy->first_name,
+                        'finalized_by' => $loan_payback->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -142,7 +142,7 @@ class AccountStatementService
                         'reference' => $investment->investment_id,
                         'investor' => $investment->investor->name,
                         'note' => $investment->note,
-                        'finalized_by' => $investment->finalizedBy->first_name,
+                        'finalized_by' => $investment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -157,7 +157,7 @@ class AccountStatementService
                     $reference_data = [
                         'reference' => $investment_return->investment_id,
                         'note' => $investment_return->note,
-                        'finalized_by' => $investment_return->finalizedBy->first_name,
+                        'finalized_by' => $investment_return->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -172,7 +172,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase->supplier->name,
                         'note' => $purchase->note,
-                        'finalized_by' => $purchase->finalizedBy->first_name,
+                        'finalized_by' => $purchase->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -189,7 +189,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase->supplier->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -203,7 +203,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase_return->purchase->supplier->name,
                         'note' => $purchase_return->note,
-                        'finalized_by' => $purchase_return->finalizedBy->first_name,
+                        'finalized_by' => $purchase_return->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -219,7 +219,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase_return->purchase->supplier->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -233,7 +233,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $sale->customer->name,
                         'note' => $sale->note,
-                        'finalized_by' => $sale->finalizedBy->first_name,
+                        'finalized_by' => $sale->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -249,7 +249,7 @@ class AccountStatementService
                         'reference' => $project->project_id,
                         'client' => $project->client->name,
                         'note' => $project->note,
-                        'finalized_by' => $project->finalizedBy->first_name,
+                        'finalized_by' => $project->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -266,7 +266,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $sale->customer->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -284,7 +284,7 @@ class AccountStatementService
                         'reference_id' => $project->project_id,
                         'client' => $project->client->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -299,7 +299,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $sale_return->sale->customer->name,
                         'note' => $sale_return->note,
-                        'finalized_by' => $sale_return->finalizedBy->first_name,
+                        'finalized_by' => $sale_return->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -316,7 +316,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $sale_return->sale->customer->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -331,7 +331,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $wholesale->customer->name,
                         'note' => $wholesale->note,
-                        'finalized_by' => $wholesale->finalizedBy->first_name,
+                        'finalized_by' => $wholesale->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -348,7 +348,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $wholesale->customer->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -363,7 +363,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $wholesale_return->wholesale->customer->name,
                         'note' => $wholesale_return->note,
-                        'finalized_by' => $wholesale_return->finalizedBy->first_name,
+                        'finalized_by' => $wholesale_return->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -380,7 +380,7 @@ class AccountStatementService
                     $reference_data = [
                         'customer' => $wholesale_return->wholesale->customer->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -395,7 +395,7 @@ class AccountStatementService
                     $reference_data = [
                         'sender_receiver' => $money_transfer->senderAccount->name . ' ->' . $money_transfer->receiverAccount->name,
                         'note' => $money_transfer->note,
-                        'finalized_by' => $money_transfer->finalizedBy->first_name,
+                        'finalized_by' => $money_transfer->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -409,7 +409,7 @@ class AccountStatementService
 
                     $reference_data = [
                         'note' => $cash_in_cash_out->note,
-                        'finalized_by' => $cash_in_cash_out->finalizedBy->first_name,
+                        'finalized_by' => $cash_in_cash_out->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -423,7 +423,7 @@ class AccountStatementService
 
                     $reference_data = [
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -489,7 +489,7 @@ class AccountStatementService
                     $reference_data = [
                         'expense_category' => $expense->expenseCategory->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -506,7 +506,7 @@ class AccountStatementService
                     $reference_data = [
                         'revenue_category' => $revenue->revenueCategory->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -521,7 +521,7 @@ class AccountStatementService
                     $reference_data = [
                         'loan_client' => $loan->loanClient->name,
                         'note' => $loan->note,
-                        'finalized_by' => $loan->finalizedBy->first_name,
+                        'finalized_by' => $loan->finalizedBy->username,
                     ];
                 }
 
@@ -533,7 +533,7 @@ class AccountStatementService
 
                     $reference_data = [
                         'note' => $loan_payback->note,
-                        'finalized_by' => $loan_payback->finalizedBy->first_name,
+                        'finalized_by' => $loan_payback->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -548,7 +548,7 @@ class AccountStatementService
                     $reference_data = [
                         'investor' => $investment->investor->name,
                         'note' => $investment->note,
-                        'finalized_by' => $investment->finalizedBy->first_name,
+                        'finalized_by' => $investment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -562,7 +562,7 @@ class AccountStatementService
 
                     $reference_data = [
                         'note' => $investment_return->note,
-                        'finalized_by' => $investment_return->finalizedBy->first_name,
+                        'finalized_by' => $investment_return->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -577,7 +577,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase->supplier->name,
                         'note' => $purchase->note,
-                        'finalized_by' => $purchase->finalizedBy->first_name,
+                        'finalized_by' => $purchase->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);
@@ -594,7 +594,7 @@ class AccountStatementService
                     $reference_data = [
                         'supplier' => $purchase->supplier->name,
                         'note' => $payment->note,
-                        'finalized_by' => $payment->finalizedBy->first_name,
+                        'finalized_by' => $payment->finalizedBy->username,
                     ];
 
                     $row->reference = implode(" | ", $reference_data);

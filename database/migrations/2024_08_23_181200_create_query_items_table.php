@@ -17,8 +17,6 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('query_id');
             $table->foreign('query_id')->references('id')->on('queries')->onDelete('cascade');
-            $table->unsignedInteger('product_type_id');
-            $table->foreign('product_type_id')->references('id')->on('product_types');
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
             $table->bigInteger('target_price')->default(0);

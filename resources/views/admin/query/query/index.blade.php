@@ -41,6 +41,7 @@
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Query No') }}</th>
                                                     <th>{{ __('Buyer') }}</th>
+                                                    <th>{{ __('Merchandiser') }}</th>
                                                     <th>{{ __('Product Names') }}</th>
                                                     <th>{{ __('Quantity') }}</th>
                                                     <th>{{ __('Status') }}</th>
@@ -188,6 +189,12 @@
                     {
                         data: 'buyer',
                         name: 'Buyer',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'merchandiser',
+                        name: 'Merchandiser',
                         orderable: true,
                         searchable: true
                     },

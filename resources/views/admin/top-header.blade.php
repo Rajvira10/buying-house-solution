@@ -69,14 +69,14 @@
                                 alt="Header Avatar">
                             <span class="text-start ms-xl-2">
                                 <span
-                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ auth()->guard('admin')->user()->first_name }}
-                                    {{ auth()->guard('admin')->user()->last_name }}</span>
+                                    class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ auth()->guard('admin')->user()->username }}
+                                </span>
                             </span>
                         </span>
                     </button>
 
                     <div class="dropdown-menu dropdown-menu-end">
-                        <h6 class="dropdown-header">Welcome {{ auth()->guard('admin')->user()->first_name }} !</h6>
+                        <h6 class="dropdown-header">Welcome {{ auth()->guard('admin')->user()->username }} !</h6>
                         <form action="{{ route('admin-logout') }}" method="post">
                             @csrf
                             <button class="dropdown-item" type="submit"><i

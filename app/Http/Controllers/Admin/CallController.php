@@ -37,8 +37,7 @@ class CallController extends Controller
                                 $query->where('name', 'like', "%{$request['search']['value']}%");
                             });
                             $query->orWhereHas('user', function ($query) use ($request) {
-                                $query->where('first_name', 'like', "%{$request['search']['value']}%");
-                                $query->orWhere('last_name', 'like', "%{$request['search']['value']}%");
+                                $query->where('username', 'like', "%{$request['search']['value']}%");
                             });
                         })->get();
                     }
@@ -56,7 +55,7 @@ class CallController extends Controller
                     return $call->call_status->name;
                 })
                 ->addColumn('called_by', function ($call) {
-                    return $call->user->first_name . ' ' . $call->user->last_name;
+                    return $call->user->username;
                 })
                 ->addColumn('date', function ($call) {
                     return Carbon::parse($call->call_date)->format('d M Y h:i A');

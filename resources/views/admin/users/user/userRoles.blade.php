@@ -26,7 +26,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Assign Roles to <span
-                                        class="font-weight-bold">{{ $user->first_name }} {{ $user->last_name }}</span></h3>
+                                        class="font-weight-bold">{{ $user->username }}</span></h3>
                             </div>
                             <div class="card-body">
                                 <form action="{{ route('users.assign_roles', $user->id) }}" method="POST">

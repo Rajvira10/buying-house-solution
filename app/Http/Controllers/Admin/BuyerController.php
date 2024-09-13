@@ -6,6 +6,7 @@ use DataTables;
 use App\Models\User;
 use App\Models\Buyer;
 use Illuminate\Http\Request;
+use App\Models\BuyerContactPerson;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class BuyerController extends Controller
 
             return DataTables::of($buyers)
                 ->addColumn('name', function ($category) {
-                    return $category->user->first_name . ' ' . $category->user->last_name;
+                    return $category->user->username;
                 }) 
                 ->addColumn('action', function ($category) {
                     $edit_button = '<div class="dropdown d-inline-block">
@@ -119,8 +120,7 @@ class BuyerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
             'phone' => 'nullable',
@@ -132,15 +132,15 @@ class BuyerController extends Controller
             try {
                 $user = new User();
 
-                $user->first_name = $request->first_name;
-                
-                $user->last_name = $request->last_name;
+                $user->username = $request->username;
                 
                 $user->warehouse_id = session('user_warehouse')->id;
 
                 $user->email = $request->email;
                 
                 $user->password = Hash::make($request->password);
+
+                $user->type = 'buyer';
                 
                 $user->save();
 
@@ -167,8 +167,7 @@ class BuyerController extends Controller
     public function update(Request $request, $buyer_id)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email,' . Buyer::find($buyer_id)->user_id,
             'password' => 'nullable|min:6|confirmed',
             'phone' => 'nullable',
@@ -184,9 +183,7 @@ class BuyerController extends Controller
 
                 $user = User::find($buyer->user_id);
 
-                $user->first_name = $request->first_name;
-                
-                $user->last_name = $request->last_name;
+                $user->username = $request->username;
                 
                 $user->email = $request->email;
 
@@ -231,6 +228,84 @@ class BuyerController extends Controller
             }
             else{
                 return response()->json(['error' => 'Buyer Not Found']);
+            }
+        }
+    }
+
+    public function storeContactPerson(Request $request)
+    {
+        if($request->ajax()){
+            $request->validate([
+                'name' => 'required',
+                'phone' => 'nullable',
+                'email' => 'nullable|email',
+                'designation' => 'nullable',
+                'buyer_id' => 'required|exists:buyers,id'
+            ]);
+
+            try {
+                $contact_person = new BuyerContactPerson();
+
+                $contact_person->name = $request->name;
+                $contact_person->phone = $request->phone;
+                $contact_person->email = $request->email;
+                $contact_person->designation = $request->designation;
+                $contact_person->buyer_id = $request->buyer_id;
+
+                $contact_person->save();
+
+                return response()->json(['success' => 'Contact Person Created Successfully']);
+            } catch (\Throwable $th) {
+                return response()->json(['error' => 'Something went wrong']);
+            }
+            
+        }
+    }
+
+    public function updateContactPerson(Request $request)
+    {
+        $contactPerson = BuyerContactPerson::findOrFail($request->contact_person_id); 
+
+        if($contactPerson != null)
+        {
+            $request->validate([
+                'name' => 'required',
+                'phone' => 'nullable',
+                'email' => 'nullable|email',
+                'designation' => 'nullable',
+            ]);
+
+            try {
+                $contactPerson->name = $request->name;
+                $contactPerson->phone = $request->phone;
+                $contactPerson->email = $request->email;
+                $contactPerson->designation = $request->designation;
+
+                $contactPerson->save();
+
+                return response()->json(['success' => 'Contact Person Updated Successfully']);
+            } catch (\Throwable $th) {
+                return response()->json(['error' => $th->getMessage()]);
+            }
+        }
+        else{
+            return response()->json(['error' => 'Contact Person Not Found']);
+        }
+    }
+
+    public function deleteContactPerson (Request $request)
+    {
+        if($request->ajax())
+        {
+            $contactPerson = BuyerContactPerson::find($request->contact_person_id);
+
+            if($contactPerson != null)
+            {
+                $contactPerson->delete();
+                return response()->json(['success' => 'Contact Person Deleted Successfully']);
+            }
+            else{
+                return response()->json(['error' => 'Contact Person Not Found']);
             }
         }
     }

@@ -8,6 +8,7 @@ use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\AccountSeeder;
 use Database\Seeders\WarehouseSeeder;
+use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\PermissionSeeder;
 use Database\Seeders\StatesTableSeeder;
 use Database\Seeders\CountriesTableSeeder;
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AccountSeeder::class,
             WarehouseSeeder::class,
+            DepartmentSeeder::class
         ]);
 
         $this->call(CountriesTableSeeder::class);

@@ -59,11 +59,11 @@ class PayrollController extends Controller
                         
                         $user = User::where('id', '=', $payroll->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($payroll->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($payroll->finalized_at)->format('d/m/Y h:i A');
                                                  
                     })
 
@@ -473,11 +473,11 @@ class PayrollController extends Controller
                         
                         $user = User::where('id', '=', $detail->disbursed_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($detail->disbursed_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($detail->disbursed_at)->format('d/m/Y h:i A');
                                                  
                     })
 
@@ -486,11 +486,11 @@ class PayrollController extends Controller
                         if($detail->printed_by){
                             $user = User::where('id', '=', $detail->printed_by)
                                 ->select(
-                                    'first_name'
+                                    'username'
                                 )
                                 ->first();
 
-                            return $user->first_name . ' ' . Carbon::parse($detail->printed_at)->format('d/m/Y h:i A');
+                            return $user->username . ' ' . Carbon::parse($detail->printed_at)->format('d/m/Y h:i A');
                         }
                         else{
                             return '<div class="badge bg-danger">Not Printed</div>';

@@ -17,9 +17,7 @@ return new class extends Migration
 
             $table->increments('id');
 
-            $table->string('first_name');
-
-            $table->string('last_name');
+            $table->string('username');
 
             $table->string('email')->unique();
 
@@ -30,6 +28,8 @@ return new class extends Migration
             $table->unsignedInteger('warehouse_id')->nullable();
 
             $table->foreign('warehouse_id')->references('id')->on('warehouses');
+
+            $table->enum('type', ['user', 'buyer', 'employee'])->default('user');
 
             $table->rememberToken();
 

@@ -107,11 +107,11 @@ class MoneyTransferController extends Controller
                         
                         $user = User::where('id', '=', $transfer->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($transfer->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($transfer->finalized_at)->format('d/m/Y h:i A');
                         
                     })
                     
@@ -378,11 +378,11 @@ class MoneyTransferController extends Controller
                         
                         $user = User::where('id', '=', $transfer['official_data']->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($transfer['official_data']->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($transfer['official_data']->finalized_at)->format('d/m/Y h:i A');
                     })
 
                     ->addColumn('action', function ($transfer) {

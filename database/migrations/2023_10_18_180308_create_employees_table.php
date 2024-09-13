@@ -17,17 +17,12 @@ return new class extends Migration
             
             $table->increments('id');
 
-            
-            $table->unsignedInteger('warehouse_id');
+            $table->unsignedInteger('user_id')->nullable();
 
-            $table->foreign('warehouse_id')->references('id')->on('warehouses');
+            $table->foreign('user_id')->references('id')->on('users');
 
-
-            $table->string('name');
 
             $table->string('unique_id')->unique()->nullable();
-
-            $table->string('email')->unique();
 
             $table->string('contact_no')->unique();
 

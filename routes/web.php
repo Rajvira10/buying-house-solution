@@ -367,6 +367,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('delete', 'BuyerController@destroy')->name('buyers.destroy');
 
+            Route::post('store-contact-person', 'BuyerController@storeContactPerson')->name('buyers.store_contact_person');
+
+            Route::post('update-contact-person', 'BuyerController@updateContactPerson')->name('buyers.update_contact_person');
+
+            Route::post('delete-contact-person', 'BuyerController@deleteContactPerson')->name('buyers.delete_contact_person');
+
         });
 
         Route::group(['prefix' => 'factory'], function(){
@@ -390,6 +396,29 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             Route::post('update-contact-person', 'FactoryController@updateContactPerson')->name('factories.update_contact_person');
 
             Route::post('delete-contact-person', 'FactoryController@deleteContactPerson')->name('factories.delete_contact_person');
+        });
+
+        Route::group(['prefix' => 'supplier'], function(){
+
+            Route::get('index', 'SupplierController@index')->name('suppliers.index');
+
+            Route::get('create', 'SupplierController@create')->name('suppliers.create');
+
+            Route::post('store', 'SupplierController@store')->name('suppliers.store');
+
+            Route::get('{supplier_id}', 'SupplierController@show')->name('suppliers.show');
+
+            Route::get('edit/{supplier_id}', 'SupplierController@edit')->name('suppliers.edit');
+
+            Route::post('update/{supplier_id}', 'SupplierController@update')->name('suppliers.update');
+
+            Route::post('delete', 'SupplierController@destroy')->name('suppliers.destroy');
+
+            Route::post('store-contact-person', 'SupplierController@storeContactPerson')->name('suppliers.store_contact_person');
+
+            Route::post('update-contact-person', 'SupplierController@updateContactPerson')->name('suppliers.update_contact_person');
+
+            Route::post('delete-contact-person', 'SupplierController@deleteContactPerson')->name('suppliers.delete_contact_person');
         });
 
         Route::group(['prefix' => 'product-type'], function(){

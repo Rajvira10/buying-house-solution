@@ -14,16 +14,15 @@ class AuthenticationController extends Controller
     public function authenticate(Request $request)
     {
         $request->validate([
-            'email' => 'required | email',
+            'credential' => 'required',
             'password' => 'required | string'
         ], [
-            'email.required' => 'Please enter your email !',
-            'email.email' => 'Please enter a valid email !',
+            'credential.required' => 'Please enter your credential !',
             'password.required' => 'Please enter your password !',
             'password.string' => 'Only alphabets, numbers & special characters are allowed. Must be a string !'
         ]);
 
-        if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password]))
+        if(Auth::guard('admin')->attempt(['email' => $request->credential, 'password' => $request->password]) || Auth::guard('admin')->attempt(['username' => $request->credential, 'password' => $request->password]))
         {
             $request->session()->regenerate();
 

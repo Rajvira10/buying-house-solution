@@ -32,7 +32,7 @@ class DepartmentController extends Controller
 
                     $edit_button = '';
 
-                    if(!in_array('department.edit', session('user_permissions')))
+                    if(in_array('department.edit', session('user_permissions')))
                     {
                         $edit_button = '<a href="' . route('departments.edit', $category->id) . '">
                                         <button class="btn btn-sm btn-success edit-item-btn">
@@ -75,6 +75,10 @@ class DepartmentController extends Controller
         $department = Department::find($department_id);
 
         if($department != null){
+
+            if($department->editable == false){
+                return redirect()->route('departments.index')->with('error', 'This Department is not editable');
+            }
 
             return view('admin.hrm.department.edit', compact('department'));
         }

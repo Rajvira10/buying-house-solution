@@ -165,7 +165,13 @@
 
                         @php
                             $active = $show = '';
-                            if (in_array(session('view_name'), ['admin.crm.buyer.index', 'admin.crm.factory.index'])) {
+                            if (
+                                in_array(session('view_name'), [
+                                    'admin.crm.buyer.index',
+                                    'admin.crm.factory.index',
+                                    'admin.crm.supplier.index',
+                                ])
+                            ) {
                                 $active = 'active';
                                 $show = 'show';
                             }
@@ -177,7 +183,6 @@
                         </a>
                         <div class="collapse menu-dropdown {{ $show }}" id="sidebarCRM">
                             <ul class="nav nav-sm flex-column">
-
                                 @if ($permissions->nav_buyer_option)
                                     <li class="nav-item">
                                         <a href="{{ route('buyers.index') }}" target="_self"
@@ -185,7 +190,6 @@
                                             data-key="t-buyer">Buyer</a>
                                     </li>
                                 @endif
-
                                 @if ($permissions->nav_factory_option)
                                     <li class="nav-item">
                                         <a href="{{ route('factories.index') }}" target="_self"
@@ -193,7 +197,13 @@
                                             data-key="t-factory">Factory</a>
                                     </li>
                                 @endif
-
+                                @if ($permissions->nav_supplier_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('suppliers.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.supplier.index' ? 'active' : '' }}"
+                                            data-key="t-supplier">Supplier</a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </li>

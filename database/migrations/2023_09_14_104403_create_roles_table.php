@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->string('description');
 
+            $table->boolean('editable')->default(true);
+
             $table->timestamps();
             
         });

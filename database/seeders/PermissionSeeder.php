@@ -447,6 +447,43 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'buyer.add_contact_person')->first();
+        
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "buyer.add_contact_person";
+            $permission->alias = "Add Contact Person";
+            $permission->description = "To add a new contact person to a buyer";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.edit_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "buyer.edit_contact_person";
+            $permission->alias = "Edit Contact Person";
+            $permission->description = "To edit a contact person of a buyer";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'buyer.delete_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "buyer.delete_contact_person";
+            $permission->alias = "Delete Contact Person";
+            $permission->description = "To delete a contact person of a buyer";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+
         $permission = Permission::where('name' , '=' , 'factory.index')->first();
 
         if($permission == null)
@@ -539,6 +576,102 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.delete_contact_person";
             $permission->alias = "Delete Contact Person";
             $permission->description = "To delete a contact person of a factory";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.index";
+            $permission->alias = "View Suppliers";
+            $permission->description = "To view the list of suppliers";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.create";
+            $permission->alias = "Create Suppliers";
+            $permission->description = "To create a new supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.edit";
+            $permission->alias = "Edit Suppliers";
+            $permission->description = "To edit a supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.delete";
+            $permission->alias = "Delete Suppliers";
+            $permission->description = "To delete a supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.show')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.show";
+            $permission->alias = "View Supplier Details";
+            $permission->description = "To view the details of a supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.add_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.add_contact_person";
+            $permission->alias = "Add Contact Person";
+            $permission->description = "To add a new contact person to a supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.edit_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.edit_contact_person";
+            $permission->alias = "Edit Contact Person";
+            $permission->description = "To edit a contact person of a supplier";
+            $permission->permission_group = "CRM";
+            $permission->save();
+        }
+
+        $permission = Permission::where('name' , '=' , 'supplier.delete_contact_person')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+            $permission->name = "supplier.delete_contact_person";
+            $permission->alias = "Delete Contact Person";
+            $permission->description = "To delete a contact person of a supplier";
             $permission->permission_group = "CRM";
             $permission->save();
         }

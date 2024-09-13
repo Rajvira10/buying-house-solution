@@ -62,11 +62,11 @@
                                         @csrf
 
                                         <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="email" name="email"
-                                                placeholder="Enter email" required>
+                                            <label for="credential" class="form-label">Email/Username</label>
+                                            <input type="text" class="form-control" id="credential" name="credential"
+                                                placeholder="Enter email/username" required>
                                             <div class="invalid-feedback">
-                                                Please enter email
+                                                Please enter email/username
                                             </div>
                                         </div>
 

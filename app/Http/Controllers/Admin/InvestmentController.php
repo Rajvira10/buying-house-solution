@@ -97,11 +97,11 @@ class InvestmentController extends Controller
                         
                         $user = User::where('id', '=', $expense->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($expense->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($expense->finalized_at)->format('d/m/Y h:i A');
                         
                     })
                     
@@ -283,11 +283,11 @@ class InvestmentController extends Controller
                         
                         $user = User::where('id', '=', $investment->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($investment->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($investment->finalized_at)->format('d/m/Y h:i A');
                     })
 
                     ->rawColumns(['return_status'])
@@ -339,11 +339,11 @@ class InvestmentController extends Controller
                     
                     $user = User::where('id', '=', $return->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($return->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($return->finalized_at)->format('d/m/Y h:i A');
                 })
                 ->make(true);
                    
@@ -399,11 +399,11 @@ class InvestmentController extends Controller
                     
                     $user = User::where('id', '=', $return->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($return->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($return->finalized_at)->format('d/m/Y h:i A');
                     })
                 
                 ->addColumn('action', function ($expense) {

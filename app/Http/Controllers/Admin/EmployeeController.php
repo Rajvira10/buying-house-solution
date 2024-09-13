@@ -6,6 +6,8 @@ use DB;
 use DataTables;
 use Carbon\Carbon;
 use App\Models\File;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Employee;
 use App\Models\Warehouse;
 use App\Models\Department;
@@ -13,6 +15,7 @@ use App\Models\JobDuration;
 use Illuminate\Http\Request;
 use App\Models\SalaryStructure;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
@@ -32,12 +35,15 @@ class EmployeeController extends Controller
                     
             $employees = Employee::join('departments as d', 'd.id', '=', 'employees.department_id')
                 ->leftJoin('files as f', 'f.id', '=', 'employees.image_id')
+                ->join('users as u', 'u.id', '=', 'employees.user_id')
                 ->select(
                     'employees.*',
                     'd.name as department_name',
-                    'f.absolute_path as image_path'
+                    'f.absolute_path as image_path',
+                    'u.username as username',
+                    'u.email as email'
                 )
-                ->where('employees.warehouse_id', '=', $warehouse->id)
+                ->where('u.warehouse_id', '=', $warehouse->id)
                 ->orderBy('id', 'asc')
                 ->get();
 
@@ -166,10 +172,11 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'username' => 'required',
+            'password' => 'required|min:6|confirmed',
             'department_id' => 'required|exists:departments,id',
             'designation' => 'required',
-            'email' => 'required|email|unique:employees',
+            'email' => 'required|email|unique:users',
             'nid' => 'required|unique:employees',
             'contact_no' => 'required|unique:employees',
             'present_address' => 'required',
@@ -192,18 +199,37 @@ class EmployeeController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $user = new User();
+
+            $user->username = $request->username;
+            
+            $user->warehouse_id = session('user_warehouse')->id;
+
+            $user->email = $request->email;
+            
+            $user->password = Hash::make($request->password);
+
+            $user->type = 'employee';
+            
+            $user->save();
+
+            $department = Department::find($request->department_id);
+            
+            if($department->name == "Merchandiser")
+            {
+                $role = Role::where('name', 'merchandiser')->first();
+
+                $user->roles()->attach($role->id);
+            }
             
             $employee = new Employee();
 
-            $employee->warehouse_id = session('user_warehouse')->id;
-
-            $employee->name = $request->name;
+            $employee->user_id = $user->id;
 
             $employee->department_id = $request->department_id;
 
             $employee->designation = $request->designation;
-
-            $employee->email = $request->email;
 
             $employee->nid = $request->nid;
 
@@ -300,7 +326,9 @@ class EmployeeController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
 
-            return redirect()->back()->withInput()->withErrors(['error' => 'Something went wrong. Please try again later']);
+            dd($th->getMessage());
+
+            return redirect()->back()->with('error', $th->getMessage());
         }
 
     }
@@ -308,10 +336,11 @@ class EmployeeController extends Controller
     public function update(Request $request, $employee_id)
     {
         $request->validate([
-            'name' => 'required',
+            'username' => 'required',
+            'password' => 'nullable|min:6|confirmed',
             'department_id' => 'required|exists:departments,id',
             'designation' => 'required',
-            'email' => 'required|email|unique:employees,email,'.$employee_id,
+            'email' => 'required|email|unique:users,email,'.$employee_id,
             'nid' => 'required|unique:employees,nid,'.$employee_id,
             'contact_no' => 'required|unique:employees,contact_no,'.$employee_id,
             'present_address' => 'required',
@@ -327,17 +356,24 @@ class EmployeeController extends Controller
 
         $employee = Employee::find($employee_id);
 
+        $user = User::find($employee->user_id);
+
+        $user->username = $request->username;
+        
+        $user->email = $request->email;
+
+        if($request->password != null)
+        {
+            $user->password = Hash::make($request->password);
+        }
+        
+        $user->save();
+
         if($employee != null){
-
-            $employee->warehouse_id = session('user_warehouse')->id;
-
-            $employee->name = $request->name;
 
             $employee->department_id = $request->department_id;
 
             $employee->designation = $request->designation;
-
-            $employee->email = $request->email;
 
             $employee->nid = $request->nid;
 

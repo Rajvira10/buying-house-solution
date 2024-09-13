@@ -106,11 +106,11 @@ class TransactionPoolController extends Controller
                         
                         $user = User::where('id', '=', $transaction->checked_by)
                         ->select(
-                            'first_name',
+                            'username',
                         )
                         ->first();
                         
-                        $checked_by = '<span>'.$user->first_name . ' ' . Carbon::parse($transaction->checked_at)->format('d/m/Y h:i A').'</span>';
+                        $checked_by = '<span>'.$user->username . ' ' . Carbon::parse($transaction->checked_at)->format('d/m/Y h:i A').'</span>';
 
                         return $checked_by;
                     })
@@ -128,11 +128,11 @@ class TransactionPoolController extends Controller
 
                         $user = User::where('id', '=', $transaction->approved_by)
                         ->select(
-                            'first_name',
+                            'username',
                         )
                         ->first();
 
-                        $approved_by = '<span>'.$user->first_name . ' ' . Carbon::parse($transaction->approved_at)->format('d/m/Y h:i A').'</span>';
+                        $approved_by = '<span>'.$user->username . ' ' . Carbon::parse($transaction->approved_at)->format('d/m/Y h:i A').'</span>';
 
                         return $approved_by;
                     })

@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
-            
+        Schema::create('buyer_contact_people', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->string('name')->unique();
-
-            $table->boolean('editable')->default(true);
-
+            $table->unsignedInteger('buyer_id');
+            $table->foreign('buyer_id')->references('id')->on('buyers');
+            $table->string('name');
+            $table->string('phone')->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->string('designation')->nullable();
             $table->timestamps();
-
         });
     }
 
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('buyer_contact_people');
     }
 };

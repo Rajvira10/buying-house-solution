@@ -48,8 +48,7 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Buyer:</strong></td>
-                                                <td>{{ $query->buyer->user->first_name }}
-                                                    {{ $query->buyer->user->last_name }}
+                                                <td>{{ $query->buyer->user->username }}
                                                 </td>
                                             </tr>
                                         </table>

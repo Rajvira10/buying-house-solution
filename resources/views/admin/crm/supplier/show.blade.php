@@ -1,5 +1,5 @@
 @extends('admin.layout')
-@section('title', 'User')
+@section('title', 'Supplier Details')
 @section('content')
 
     <div class="main-content">
@@ -14,8 +14,8 @@
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="{{ route('admin-dashboard') }}"><i
                                                 class="ri-home-5-fill"></i></a></li>
-                                    <li class="breadcrumb-item"><a href={{ route('buyers.index') }}>Users</a></li>
-                                    <li class="breadcrumb-item active">User Details</li>
+                                    <li class="breadcrumb-item"><a href={{ route('suppliers.index') }}>Suppliers</a></li>
+                                    <li class="breadcrumb-item active">Supplier Details</li>
                                 </ol>
                             </div>
 
@@ -30,12 +30,16 @@
                 </div>
                 <div class="pt-4 mb-4 mb-lg-3 pb-lg-4">
                     <div class="row g-4">
-
+                        <div class="col-auto">
+                            {{-- <div class="avatar-lg">
+                                <img src={{ asset('public/admin-assets/images/user-dummy-img.jpg') }} alt="user-img"
+                                    class="img-thumbnail rounded-circle" />
+                            </div> --}}
+                        </div>
                         <div class="col">
                             <div class="p-2">
-                                <h3 class="text-white mb-1">{{ $buyer->user->username }}
-                                </h3>
-                                <p class="text-white-75">Buyer</p>
+                                <h3 class="text-white mb-1">{{ $supplier->name }}</h3>
+                                <p class="text-white-75">Supplier</p>
                             </div>
                         </div>
                     </div>
@@ -63,17 +67,21 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <h5 class="card-title mb-3">About</h5>
                                                     <div class="flex-shrink-0">
-                                                        @if (!in_array('buyer.add_contact_person', session('user_permissions')))
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#addContactPersonModal">
-                                                                <i class="ri-user-add-line align-bottom"></i>
-                                                                Add Contact Person
-                                                            </button>
-                                                        @endif
-                                                        <a href={{ route('buyers.edit', $buyer->id) }}
-                                                            class="btn btn-success"><i
-                                                                class="ri-edit-box-line align-bottom"></i> Edit </a>
+                                                        <div class="d-flex justify-content-end">
+                                                            @if (!in_array('supplier.add_contact_person', session('user_permissions')))
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#addContactPersonModal">
+                                                                    <i class="ri-user-add-line align-bottom"></i>
+                                                                    Add Contact Person
+                                                                </button>
+                                                            @endif
+                                                            <a href={{ route('suppliers.edit', $supplier->id) }}
+                                                                class="btn btn-success ms-3"><i
+                                                                    class="ri-edit-box-line align-bottom "></i> Edit
+                                                            </a>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -81,27 +89,23 @@
                                                     <div class="col-md-6">
                                                         <table class="table table-borderless">
                                                             <tr>
-                                                                <td><strong>Username :</strong></td>
-                                                                <td>{{ $buyer->user->username }}</td>
-                                                            </tr>
-                                                            <tr>
                                                                 <td><strong>Email :</strong></td>
-                                                                <td>{{ $buyer->email }}</td>
+                                                                <td>{{ $supplier->email }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td><strong>Phone :</strong></td>
-                                                                <td>{{ $buyer->phone }}</td>
+                                                                <td>{{ $supplier->phone }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td><strong>Address :</strong></td>
-                                                                <td>{{ $buyer->address }}</td>
+                                                                <td>{{ $supplier->address }}</td>
                                                             </tr>
                                                         </table>
                                                     </div>
                                                 </div>
                                                 <h5 class="card-title mb-3">Contact People</h5>
                                                 <div class="row">
-                                                    @foreach ($buyer->contact_people as $contact_person)
+                                                    @foreach ($supplier->contact_people as $contact_person)
                                                         <div class="col-md-12">
                                                             <table class="table table-borderless">
                                                                 <tr>
@@ -120,7 +124,7 @@
                                                                     <td>{{ $contact_person->designation }}</td>
                                                                     <td>
                                                                         <div class="d-flex">
-                                                                            @if (in_array('buyer.edit_contact_person', session('user_permissions')))
+                                                                            @if (in_array('supplier.edit_contact_person', session('user_permissions')))
                                                                                 <button type="button"
                                                                                     class="btn btn-warning me-2 btn-sm"
                                                                                     data-bs-toggle="modal"
@@ -135,7 +139,7 @@
                                                                                     Edit
                                                                                 </button>
                                                                             @endif
-                                                                            @if (in_array('buyer.delete_contact_person', session('user_permissions')))
+                                                                            @if (in_array('supplier.delete_contact_person', session('user_permissions')))
                                                                                 <button type="button"
                                                                                     class="btn btn-danger btn-sm"
                                                                                     onclick="deleteContactPerson({{ $contact_person->id }})">
@@ -175,7 +179,7 @@
                 <div class="modal-body">
                     <form id="addContactPersonForm">
                         @csrf
-                        <input type="hidden" name="buyer_id" value="{{ $buyer->id }}">
+                        <input type="hidden" name="supplier_id" value="{{ $supplier->id }}">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -235,6 +239,8 @@
         </div>
     </div>
 
+
+
 @endsection
 @section('custom-script')
     <script>
@@ -244,7 +250,7 @@
                 let formData = $(this).serialize();
 
                 $.ajax({
-                    url: "{{ route('buyers.store_contact_person') }}",
+                    url: "{{ route('suppliers.store_contact_person') }}",
                     method: "POST",
                     data: formData,
                     success: function(response) {
@@ -284,7 +290,7 @@
                 let formData = $(this).serialize();
 
                 $.ajax({
-                    url: "{{ route('buyers.update_contact_person') }}",
+                    url: "{{ route('suppliers.update_contact_person') }}",
                     method: "POST",
                     data: formData,
                     success: function(response) {
@@ -302,6 +308,7 @@
             });
         });
 
+        // Function to delete contact person with SweetAlert confirmation
         function deleteContactPerson(id) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -314,7 +321,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('buyers.delete_contact_person') }}",
+                        url: "{{ route('suppliers.delete_contact_person') }}",
                         method: "POST",
                         data: {
                             _token: "{{ csrf_token() }}",

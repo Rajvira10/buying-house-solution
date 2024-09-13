@@ -24,11 +24,13 @@ class UserController extends Controller
         try{
             if($request->ajax()){
 
-                $users = User::with('roles')->get();
-
+                $users = User::with('roles')->where('warehouse_id', session('user_warehouse')->id)
+                ->where('type', '=', 'user')
+                ->get();
+                
                 return DataTables::of($users)
                     ->addColumn('name', function($user){
-                        return $user->first_name . ' ' . $user->last_name;
+                        return $user->username;
                     })
                     ->addColumn('roles', function ($user) {
                         return $user->roles->pluck('name')->implode(', ');
@@ -55,6 +57,11 @@ class UserController extends Controller
                                 <li>
                                     <a href="' . route('users.user_roles', $user->id) . '" class="dropdown-item">
                                         <i class="ri-group-fill align-bottom me-2 text-success"></i> Assign Roles
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="' . route('users.edit', $user->id) . '" class="dropdown-item">
+                                        <i class="ri-pencil-line align-bottom me-2 text-warning"></i> Edit
                                     </a>
                                 </li>
                             </ul>
@@ -137,8 +144,7 @@ class UserController extends Controller
     public function store(Request $request)
     {   
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -147,9 +153,7 @@ class UserController extends Controller
 
             $user = new User();
 
-            $user->first_name = $request->first_name;
-            
-            $user->last_name = $request->last_name;
+            $user->username = $request->username;
             
             $user->warehouse_id = session('user_warehouse')->id;
 
@@ -170,10 +174,9 @@ class UserController extends Controller
     public function update(Request $request, $user_id)
     {
         $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email,' .$user_id,
-            'password' => 'required|min:6|confirmed',
+            'password' => 'nullable|min:6|confirmed',
         ]);
 
         try{
@@ -181,13 +184,11 @@ class UserController extends Controller
 
             if($user != null){
 
-                $user->first_name = $request->first_name;
-                
-                $user->last_name = $request->last_name;
+                $user->username = $request->username;
 
                 $user->email = $request->email;
 
-                $user->password = Hash::make($request->password);
+                if($request->password != null) $user->password = Hash::make($request->password);
                 
                 $user->save();
 

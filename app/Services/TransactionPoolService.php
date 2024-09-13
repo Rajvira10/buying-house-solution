@@ -77,7 +77,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -184,7 +184,7 @@ class TransactionPoolService
 
         $expense_presentation_data['Payment Status'] = $expense['payment_status'];
 
-        $expense_presentation_data['Finalized By'] = User::find($expense['finalized_by'])->first_name;
+        $expense_presentation_data['Finalized By'] = User::find($expense['finalized_by'])->username;
 
         $expense_presentation_data['Finalized At'] = Carbon::parse($expense['finalized_at'])->format('d/m/Y h:i A');
 
@@ -263,7 +263,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -364,7 +364,7 @@ class TransactionPoolService
 
         $revenue_presentation_data['Payment Status'] = $revenue['payment_status'];
 
-        $revenue_presentation_data['Finalized By'] = User::find($revenue['finalized_by'])->first_name;
+        $revenue_presentation_data['Finalized By'] = User::find($revenue['finalized_by'])->username;
 
         $revenue_presentation_data['Finalized At'] = Carbon::parse($revenue['finalized_at'])->format('d/m/Y h:i A');
 
@@ -443,7 +443,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -538,7 +538,7 @@ class TransactionPoolService
 
         $money_transfer_presentation_data['Note'] = $request->note;
 
-        $money_transfer_presentation_data['Finalized By'] = User::find($money_transfer['finalized_by'])->first_name;
+        $money_transfer_presentation_data['Finalized By'] = User::find($money_transfer['finalized_by'])->username;
 
         $money_transfer_presentation_data['Finalized At'] = Carbon::parse($money_transfer['finalized_at'])->format('d/m/Y h:i A');
 
@@ -588,7 +588,7 @@ class TransactionPoolService
 
         $money_transfer_presentation_data['Note'] = $request->note;
 
-        $money_transfer_presentation_data['Finalized By'] = User::find($money_transfer['finalized_by'])->first_name;
+        $money_transfer_presentation_data['Finalized By'] = User::find($money_transfer['finalized_by'])->username;
 
         $money_transfer_presentation_data['Finalized At'] = Carbon::parse($money_transfer['finalized_at'])->format('d/m/Y h:i A');
 
@@ -691,7 +691,7 @@ class TransactionPoolService
 
         $loan_presentation_data['Payback Status'] = $loan['payback_status'];
 
-        $loan_presentation_data['Finalized By'] = User::find($loan['finalized_by'])->first_name;
+        $loan_presentation_data['Finalized By'] = User::find($loan['finalized_by'])->username;
 
         $loan_presentation_data['Finalized At'] = Carbon::parse($loan['finalized_at'])->format('d/m/Y h:i A');
 
@@ -796,7 +796,7 @@ class TransactionPoolService
 
         $loan_payback_presentation_data['Note'] = $loan_payback->note;
 
-        $loan_payback_presentation_data['Finalized By'] = User::find($loan_payback->finalized_by)->first_name;
+        $loan_payback_presentation_data['Finalized By'] = User::find($loan_payback->finalized_by)->username;
 
         $loan_payback_presentation_data['Finalized At'] = Carbon::parse($loan_payback->finalized_at)->format('d/m/Y h:i A');
 
@@ -907,7 +907,7 @@ class TransactionPoolService
 
         $investment_presentation_data['Return Status'] = $investment['return_status'];
 
-        $investment_presentation_data['Finalized By'] = User::find($investment['finalized_by'])->first_name;
+        $investment_presentation_data['Finalized By'] = User::find($investment['finalized_by'])->username;
 
         $investment_presentation_data['Finalized At'] = Carbon::parse($investment['finalized_at'])->format('d/m/Y h:i A');
 
@@ -1012,7 +1012,7 @@ class TransactionPoolService
 
         $investment_return_presentation_data['Note'] = $investment_return->note;
 
-        $investment_return_presentation_data['Finalized By'] = User::find($investment_return->finalized_by)->first_name;
+        $investment_return_presentation_data['Finalized By'] = User::find($investment_return->finalized_by)->username;
 
         $investment_return_presentation_data['Finalized At'] = Carbon::parse($investment_return->finalized_at)->format('d/m/Y h:i A');
 
@@ -1115,7 +1115,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1218,7 +1218,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1318,7 +1318,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1420,7 +1420,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1523,7 +1523,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1623,7 +1623,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 
@@ -1726,7 +1726,7 @@ class TransactionPoolService
 
         $payment_presentation_data['Note'] = $payment->note;
 
-        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->first_name;
+        $payment_presentation_data['Finalized By'] = User::find($payment->finalized_by)->username;
 
         $payment_presentation_data['Finalized At'] = Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
 

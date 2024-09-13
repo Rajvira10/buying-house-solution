@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <h5>Handled By</h5>
-                                        <p>{{ $call->user->first_name }} {{ $call->user->last_name }}</p>
+                                        <p>{{ $call->user->username }}</p>
                                     </div>
                                 </div>
 

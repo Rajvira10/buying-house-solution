@@ -97,11 +97,11 @@ class LoanController extends Controller
                         
                         $user = User::where('id', '=', $expense->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($expense->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($expense->finalized_at)->format('d/m/Y h:i A');
                         
                     })
                     
@@ -285,11 +285,11 @@ class LoanController extends Controller
                         
                         $user = User::where('id', '=', $loan->finalized_by)
                         ->select(
-                            'first_name'
+                            'username'
                         )
                         ->first();
 
-                        return $user->first_name . ' ' . Carbon::parse($loan->finalized_at)->format('d/m/Y h:i A');
+                        return $user->username . ' ' . Carbon::parse($loan->finalized_at)->format('d/m/Y h:i A');
                     })
 
                     ->rawColumns(['payback_status'])
@@ -341,11 +341,11 @@ class LoanController extends Controller
                     
                     $user = User::where('id', '=', $payback->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($payback->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($payback->finalized_at)->format('d/m/Y h:i A');
                 })
                 ->make(true);
                    
@@ -401,11 +401,11 @@ class LoanController extends Controller
                     
                     $user = User::where('id', '=', $payback->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($payback->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($payback->finalized_at)->format('d/m/Y h:i A');
                     })
                 
                 ->addColumn('action', function ($expense) {

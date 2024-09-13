@@ -30,6 +30,8 @@ class PermissionService
 
     public $nav_buyer_option = false;
 
+    public $nav_supplier_option = false;
+
     public $nav_call_group = false;
 
     public $nav_call_types_option = false;
@@ -180,7 +182,7 @@ class PermissionService
 
         // CRM Group
 
-        if(in_array('factory.index', $permissions) || in_array('buyer.index', $permissions))
+        if(in_array('factory.index', $permissions) || in_array('buyer.index', $permissions) || in_array('supplier.index', $permissions))
         {
             $this->nav_crm_group = true;
         }
@@ -193,6 +195,11 @@ class PermissionService
         if(in_array('buyer.index', $permissions))
         {
             $this->nav_buyer_option = true;
+        }
+
+        if(in_array('supplier.index', $permissions))
+        {
+            $this->nav_supplier_option = true;
         }
 
         // Call Group
@@ -436,6 +443,8 @@ class PermissionService
         $this->nav_factory_option =  true;
 
         $this->nav_buyer_option =  true;
+
+        $this->nav_supplier_option =  true;
 
         $this->nav_call_group =  true;
 

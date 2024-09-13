@@ -84,8 +84,7 @@
                         <div class="card card-animate animate__animated animate__bounce">
                             <div class="card-body">
                                 <h4 class="text-center" style="font-size: 24px; color: #333;">
-                                    Welcome <span class="text-primary">{{ auth()->user()->first_name }}
-                                        {{ auth()->user()->last_name }}</span>
+                                    Welcome <span class="text-primary">{{ auth()->user()->username }}</span>
                                     <i class="fas fa-star fa-spin star-icon"></i>
                                 </h4>
                             </div>

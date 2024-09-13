@@ -36,15 +36,15 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="name">
+                                                <label for="username">
                                                     {{ __('Name') }}
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input id="name" type="text"
-                                                    class="form-control @error('name') is-invalid @enderror" name="name"
-                                                    value="{{ old('name') }}" placeholder="">
+                                                <input id="username" type="text"
+                                                    class="form-control @error('username') is-invalid @enderror"
+                                                    name="username" value="{{ old('username') }}" placeholder="">
                                                 <div class="help-block with-errors"></div>
-                                                @error('name')
+                                                @error('username')
                                                     <span class="text-danger-error" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -53,6 +53,36 @@
                                         </div>
 
                                         <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="password">
+                                                    Password
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror"
+                                                    name="password" placeholder="">
+                                                <div class="help-block with-errors"></div>
+                                                @error('password')
+                                                    <span class="text-danger-error" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="password_confirmation">
+                                                    Confirm Password
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input id="password_confirmation" type="password" class="form-control"
+                                                    name="password_confirmation" placeholder="">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="department_id">
                                                     {{ __('Department') }}
@@ -75,7 +105,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="designation">
                                                     {{ __('Designation') }}

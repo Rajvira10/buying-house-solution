@@ -37,45 +37,26 @@
                                     onsubmit="return disableOnSubmit()">
                                     @csrf
                                     <div class="row mb-3">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="first_name">
-                                                    First Name
+                                                <label for="username">
+                                                   Username
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input id="first_name" type="text"
-                                                    class="form-control @error('first_name') is-invalid @enderror"
-                                                    name="first_name"
-                                                    value="{{ old('first_name') ?? $buyer->user->first_name }}"
+                                                <input id="username" type="text"
+                                                    class="form-control @error('username') is-invalid @enderror"
+                                                    name="username"
+                                                    value="{{ old('username') ?? $buyer->user->username }}"
                                                     placeholder="">
                                                 <div class="help-block with-errors"></div>
-                                                @error('first_name')
+                                                @error('username')
                                                     <span class="text-danger-error" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="last_name">
-                                                    Last Name
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <input id="last_name" type="text"
-                                                    class="form-control @error('last_name') is-invalid @enderror"
-                                                    name="last_name"
-                                                    value="{{ old('last_name') ?? $buyer->user->last_name }}"
-                                                    placeholder="">
-                                                <div class="help-block with-errors"></div>
-                                                @error('last_name')
-                                                    <span class="text-danger-error" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="Email Address">
                                                     Email Address

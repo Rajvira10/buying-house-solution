@@ -148,8 +148,7 @@ class DashboardController extends Controller
             ];
         }
 
-        $total_employees = Employee::where('warehouse_id', '=', session('user_warehouse')->id)
-        ->count();
+        $total_employees = 0;
 
         $employees = [
             'name' => 'Total Employees',

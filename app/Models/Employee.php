@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Payroll;
 use App\Models\Warehouse;
 use App\Models\Department;
@@ -29,9 +30,9 @@ class Employee extends Model
         return $this->belongsToMany(Payroll::class, 'payroll_details', 'employee_id', 'payroll_id');
     }
 
-    public function warehouse()
+    public function user()
     {
-        return $this->belongsTo(Warehouse::class);
+        return $this->belongsTo(User::class);
     }
 
     public function department()

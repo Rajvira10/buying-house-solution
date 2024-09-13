@@ -38,15 +38,15 @@
                                     <div class="row mb-3">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label for="first_name">
+                                                <label for="username">
                                                     First Name
                                                     <span class="text-danger">*</span>
                                                 </label>
-                                                <input id="first_name" type="text"
-                                                    class="form-control @error('first_name') is-invalid @enderror"
-                                                    name="first_name" value="{{ $user->first_name }}" placeholder="">
+                                                <input id="username" type="text"
+                                                    class="form-control @error('username') is-invalid @enderror"
+                                                    name="username" value="{{ $user->username }}" placeholder="">
                                                 <div class="help-block with-errors"></div>
-                                                @error('first_name')
+                                                @error('username')
                                                     <span class="text-danger-error" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -54,26 +54,6 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label for="last_name">
-                                                    Last Name
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <input id="last_name" type="text"
-                                                    class="form-control @error('last_name') is-invalid @enderror"
-                                                    name="last_name" value="{{ $user->last_name }}" placeholder="">
-                                                <div class="help-block with-errors"></div>
-                                                @error('last_name')
-                                                    <span class="text-danger-error" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="Email Address">
                                                     Email Address
@@ -90,11 +70,13 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                    </div>
+                                    <div class="row mb-3">
+
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="password">
                                                     Password
-                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <input id="password" type="password"
                                                     class="form-control @error('password') is-invalid @enderror"
@@ -107,11 +89,10 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="password_confirmation">
                                                     Confirm Password
-                                                    <span class="text-danger">*</span>
                                                 </label>
                                                 <input id="password_confirmation" type="password" class="form-control"
                                                     name="password_confirmation" placeholder="">

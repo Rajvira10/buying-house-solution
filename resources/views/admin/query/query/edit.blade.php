@@ -27,26 +27,49 @@
                                     onsubmit="return disableOnSubmit()" enctype="multipart/form-data">
                                     @csrf
 
-                                    <!-- Buyer Selection -->
-                                    <div class="mb-4">
-                                        <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }} <span
-                                                class="text-danger">*</span></label>
-                                        <select class="form-select" name="buyer_id" id="buyer_id" required>
-                                            @if ($logged_in_user_is_buyer != null)
-                                                <option value="{{ $logged_in_user_is_buyer->id }}" selected>
-                                                    {{ $logged_in_user_is_buyer->user->first_name }}
-                                                    {{ $logged_in_user_is_buyer->user->last_name }}
-                                                </option>
-                                            @else
-                                                <option value="" disabled>Select a Buyer</option>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }}
+                                                <span class="text-danger">*</span></label>
+                                            <select class="form-select select-category" name="buyer_id" id="buyer_id"
+                                                required>
+                                                <option value="" disabled selected>Select a Buyer</option>
                                                 @foreach ($buyers as $buyer)
                                                     <option value="{{ $buyer->id }}"
                                                         {{ $query->buyer_id == $buyer->id ? 'selected' : '' }}>
-                                                        {{ $buyer->user->first_name }} {{ $buyer->user->last_name }}
+                                                        {{ $buyer->user->username }}
                                                     </option>
                                                 @endforeach
-                                            @endif
-                                        </select>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="product_type_id" class="form-label fw-bold">{{ __('Product Type') }}
+                                                <span class="text-danger">*</span></label>
+                                            <select class="form-select select-category" name="product_type_id" required>
+                                                <option value="" selected disabled>Select a product type</option>
+                                                @foreach ($product_types as $product_type)
+                                                    <option value="{{ $product_type->id }}"
+                                                        {{ $query->product_type_id == $product_type->id ? 'selected' : '' }}>
+                                                        {{ $product_type->name }}
+                                                        >{{ $product_type->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="employee_id"
+                                                class="form-label fw-bold">{{ __('Select Merchandiser') }}
+                                            </label>
+                                            <select class="form-select select-category" name="employee_id" required>
+                                                <option value="" selected disabled>Select a Merchandiser</option>
+                                                @foreach ($merchandisers as $merchandiser)
+                                                    <option value="{{ $merchandiser->id }}"
+                                                        {{ $query->employee_id == $merchandiser->id ? 'selected' : '' }}>
+                                                        {{ $merchandiser->user->username }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <!-- Products Container -->
@@ -66,24 +89,8 @@
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row g-3">
-                                                            <!-- Product Type and Product -->
-                                                            <div class="col-md-6">
-                                                                <label for="product_type_id"
-                                                                    class="form-label">{{ __('Product Type') }} <span
-                                                                        class="text-danger">*</span></label>
-                                                                <select class="form-select select-category"
-                                                                    name="products[{{ $index }}][product_type_id]"
-                                                                    required>
-                                                                    <option value="" selected disabled>Select a
-                                                                        product type</option>
-                                                                    @foreach ($product_types as $product_type)
-                                                                        <option value="{{ $product_type->id }}"
-                                                                            {{ $item->product_type_id == $product_type->id ? 'selected' : '' }}>
-                                                                            {{ $product_type->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
+
+
                                                             <div class="col-md-6">
                                                                 <label for="product_id"
                                                                     class="form-label">{{ __('Product') }} <span
@@ -303,16 +310,6 @@
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
-                                    <!-- Similar HTML structure as existing products -->
-                                    <div class="col-md-6">
-                                        <label for="product_type_id" class="form-label">{{ __('Product Type') }} <span class="text-danger">*</span></label>
-                                        <select class="form-select select-category" name="products[${productCount - 1}][product_type_id]" required>
-                                            <option value="" selected disabled>Select a product type</option>
-                                            @foreach ($product_types as $product_type)
-                                                <option value="{{ $product_type->id }}">{{ $product_type->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
                                     <div class="col-md-6">
                                         <label for="product_id" class="form-label">{{ __('Product') }} <span class="text-danger">*</span></label>
                                         <select class="form-select select-category" name="products[${productCount - 1}][product_id]" required>

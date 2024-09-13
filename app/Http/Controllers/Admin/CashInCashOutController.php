@@ -70,11 +70,11 @@ class CashInCashOutController extends Controller
                     
                     $user = User::where('id', '=', $cash_in_cash_out->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($cash_in_cash_out->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($cash_in_cash_out->finalized_at)->format('d/m/Y h:i A');
                     
                 })
 

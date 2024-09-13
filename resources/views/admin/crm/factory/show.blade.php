@@ -68,12 +68,14 @@
                                                     <h5 class="card-title mb-3">About</h5>
                                                     <div class="flex-shrink-0">
                                                         <div class="d-flex justify-content-end">
-                                                            <button type="button" class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#addContactPersonModal">
-                                                                <i class="ri-user-add-line align-bottom"></i>
-                                                                Add Contact Person
-                                                            </button>
+                                                            @if (!in_array('factory.add_contact_person', session('user_permissions')))
+                                                                <button type="button" class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#addContactPersonModal">
+                                                                    <i class="ri-user-add-line align-bottom"></i>
+                                                                    Add Contact Person
+                                                                </button>
+                                                            @endif
                                                             <a href={{ route('factories.edit', $factory->id) }}
                                                                 class="btn btn-success ms-3"><i
                                                                     class="ri-edit-box-line align-bottom "></i> Edit
@@ -122,25 +124,30 @@
                                                                     <td>{{ $contact_person->designation }}</td>
                                                                     <td>
                                                                         <div class="d-flex">
-                                                                            <button type="button"
-                                                                                class="btn btn-warning me-2 btn-sm"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#editContactPersonModal"
-                                                                                data-id="{{ $contact_person->id }}"
-                                                                                data-name="{{ $contact_person->name }}"
-                                                                                data-email="{{ $contact_person->email }}"
-                                                                                data-phone="{{ $contact_person->phone }}"
-                                                                                data-designation="{{ $contact_person->designation }}">
-                                                                                <i class="ri-edit-line align-bottom"></i>
-                                                                                Edit
-                                                                            </button>
-                                                                            <button type="button"
-                                                                                class="btn btn-danger btn-sm"
-                                                                                onclick="deleteContactPerson({{ $contact_person->id }})">
-                                                                                <i
-                                                                                    class="ri-delete-bin-line align-bottom"></i>
-                                                                                Delete
-                                                                            </button>
+                                                                            @if (in_array('factory.edit_contact_person', session('user_permissions')))
+                                                                                <button type="button"
+                                                                                    class="btn btn-warning me-2 btn-sm"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#editContactPersonModal"
+                                                                                    data-id="{{ $contact_person->id }}"
+                                                                                    data-name="{{ $contact_person->name }}"
+                                                                                    data-email="{{ $contact_person->email }}"
+                                                                                    data-phone="{{ $contact_person->phone }}"
+                                                                                    data-designation="{{ $contact_person->designation }}">
+                                                                                    <i
+                                                                                        class="ri-edit-line align-bottom"></i>
+                                                                                    Edit
+                                                                                </button>
+                                                                            @endif
+                                                                            @if (in_array('factory.delete_contact_person', session('user_permissions')))
+                                                                                <button type="button"
+                                                                                    class="btn btn-danger btn-sm"
+                                                                                    onclick="deleteContactPerson({{ $contact_person->id }})">
+                                                                                    <i
+                                                                                        class="ri-delete-bin-line align-bottom"></i>
+                                                                                    Delete
+                                                                                </button>
+                                                                            @endif
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -238,7 +245,6 @@
 @section('custom-script')
     <script>
         $(document).ready(function() {
-            // Add Contact Person form submission
             $('#addContactPersonForm').on('submit', function(event) {
                 event.preventDefault();
                 let formData = $(this).serialize();

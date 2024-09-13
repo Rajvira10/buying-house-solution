@@ -5,7 +5,7 @@
 @endphp
 
 @extends('admin.layout')
-@section('title', 'Employees')
+@section('title', 'Suppliers')
 @section('content')
 
     <div class="main-content">
@@ -16,33 +16,30 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="">
-                                        <h4 class="card-title mb-0">Employees</h4>
+                                    <div class="col">
+                                        <h4 class="card-title mb-0">Suppliers</h4>
                                     </div>
-                                    @if (in_array('employee.create', session('user_permissions')))
-                                        <a href="{{ route('employees.create') }}">
-                                            <button type="button" class="btn btn-success add-btn">
-                                                <i class="ri-add-line align-bottom me-1"></i> Add
-                                            </button>
-                                        </a>
-                                    @endif
+                                    <div class="col-sm-auto">
+                                        @if (in_array('supplier.create', session('user_permissions')))
+                                            <a href="{{ route('suppliers.create') }}">
+                                                <button type="button" class="btn btn-success add-btn">
+                                                    <i class="ri-add-line align-bottom me-1"></i> Add
+                                                </button>
+                                            </a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="card-body">
-                                <div id="employeeList">
+                                <div id="expenseCategoryList">
                                     <div class="card-body">
-                                        <table id="employeeTable" class="table">
+                                        <table id="expenseCategoryTable" class="table">
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
-                                                    <th>{{ __('Image') }}</th>
                                                     <th>{{ __('Name') }}</th>
-                                                    <th>{{ __('Unique Id') }}</th>
-                                                    <th>{{ __('Department') }}</th>
-                                                    <th>{{ __('Designation') }}</th>
-                                                    <th>{{ __('Email') }}</th>
-                                                    <th>{{ __('Contact No.') }}</th>
+                                                    <th>{{ __('Phone') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -62,19 +59,13 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @section('custom-script')
 
     @include('admin.message')
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            const selectCategory = document.querySelectorAll(".select-category");
-            for (let i = 0; i < selectCategory.length; i++) {
-                new Selectr(selectCategory[i]);
-            }
-        });
-
         $(document).ready(function() {
             var searchable = [];
             var selectable = [];
@@ -84,7 +75,7 @@
                 }
             });
 
-            var dTable = $('#employeeTable').DataTable({
+            var dTable = $('#expenseCategoryTable').DataTable({
                 order: [],
                 lengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -169,7 +160,7 @@
                 },
                 pagingType: "full_numbers",
                 ajax: {
-                    url: "{{ route('employees.index') }}",
+                    url: "{{ route('suppliers.index') }}",
                     type: "get"
                 },
                 columns: [{
@@ -179,44 +170,14 @@
                         searchable: false
                     },
                     {
-                        data: 'image',
-                        name: 'Image',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'username',
-                        name: 'Username',
+                        data: 'name',
+                        name: 'Name',
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: 'unique_id',
-                        name: 'Unique Id',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'department_name',
-                        name: 'Department',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'designation',
-                        name: 'Designation',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'email',
-                        name: 'Email',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'contact_no',
-                        name: 'Contact No',
+                        data: 'phone',
+                        name: 'Phone',
                         orderable: true,
                         searchable: true
                     },
@@ -226,12 +187,10 @@
                         orderable: false,
                         searchable: false
                     }
-
                 ],
             });
         });
-
-        const deleteEmployee = (employeeId) => {
+        const deleteSupplier = (id) => {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -243,19 +202,22 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('employees.destroy') }}",
+                        url: "{{ route('suppliers.destroy') }}",
                         method: 'POST',
                         data: {
-                            employee_id: employeeId,
+                            supplier_id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         success: function(response) {
-                            console.log(response);
-                            $('#employeeTable').DataTable().ajax.reload();
-                            toaster('Employee Deleted Successfully', 'success');
+                            if (response.success) {
+                                $('#expenseCategoryTable').DataTable().ajax.reload();
+                                toaster('Supplier Deleted Successfully', 'success');
+                            } else {
+                                toaster(response.error, 'danger');
+                            }
                         },
                         error: function(xhr, status, error) {
                             console.log(error);

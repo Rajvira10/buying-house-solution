@@ -38,7 +38,7 @@
                         </div>
                         <div class="col">
                             <div class="p-2">
-                                <h3 class="text-white mb-1">{{ $user->first_name . ' ' . $user->last_name }}</h3>
+                                <h3 class="text-white mb-1">{{ $user->username }}</h3>
                                 <p class="text-white-75">User Official</p>
                             </div>
                         </div>
@@ -77,13 +77,10 @@
                                                     <div class="col-md-6">
                                                         <table class="table table-borderless">
                                                             <tr>
-                                                                <td><strong>First Name :</strong></td>
-                                                                <td>{{ $user->first_name }}</td>
+                                                                <td><strong>Username :</strong></td>
+                                                                <td>{{ $user->username }}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td><strong>Last Name :</strong></td>
-                                                                <td>{{ $user->last_name }}</td>
-                                                            </tr>
+                                                           
                                                             <tr>
                                                                 <td><strong>Email :</strong></td>
                                                                 <td>{{ $user->email }}</td>

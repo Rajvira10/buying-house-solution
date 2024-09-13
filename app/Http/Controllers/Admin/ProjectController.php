@@ -119,7 +119,7 @@ class ProjectController extends Controller
                 })
 
                 ->addColumn('finalized_by', function ($project) {
-                    return $project->finalizedBy->first_name . ' ' . Carbon::parse($project->finalized_at)->format('d/m/Y h:i A');
+                    return $project->finalizedBy->username . ' ' . Carbon::parse($project->finalized_at)->format('d/m/Y h:i A');
                 })
 
                 ->addColumn('action', function ($project) {
@@ -544,11 +544,11 @@ class ProjectController extends Controller
                     
                     $user = User::where('id', '=', $payment->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
                 })
                 ->make(true);
                    
@@ -604,11 +604,11 @@ class ProjectController extends Controller
                     
                     $user = User::where('id', '=', $payment->finalized_by)
                     ->select(
-                        'first_name'
+                        'username'
                     )
                     ->first();
 
-                    return $user->first_name . ' ' . Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
+                    return $user->username . ' ' . Carbon::parse($payment->finalized_at)->format('d/m/Y h:i A');
                     })
                 
                 ->addColumn('action', function ($payment) {

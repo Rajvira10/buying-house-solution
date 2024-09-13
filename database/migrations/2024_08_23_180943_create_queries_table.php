@@ -17,8 +17,12 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('buyer_id');
             $table->foreign('buyer_id')->references('id')->on('buyers')->onDelete('cascade');
+            $table->unsignedInteger('employee_id')->nullable();
+            $table->foreign('employee_id')->references('id')->on('employees');
             $table->unsignedInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('queries');
+            $table->unsignedInteger('product_type_id');
+            $table->foreign('product_type_id')->references('id')->on('product_types');
             $table->dateTime('query_date');
             $table->string('query_no')->nullable();
             $table->string('status')->default('Pending');
