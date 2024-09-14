@@ -6,7 +6,9 @@ use App\Models\File;
 use App\Models\Trim;
 use App\Models\Buyer;
 use App\Models\Query;
+use App\Models\Employee;
 use App\Models\QueryItem;
+use App\Models\ProductType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -37,4 +39,15 @@ class Query extends Model
     {
         return $this->hasMany(QueryItem::class);
     }
+
+    public function merchandiser()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public function product_type()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+    
 }

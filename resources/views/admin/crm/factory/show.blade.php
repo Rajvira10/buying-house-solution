@@ -68,7 +68,7 @@
                                                     <h5 class="card-title mb-3">About</h5>
                                                     <div class="flex-shrink-0">
                                                         <div class="d-flex justify-content-end">
-                                                            @if (!in_array('factory.add_contact_person', session('user_permissions')))
+                                                            @if (in_array('factory.add_contact_person', session('user_permissions')))
                                                                 <button type="button" class="btn btn-primary"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#addContactPersonModal">

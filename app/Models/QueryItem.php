@@ -10,13 +10,17 @@ use App\Models\QueryTrim;
 use App\Models\QueryImage;
 use App\Models\ProductType;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\QueryItemSpecificationSheet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class QueryItem extends Model
 {
     use HasFactory;
 
-
+    public function queryModel()
+    {
+        return $this->belongsTo(Query::class, 'query_id');
+    }
 
     public function images()
     {
@@ -46,5 +50,10 @@ class QueryItem extends Model
     public function productType()
     {
         return $this->belongsTo(ProductType::class);
+    }
+
+    public function specificationSheets()
+    {
+        return $this->hasMany(QueryItemSpecificationSheet::class)->orderBy('date', 'desc');
     }
 }

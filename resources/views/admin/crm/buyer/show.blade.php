@@ -63,7 +63,7 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <h5 class="card-title mb-3">About</h5>
                                                     <div class="flex-shrink-0">
-                                                        @if (!in_array('buyer.add_contact_person', session('user_permissions')))
+                                                        @if (in_array('buyer.add_contact_person', session('user_permissions')))
                                                             <button type="button" class="btn btn-primary"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#addContactPersonModal">

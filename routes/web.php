@@ -489,6 +489,14 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('delete', 'QueryController@destroy')->name('queries.destroy');
 
+            Route::post('store-specification-sheet', 'QueryController@storeSpecificationSheet')->name('queries.store_specification_sheet');
+
+            Route::post('update-specification-sheet/{specificationSheet}', 'QueryController@updateSpecificationSheet')->name('queries.update_specification_sheet');
+
+            Route::post('delete-specification-sheet/{specificationSheet}', 'QueryController@destroySpecificationSheet')->name('queries.destroy_specification_sheet');
+            
+            Route::get('print_specification_sheet/{specificationSheet}', 'QueryController@printSpecificationSheet')->name('queries.print_specification_sheet');
+
         });
 
         Route::group(['prefix' => 'expense-category'], function(){

@@ -1794,61 +1794,61 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
-        $permission = Permission::where('name', '=', 'trim.index')->first();
+        // $permission = Permission::where('name', '=', 'trim.index')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "trim.index";
-            $permission->alias = "View Trims";
-            $permission->description = "To view the list of trims";
-            $permission->permission_group = "Query";
+        //     $permission->name = "trim.index";
+        //     $permission->alias = "View Trims";
+        //     $permission->description = "To view the list of trims";
+        //     $permission->permission_group = "Query";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'trim.create')->first();
+        // $permission = Permission::where('name', '=', 'trim.create')->first();
         
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "trim.create";
-            $permission->alias = "Create Trims";
-            $permission->description = "To create a new trim";
-            $permission->permission_group = "Query";
+        //     $permission->name = "trim.create";
+        //     $permission->alias = "Create Trims";
+        //     $permission->description = "To create a new trim";
+        //     $permission->permission_group = "Query";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'trim.edit')->first();
+        // $permission = Permission::where('name', '=', 'trim.edit')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "trim.edit";
-            $permission->alias = "Edit Trims";
-            $permission->description = "To edit a trim";
-            $permission->permission_group = "Query";
+        //     $permission->name = "trim.edit";
+        //     $permission->alias = "Edit Trims";
+        //     $permission->description = "To edit a trim";
+        //     $permission->permission_group = "Query";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
-        $permission = Permission::where('name', '=', 'trim.delete')->first();
+        // $permission = Permission::where('name', '=', 'trim.delete')->first();
 
-        if($permission == null)
-        {
-            $permission = new Permission();
+        // if($permission == null)
+        // {
+        //     $permission = new Permission();
 
-            $permission->name = "trim.delete";
-            $permission->alias = "Delete Trims";
-            $permission->description = "To delete a trim";
-            $permission->permission_group = "Query";
+        //     $permission->name = "trim.delete";
+        //     $permission->alias = "Delete Trims";
+        //     $permission->description = "To delete a trim";
+        //     $permission->permission_group = "Query";
 
-            $permission->save();
-        }
+        //     $permission->save();
+        // }
 
         $permission = Permission::where('name', '=', 'query.index')->first();
 

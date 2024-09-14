@@ -8,6 +8,7 @@ use App\Models\File;
 use App\Models\Trim;
 use App\Models\Buyer;
 use App\Models\Query;
+use App\Models\Factory;
 use App\Models\Product;
 use App\Models\Employee;
 use App\Models\QueryItem;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Models\QueryItemSpecificationSheet;
 
 class QueryController extends Controller
 {
@@ -143,14 +145,14 @@ class QueryController extends Controller
 
             if($query->parent_id != null)
             {
-                $queries = Query::with('buyer', 'items', 'items.trims', 'items.images', 'items.measurements')
+                $queries = Query::with('buyer', 'items', 'items.images', 'items.measurements')
                 ->where('parent_id', $query->parent_id)
                 ->orWhere('id', $query->parent_id)
                 ->orderBy('created_at', 'desc')
                 ->get();
             }
             else{
-                $queries = Query::with('buyer', 'items', 'items.trims', 'items.images', 'items.measurements')
+                $queries = Query::with('buyer', 'items', 'items.images', 'items.measurements')
                 ->where('parent_id', $query->id)
                 ->orWhere('id', $query->id)
                 ->orderBy('created_at', 'desc')
@@ -211,7 +213,6 @@ class QueryController extends Controller
         }
         $request->session()->now('view_name', 'admin.query.query.index');
 
-        $trims = Trim::select('id', 'name')->get();
 
         $logged_in_user_is_buyer = Buyer::where('user_id', auth()->user()->id)->first();
 
@@ -231,7 +232,7 @@ class QueryController extends Controller
             $query->where('name', 'merchandiser');
         })->get();
 
-        return view('admin.query.query.create', compact('trims', 'buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
+        return view('admin.query.query.create', compact('buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
     }
 
     public function edit(Request $request, $query_id)
@@ -243,10 +244,9 @@ class QueryController extends Controller
         
         $request->session()->now('view_name', 'admin.query.query.index');
 
-        $query = Query::with('items', 'items.trims', 'items.images', 'items.measurements')->find($query_id);
+        $query = Query::with('items', 'items.images', 'items.measurements')->find($query_id);
 
         if($query != null){
-            $trims = Trim::select('id', 'name')->get();
 
             $logged_in_user_is_buyer = Buyer::where('user_id', auth()->user()->id)->first();
 
@@ -266,7 +266,7 @@ class QueryController extends Controller
                 $query->where('name', 'merchandiser');
             })->get();
 
-            return view('admin.query.query.edit', compact('query', 'trims', 'buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
+            return view('admin.query.query.edit', compact('query',  'buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
         }
         else{
             return redirect()->route('queries.index')->with('error', 'Query Not Found');
@@ -275,6 +275,7 @@ class QueryController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'buyer_id' => 'required',
             'employee_id' => 'nullable',
@@ -285,12 +286,13 @@ class QueryController extends Controller
             'products.*.price_submission_date' => 'required',
             'products.*.sample_submission_date' => 'nullable',
             'products.*.product_model' => 'required',
-            'products.*.trim_ids' => 'required',
             'products.*.details' => 'required',
             'products.*.approximate_quantity' => 'required|numeric',
-            'products.*.query_images' => 'nullable',
-            'products.*.query_measurements' => 'nullable',
+            'products.*.query_images' => 'required',
+            'products.*.query_measurements' => 'required',
         ]);
+
+
 
         try {
             DB::beginTransaction();
@@ -302,8 +304,10 @@ class QueryController extends Controller
             $query->product_type_id = $request->product_type_id;
             $query->save();
 
+
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
             $query->save();
+
 
             foreach ($request->products as $product) {
                 $query_item = new QueryItem();
@@ -317,7 +321,6 @@ class QueryController extends Controller
                 $query_item->approximate_quantity = $product['approximate_quantity'];
                 $query_item->save();
 
-                $query_item->trims()->attach($product['trim_ids']);
 
                 foreach ($product['query_images'] as $image) {
                     $image_name = $image->hashName();
@@ -372,10 +375,11 @@ class QueryController extends Controller
         
         $request->session()->now('view_name', 'admin.query.query.index');
 
-        $query = Query::with('items', 'items.trims', 'items.images', 'items.measurements')->find($query_id);
+        $query = Query::with('items',  'items.images', 'items.measurements')->find($query_id);
 
         if($query != null){
-            return view('admin.query.query.show', compact('query'));
+            $factories = Factory::all();
+            return view('admin.query.query.show', compact('query','factories'));
         }
         else{
             return redirect()->route('queries.index')->with('error', 'Query Not Found');
@@ -396,7 +400,6 @@ class QueryController extends Controller
             'products.*.price_submission_date' => 'required',
             'products.*.sample_submission_date' => 'nullable',
             'products.*.product_model' => 'required',
-            'products.*.trim_ids' => 'required',
             'products.*.details' => 'required',
             'products.*.approximate_quantity' => 'required|numeric',
             'products.*.query_images' => 'nullable',
@@ -431,7 +434,6 @@ class QueryController extends Controller
                 $query_item->approximate_quantity = $product['approximate_quantity'];
                 $query_item->save();
 
-                $query_item->trims()->attach($product['trim_ids']);
 
                 if(array_key_exists('query_images', $product))
                 {
@@ -499,7 +501,6 @@ class QueryController extends Controller
 
             if ($query != null) {
                 $query->items()->each(function ($item) {
-                    $item->trims()->detach();
                     $item->images()->detach();
                     $item->measurements()->detach();
                     $item->delete(); 
@@ -507,7 +508,6 @@ class QueryController extends Controller
 
                 $query->children()->each(function ($child) {
                     $child->items()->each(function ($item) {
-                        $item->trims()->detach();
                         $item->images()->detach();
                         $item->measurements()->detach();
                         $item->delete();
@@ -538,5 +538,121 @@ class QueryController extends Controller
                 return response()->json(['error' => 'Query Not Found']);
             }
         }
+    }
+
+    public function storeSpecificationSheet(Request $request)
+    {
+        $validatedData = $request->validate([
+            'query_item_id' => 'required|exists:query_items,id',
+            'factory_id' => 'nullable|exists:factories,id',
+            'date' => 'required',
+            'approximate_delivery_date' => 'nullable',
+            'express_courier' => 'nullable',
+            'AWB' => 'nullable',
+            'AWB_date' => 'nullable',
+            'required_size' => 'nullable',
+            'quantity' => 'nullable',
+            'fitting' => 'nullable',
+            'styling' => 'nullable',
+            'required_fabric_composition' => 'nullable',
+            'GSM' => 'nullable',
+            'fabric_color' => 'nullable',
+            'main_label' => 'nullable',
+            'care_label' => 'nullable',
+            'hang_tag' => 'nullable',
+            'print_instructions' => 'nullable',
+            'embroidery_instructions' => 'nullable',
+            'button_type' => 'nullable',
+            'button_size' => 'nullable',
+            'button_color' => 'nullable',
+            'button_thread' => 'nullable',
+            'button_hole' => 'nullable',
+            'zipper_type' => 'nullable',
+            'zipper_size' => 'nullable',
+            'zipper_color' => 'nullable',
+            'zipper_tape' => 'nullable',
+            'zipper_puller' => 'nullable',
+            'other_instructions' => 'nullable',
+        ]);
+
+        $validatedData['date'] = Carbon::createFromFormat('d/m/Y', $validatedData['date'])->toDateTimeString();
+
+        if(array_key_exists('approximate_delivery_date', $validatedData))
+        {
+            $validatedData['approximate_delivery_date'] = Carbon::createFromFormat('d/m/Y', $validatedData['approximate_delivery_date'])->toDateTimeString();
+        }
+
+        if(array_key_exists('AWB_date', $validatedData))
+        {
+            $validatedData['AWB_date'] = Carbon::createFromFormat('d/m/Y', $validatedData['AWB_date'])->toDateTimeString();
+        }
+        
+
+        QueryItemSpecificationSheet::create($validatedData);
+
+        return redirect()->back()->with('success', 'Specification sheet added successfully.');
+    }
+
+    public function updateSpecificationSheet(Request $request, QueryItemSpecificationSheet $specificationSheet)
+    {
+        $validatedData = $request->validate([
+            'factory_id' => 'required|exists:factories,id',
+            'date' => 'required',
+            'approximate_delivery_date' => 'nullable',
+            'express_courier' => 'nullable',
+            'AWB' => 'nullable',
+            'AWB_date' => 'nullable',
+            'required_size' => 'nullable',
+            'quantity' => 'nullable',
+            'fitting' => 'nullable',
+            'styling' => 'nullable',
+            'required_fabric_composition' => 'nullable',
+            'GSM' => 'nullable',
+            'fabric_color' => 'nullable',
+            'main_label' => 'nullable',
+            'care_label' => 'nullable',
+            'hang_tag' => 'nullable',
+            'print_instructions' => 'nullable',
+            'embroidery_instructions' => 'nullable',
+            'button_type' => 'nullable',
+            'button_size' => 'nullable',
+            'button_color' => 'nullable',
+            'button_thread' => 'nullable',
+            'button_hole' => 'nullable',
+            'zipper_type' => 'nullable',
+            'zipper_size' => 'nullable',
+            'zipper_color' => 'nullable',
+            'zipper_tape' => 'nullable',
+            'zipper_puller' => 'nullable',
+            'other_instructions' => 'nullable',
+        ]);
+
+        $validatedData['date'] = Carbon::createFromFormat('d/m/Y', $validatedData['date'])->toDateTimeString();
+
+        if(array_key_exists('approximate_delivery_date', $validatedData))
+        {
+            $validatedData['approximate_delivery_date'] = Carbon::createFromFormat('d/m/Y', $validatedData['approximate_delivery_date'])->toDateTimeString();
+        }
+
+        if(array_key_exists('AWB_date', $validatedData))
+        {
+            $validatedData['AWB_date'] = Carbon::createFromFormat('d/m/Y', $validatedData['AWB_date'])->toDateTimeString();
+        }
+
+        $specificationSheet->update($validatedData);
+
+        return redirect()->back()->with('success', 'Specification sheet updated successfully.');
+    }
+
+    public function destroySpecificationSheet(QueryItemSpecificationSheet $specificationSheet)
+    {
+        $specificationSheet->delete();
+
+        return redirect()->back()->with('success', 'Specification sheet deleted successfully.');
+    }
+
+    public function printSpecificationSheet(QueryItemSpecificationSheet $specificationSheet)
+    {
+        return view('admin.query.query.print', compact('specificationSheet'));
     }
 }

@@ -515,13 +515,13 @@
                                             data-key="t-product">Product</a>
                                     </li>
                                 @endif
-                                @if ($permissions->nav_trim_option)
+                                {{-- @if ($permissions->nav_trim_option)
                                     <li class="nav-item">
                                         <a href="{{ route('trims.index') }}" target="_self"
                                             class="nav-link {{ session('view_name') == 'admin.query.trim.index' ? 'active' : '' }}"
                                             data-key="t-trim">Trim</a>
                                     </li>
-                                @endif
+                                @endif --}}
                                 @if ($permissions->nav_query_option)
                                     <li class="nav-item">
                                         <a href="{{ route('queries.index') }}" target="_self"

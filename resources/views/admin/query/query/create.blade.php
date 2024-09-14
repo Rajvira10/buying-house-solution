@@ -65,7 +65,7 @@
                                                 <label for="employee_id"
                                                     class="form-label fw-bold">{{ __('Select Merchandiser') }}
                                                 </label>
-                                                <select class="form-select select-category" name="employee_id" required>
+                                                <select class="form-select select-category" name="employee_id">
                                                     <option value="" selected disabled>Select a Merchandiser</option>
                                                     @foreach ($merchandisers as $merchandiser)
                                                         <option value="{{ $merchandiser->id }}">
@@ -165,17 +165,6 @@
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="products[0][product_model]" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="trim_ids" class="form-label">{{ __('Trim') }} <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-select multiple-select-category" name="products[0][trim_ids][]" multiple
-                                required>
-                                <option value="" disabled>Select a category</option>
-                                @foreach ($trims as $trim)
-                                    <option value="{{ $trim->id }}">{{ $trim->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
                         <!-- Images and Measurements -->
                         <div class="col-md-6">
@@ -266,7 +255,8 @@
                 productsContainer.appendChild(productClone);
 
                 const newSelect = productsContainer.lastElementChild.querySelector('.multiple-select-category');
-                initializeSelectr(newSelect, true);
+                if (newSelect)
+                    initializeSelectr(newSelect, true);
 
                 const newSelectCategories = productsContainer.lastElementChild.querySelectorAll('.select-category');
                 newSelectCategories.forEach(newSelectCategory => {

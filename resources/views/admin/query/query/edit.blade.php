@@ -60,7 +60,7 @@
                                             <label for="employee_id"
                                                 class="form-label fw-bold">{{ __('Select Merchandiser') }}
                                             </label>
-                                            <select class="form-select select-category" name="employee_id" required>
+                                            <select class="form-select select-category" name="employee_id" >
                                                 <option value="" selected disabled>Select a Merchandiser</option>
                                                 @foreach ($merchandisers as $merchandiser)
                                                     <option value="{{ $merchandiser->id }}"
@@ -160,21 +160,7 @@
                                                                     name="products[{{ $index }}][product_model]"
                                                                     value="{{ $item->product_model }}" required>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <label for="trim_ids"
-                                                                    class="form-label">{{ __('Trim') }} <span
-                                                                        class="text-danger">*</span></label>
-                                                                <select class="form-select multiple-select-category"
-                                                                    name="products[{{ $index }}][trim_ids][]"
-                                                                    multiple required>
-                                                                    @foreach ($trims as $trim)
-                                                                        <option value="{{ $trim->id }}"
-                                                                            {{ in_array($trim->id, $item->trims->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                                                            {{ $trim->name }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
+                                                            
 
                                                             <!-- Images and Measurements -->
                                                             <div class="col-md-6">
@@ -341,14 +327,7 @@
                                         ">{{ __('Product Model') }} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="products[${productCount - 1}][product_model]" required>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="trim_ids" class="form-label">{{ __('Trim') }} <span class="text-danger">*</span></label>
-                                        <select class="form-select multiple-select-category" name="products[${productCount - 1}][trim_ids][]" multiple required>
-                                            @foreach ($trims as $trim)
-                                                <option value="{{ $trim->id }}">{{ $trim->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                    
 
                                     <div class="col-md-6">
                                         <label for="query_images" class="form-label">{{ __('Query Images') }} <span class="text-danger">*</span></label>
