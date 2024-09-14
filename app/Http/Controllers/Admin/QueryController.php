@@ -14,6 +14,7 @@ use App\Models\Employee;
 use App\Models\QueryItem;
 use App\Models\ProductType;
 use Illuminate\Http\Request;
+use App\Models\QueryMerchandiser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,10 @@ class QueryController extends Controller
         }
 
         $request->session()->now('view_name', 'admin.query.query.index');
+
+        $merchandisers = Employee::whereHas('user.roles', function ($query) {
+            $query->where('name', 'merchandiser');
+        })->get();
         
         if($request->ajax()){
 
@@ -80,7 +85,7 @@ class QueryController extends Controller
                     return Carbon::parse($category->query_date)->format('d/m/Y');
                 })
                 ->addColumn('merchandiser', function ($category) {
-                    return $category->employee ? $category->employee->user->username : 'N/A';
+                    return $category->merchandiser ? $category->merchandiser->user->username : 'N/A';
                 })
                 ->addColumn('action', function ($category) {
                     $edit_button = '<div class="dropdown d-inline-block">
@@ -105,6 +110,19 @@ class QueryController extends Controller
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> History</a></li>';
                     }
 
+                    if(in_array('query.view_merchandiser_assign_history', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><a href="'.route('queries.merchandiser_assign_history', $category->id).'" class
+                        ="dropdown-item"><i class="ri-history-fill me-2"></i> Merchandiser Assign History</a></li>';
+                    }
+
+                    if(in_array('query.assign_merchandiser', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="assignMerchandiser(' . $category->id . ')">
+                                            <i class="ri-user-add-fill me-2"></i> Assign Merchandiser
+                                        </button></li>';
+                    }
+
                     if(in_array('query.edit', session('user_permissions')))
                     {
                         $edit_button .= '<li><a href="'.route('queries.edit', $category->id).'" class
@@ -127,7 +145,7 @@ class QueryController extends Controller
                 ->make(true);
         }
 
-        return view('admin.query.query.index');
+        return view('admin.query.query.index', compact('merchandisers'));
     }
 
     public function history(Request $request, $query_id)
@@ -292,8 +310,6 @@ class QueryController extends Controller
             'products.*.query_measurements' => 'required',
         ]);
 
-
-
         try {
             DB::beginTransaction();
             
@@ -304,6 +320,13 @@ class QueryController extends Controller
             $query->product_type_id = $request->product_type_id;
             $query->save();
 
+            if($request->employee_id != null)
+            {
+                $query_merchandiser = new QueryMerchandiser();
+                $query_merchandiser->query_id = $query->id;
+                $query_merchandiser->employee_id = $request->employee_id;
+                $query_merchandiser->save();
+            }
 
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
             $query->save();
@@ -421,6 +444,14 @@ class QueryController extends Controller
 
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
             $query->save();
+
+            if($request->employee_id != null)
+            {
+                $query_merchandiser = new QueryMerchandiser();
+                $query_merchandiser->query_id = $query->id;
+                $query_merchandiser->employee_id = $request->employee_id;
+                $query_merchandiser->save();
+            }
 
             foreach ($request->products as $product) {
                 $query_item = new QueryItem();
@@ -542,6 +573,11 @@ class QueryController extends Controller
 
     public function storeSpecificationSheet(Request $request)
     {
+        if(!in_array('query.store_specification_sheet', session('user_permissions')))
+        {
+            return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
+        }
+
         $validatedData = $request->validate([
             'query_item_id' => 'required|exists:query_items,id',
             'factory_id' => 'nullable|exists:factories,id',
@@ -654,5 +690,66 @@ class QueryController extends Controller
     public function printSpecificationSheet(QueryItemSpecificationSheet $specificationSheet)
     {
         return view('admin.query.query.print', compact('specificationSheet'));
+    }
+
+    public function merchandiserAssignHistory(Request $request, $query_id)
+    {
+        if(!in_array('query.view_merchandiser_assign_history', session('user_permissions')))
+        {
+            return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
+        }
+        
+        $request->session()->now('view_name', 'admin.query.query.index');
+
+        $query = Query::find($query_id);
+
+        if($query != null){
+            if($request->ajax())
+            {
+                $queryMerchandisers = QueryMerchandiser::where('query_id', $query_id)->latest()->get();
+                return DataTables::of($queryMerchandisers)
+                    ->addColumn('merchandiser', function ($category) {
+                        return $category->employee->user->username;
+                    })
+                    ->addColumn('query_no', function ($category) {
+                        return $category->queryModel->query_no;
+                    })
+                    ->addColumn('date', function ($category) {
+                        return Carbon::parse($category->created_at)->format('d/m/Y');
+                    })
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+
+            return view('admin.query.query.merchandiser_assign_history', compact('query_id', 'query'));
+        }
+        else{
+            return redirect()->route('queries.index')->with('error', 'Query Not Found');
+        }
+    }
+
+    public function assignMerchandiser(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Query::find($request->query_id);
+
+            if ($query != null) {
+                $last_merchandiser = QueryMerchandiser::where('query_id', $query->id)->latest()->first();
+
+                if($last_merchandiser->employee_id == $request->merchandiser_id)
+                {
+                    return response()->json(['error' => 'This Merchandiser Has Already Been Assigned to This Query']);
+                }
+
+                $query_merchandiser = new QueryMerchandiser();
+                $query_merchandiser->query_id = $query->id;
+                $query_merchandiser->employee_id = $request->merchandiser_id;
+                $query_merchandiser->save();
+
+                return response()->json(['success' => 'Merchandiser Assigned Successfully']);
+            } else {
+                return response()->json(['error' => 'Query Not Found']);
+            }
+        }
     }
 }

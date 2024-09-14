@@ -9,6 +9,7 @@ use App\Models\Query;
 use App\Models\Employee;
 use App\Models\QueryItem;
 use App\Models\ProductType;
+use App\Models\QueryMerchandiser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -48,6 +49,11 @@ class Query extends Model
     public function product_type()
     {
         return $this->belongsTo(ProductType::class);
+    }
+
+    public function merchandisers()
+    {
+        return $this->belongsToMany(QueryMerchandiser::class, 'query_merchandisers');
     }
     
 }

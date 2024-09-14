@@ -497,6 +497,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             
             Route::get('print_specification_sheet/{specificationSheet}', 'QueryController@printSpecificationSheet')->name('queries.print_specification_sheet');
 
+            Route::get('merchandiser-assign-history/{query_id}', 'QueryController@merchandiserAssignHistory')->name('queries.merchandiser_assign_history');
+
+            Route::post('assign-merchandiser', 'QueryController@assignMerchandiser')->name('queries.assign_merchandiser');
+
         });
 
         Route::group(['prefix' => 'expense-category'], function(){

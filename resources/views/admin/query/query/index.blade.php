@@ -312,5 +312,56 @@
                 }
             });
         }
+
+        const assignMerchandiser = (id) => {
+            Swal.fire({
+                title: 'Assign Merchandiser',
+                html: `
+            <select id="merchandiser" class="form-control" required>
+                <option value="">Select Merchandiser</option>
+                @foreach ($merchandisers as $merchandiser)
+                    <option value="{{ $merchandiser->id }}">{{ $merchandiser->user->username }}</option>
+                @endforeach
+            </select>
+        `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#f46a6a',
+                confirmButtonText: 'Yes, assign it!',
+                preConfirm: () => {
+                    const merchandiser = document.getElementById('merchandiser').value;
+                    return merchandiser;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const selectedMerchandiser = result.value;
+                    $.ajax({
+                        url: "{{ route('queries.assign_merchandiser') }}",
+                        method: 'POST',
+                        data: {
+                            query_id: id,
+                            merchandiser_id: selectedMerchandiser,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#expenseCategoryTable').DataTable().ajax.reload();
+                                toaster('Merchandiser Assigned Successfully', 'success');
+                            } else {
+                                toaster(response.error, 'danger');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(error);
+                            toaster('Something went wrong', 'danger');
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endsection

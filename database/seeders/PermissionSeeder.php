@@ -1948,6 +1948,118 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'query.view_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.view_specification_sheet";
+            $permission->alias = "View Specification Sheet";
+            $permission->description = "To view the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.store_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.store_specification_sheet";
+            $permission->alias = "Store Specification Sheet";
+            $permission->description = "To store the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.view_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.view_specification_sheet";
+            $permission->alias = "View Specification Sheet";
+            $permission->description = "To view the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.update_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.update_specification_sheet";
+            $permission->alias = "Update Specification Sheet";
+            $permission->description = "To update the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.destroy_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.destroy_specification_sheet";
+            $permission->alias = "Delete Specification Sheet";
+            $permission->description = "To delete the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+        
+        $permission = Permission::where('name', '=', 'query.print_specification_sheet')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.print_specification_sheet";
+            $permission->alias = "Print Specification Sheet";
+            $permission->description = "To print the specification sheet of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.assign_merchandiser')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.assign_merchandiser";
+            $permission->alias = "Assign Merchandiser";
+            $permission->description = "To assign a merchandiser to a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.view_merchandiser_assign_history')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.view_merchandiser_assign_history";
+            $permission->alias = "View Assign History";
+            $permission->description = "To view the assignment history of a query";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
         // PERMISSION GROUP - EXPENSE
 
         // $permission = Permission::where('name', '=', 'expense_categories.index')->first();
