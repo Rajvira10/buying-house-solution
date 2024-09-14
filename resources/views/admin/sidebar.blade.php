@@ -535,21 +535,22 @@
                     </li>
                 @endif
 
-                <li class="nav-item">
-                    @php
-                        $active = $show = '';
-                        if (in_array(session('view_name'), ['admin.orders.order.index'])) {
-                            $active = 'active';
-                            $show = 'show';
-                        }
-                    @endphp
-                    <a class="nav-link menu-link {{ $active }}" href="#sidebarOrder" role="button"
-                        aria-expanded="false">
-                        <i class="ri-shopping-cart-2-line"></i> <span data-key="t-orders">Orders</span>
-                    </a>
+                @if ($permissions->nav_order_group)
+                    <li class="nav-item">
+                        @php
+                            $active = $show = '';
+                            if (in_array(session('view_name'), ['admin.orders.order.index'])) {
+                                $active = 'active';
+                                $show = 'show';
+                            }
+                        @endphp
+                        <a class="nav-link menu-link {{ $active }}" href="{{ route('orders.index') }}"
+                            role="button" aria-expanded="false">
+                            <i class="ri-shopping-cart-2-line"></i> <span data-key="t-orders">Orders</span>
+                        </a>
 
-                </li>
-
+                    </li>
+                @endif
 
                 {{-- @if ($permissions->nav_account_group)
                     <li class="nav-item">

@@ -97,6 +97,13 @@ class QueryController extends Controller
                     $edit_button .= '<li><a href="'.route('queries.show', $category->id).'" class
                     ="dropdown-item"><i class="ri-eye-fill me-2"></i> Show</a></li>';
 
+                    if(in_array('order.create', session('user_permissions')) && $category->status == 'Approved')
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="createOrder(' . $category->id . ')">
+                                            <i class="ri-file-list-3-fill me-2"></i> Create Order
+                                        </button></li>';
+                    }
+
                     if(in_array('query.change_status', session('user_permissions')))
                     {
                         $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->id . ')">
@@ -110,13 +117,13 @@ class QueryController extends Controller
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> History</a></li>';
                     }
 
-                    if(in_array('query.view_merchandiser_assign_history', session('user_permissions')))
+                    if(in_array('query.view_merchandiser_assign_history', session('user_permissions')) && $category->merchandiser)
                     {
                         $edit_button .= '<li><a href="'.route('queries.merchandiser_assign_history', $category->id).'" class
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> Merchandiser Assign History</a></li>';
                     }
 
-                    if(in_array('query.assign_merchandiser', session('user_permissions')))
+                    if(in_array('query.assign_merchandiser', session('user_permissions')) && $category->status == 'Approved')
                     {
                         $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="assignMerchandiser(' . $category->id . ')">
                                             <i class="ri-user-add-fill me-2"></i> Assign Merchandiser

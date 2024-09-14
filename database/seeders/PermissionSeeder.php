@@ -2060,6 +2060,64 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        // PERMISSION GROUP - ORDER
+
+        $permission = Permission::where('name', '=', 'order.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.index";
+            $permission->alias = "View Orders";
+            $permission->description = "To view the list of orders";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'order.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.create";
+            $permission->alias = "Create Orders";
+            $permission->description = "To create a new order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'order.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.edit";
+            $permission->alias = "Edit Orders";
+            $permission->description = "To edit an order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'order.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.delete";
+            $permission->alias = "Delete Orders";
+            $permission->description = "To delete an order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
         // PERMISSION GROUP - EXPENSE
 
         // $permission = Permission::where('name', '=', 'expense_categories.index')->first();

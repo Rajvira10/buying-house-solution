@@ -503,6 +503,26 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
         });
 
+        Route::group(['prefix' => 'order'], function(){
+
+            Route::get('index', 'OrderController@index')->name('orders.index');
+
+            Route::get('create', 'OrderController@create')->name('orders.create');
+
+            Route::post('store', 'OrderController@store')->name('orders.store');
+
+            Route::get('show/{order_id}', 'OrderController@show')->name('orders.show');
+
+            Route::get('edit/{order_id}', 'OrderController@edit')->name('orders.edit');
+
+            Route::post('update/{order_id}', 'OrderController@update')->name('orders.update');
+
+            Route::post('delete', 'OrderController@destroy')->name('orders.destroy');
+
+            Route::get('print-order/{order_id}', 'OrderController@printOrder')->name('orders.print_order');
+
+        });
+
         Route::group(['prefix' => 'expense-category'], function(){
 
             Route::get('index', 'ExpenseCategoryController@index')->name('expense_categories.index');

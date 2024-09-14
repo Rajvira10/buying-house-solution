@@ -72,6 +72,11 @@ class PermissionService
     public $nav_query_option = false;
 
 
+    public $nav_order_group = false;
+
+    public $nav_orders_option = false;
+
+
     public $nav_expense_group = false;
 
     public $nav_expense_categories_option = false;
@@ -304,6 +309,18 @@ class PermissionService
             $this->nav_query_option = true;
         }
 
+        // Order Group
+
+        if(in_array('order.index', $permissions))
+        {
+            $this->nav_order_group = true;
+        }
+
+        if(in_array('order.index', $permissions))
+        {
+            $this->nav_orders_option = true;
+        }
+
         // Expense Group
 
         if(in_array('expense.index', $permissions) || in_array('expense_category.index', $permissions))
@@ -473,6 +490,18 @@ class PermissionService
         $this->nav_projects_option =  true;
 
         $this->nav_query_group =  true;
+
+        $this->nav_product_type_option =  true;
+
+        $this->nav_product_option =  true;
+
+        $this->nav_trim_option =  true;
+
+        $this->nav_query_option =  true;
+
+        $this->nav_order_group =  true;
+
+        $this->nav_orders_option =  true;
 
         $this->nav_expense_group =  true;
 
