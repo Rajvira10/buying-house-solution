@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Query;
+use App\Models\OrderTna;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,4 +27,10 @@ class Order extends Model
     {
         return $this->belongsTo(Query::class, 'query_id');
     }
+
+    public function tnas()
+    {
+        return $this->hasMany(OrderTna::class);
+    }
+
 }

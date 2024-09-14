@@ -32,6 +32,9 @@
                                                     <th>{{ __('Date') }}</th>
                                                     <th>{{ __('Order No') }}</th>
                                                     <th>{{ __('Query No') }}</th>
+                                                    <th>{{ __('Product Type') }}</th>
+                                                    <th>{{ __('Buyer') }}</th>
+                                                    <th>{{ __('Merchandiser') }}</th>
                                                     <th>{{ __('Total Quantity') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
@@ -48,6 +51,39 @@
                         <!-- end col -->
                     </div>
                     <!-- end col -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for adding TNAs -->
+    <div class="modal fade" id="addTnaModal" tabindex="-1" aria-labelledby="addTnaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTnaModalLabel">Add TNA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="tnaForm">
+                        <input type="hidden" id="order_id" name="order_id">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>TNA</th>
+                                    <th>Plan Date</th>
+                                    <th>Actual Date</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tnaTableBody">
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveTnaBtn">Save</button>
                 </div>
             </div>
         </div>
@@ -181,6 +217,24 @@
                         searchable: true
                     },
                     {
+                        data: 'product_type',
+                        name: 'product_type',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'buyer',
+                        name: 'buyer',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'merchandiser',
+                        name: 'merchandiser',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
                         data: 'total_quantity',
                         name: 'total_quantity',
                         orderable: true,
@@ -232,5 +286,55 @@
                 }
             })
         }
+
+        const tnas = {!! json_encode($tnas) !!};
+
+        const addTna = (orderId) => {
+            // Set order_id in the hidden input field
+            $('#order_id').val(orderId);
+
+            // Clear previous TNA rows
+            $('#tnaTableBody').empty();
+
+            // Loop through the TNAs (assuming they are globally available from the controller)
+            tnas.forEach(function(tna) {
+                $('#tnaTableBody').append(`
+            <tr>
+                <td>${tna.name}</td>
+                <td><input type="date" name="plan_date[${tna.id}]" class="form-control"></td>
+                <td><input type="date" name="actual_date[${tna.id}]" class="form-control"></td>
+                <td><input type="text" name="remarks[${tna.id}]" class="form-control"></td>
+            </tr>
+        `);
+            });
+
+            // Show the modal
+            $('#addTnaModal').modal('show');
+        }
+
+        // Save TNA data when the "Save" button is clicked
+        $('#saveTnaBtn').on('click', function() {
+            $.ajax({
+                url: "{{ route('orders.store_tna') }}", // Define this route in your controller
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: $('#tnaForm').serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        toaster('TNA added successfully', 'success');
+                        $('#addTnaModal').modal('hide');
+                        $('#expenseCategoryTable').DataTable().ajax.reload();
+                    } else {
+                        toaster('Failed to add TNA', 'danger');
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                    toaster('Something went wrong', 'danger');
+                }
+            });
+        });
     </script>
 @endsection

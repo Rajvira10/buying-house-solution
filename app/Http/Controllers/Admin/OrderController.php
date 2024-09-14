@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use DataTables;
 use Carbon\Carbon;
+use App\Models\Tna;
 use App\Models\Order;
+use App\Models\OrderTna;
 use Illuminate\Http\Request;
 use App\Imports\OrdersImport;
 use App\Http\Controllers\Controller;
@@ -21,6 +23,8 @@ class OrderController extends Controller
 
         $request->session()->now('view_name', 'admin.orders.order.index');
         
+        $tnas = Tna::all();
+
         if($request->ajax()){
 
             $orders = Order::with('items', 'items.colors')
@@ -28,6 +32,15 @@ class OrderController extends Controller
             ->get();
 
             return DataTables::of($orders)
+                ->addColumn('buyer', function ($category) {
+                    return $category->queryModel->buyer->user->username;
+                })
+                ->addColumn('product_type', function ($category) {
+                    return $category->queryModel->product_type->name;
+                })
+                ->addColumn('merchandiser', function ($category) {
+                    return $category->queryModel->merchandiser ? $category->queryModel->merchandiser->user->username : '';
+                })
                 ->addColumn('date', function ($category) {
                     return Carbon::parse($category->order_date)->format('d/m/Y');
                 })
@@ -50,6 +63,24 @@ class OrderController extends Controller
                     //     $edit_button .= '<li><a href="'.route('factories.edit', $category->id).'" class
                     //     ="dropdown-item"><i class="ri-pencil-line me-2"></i> Edit</a></li>';
                     // }
+                    if(in_array('order.add_tna', session('user_permissions')) && $category->tnas->count() == 0)
+                    {
+                        $edit_button .= '<li>
+                                            <button type="submit" class="dropdown-item" onclick="addTna(' . $category->id . ')">
+                                                <i class="ri-add-fill align-bottom me-2"></i> Add TNA
+                                            </button>
+                                        </li>';
+                    }
+
+                    if(in_array('order.print_tna', session('user_permissions')) && $category->tnas->count() > 0)
+                    {
+                        $edit_button .= '<li>
+                                            <a href="'.route('orders.print_tna', $category->id).'" class="dropdown-item">
+                                                <i class="ri-printer-line align-bottom me-2"></i> Print TNA
+                                            </a>
+                                        </li>';
+                    }
+                    
                     if(in_array('order.delete', session('user_permissions')))
                     {
                         $edit_button .= '<li>
@@ -67,7 +98,7 @@ class OrderController extends Controller
                 ->make(true);
         }
 
-        return view('admin.order.order.index');
+        return view('admin.order.order.index', compact('tnas'));
     }
 
     public function show(Request $request)
@@ -77,7 +108,7 @@ class OrderController extends Controller
             return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
         }
 
-        $request->session()->now('view_name', 'admin.order.order.index');
+        $request->session()->now('view_name', 'admin.orders.order.index');
         
         $order = Order::with('items', 'items.colors')
         ->find($request->order_id);
@@ -99,7 +130,7 @@ class OrderController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Orders imported successfully!']);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            return response()->json(['error' => 'Something went wrong!']);
         }
     }
 
@@ -117,4 +148,29 @@ class OrderController extends Controller
             }
         }
     }
+
+    public function storeTna(Request $request)
+    {
+        $order_id = $request->input('order_id');
+
+        foreach ($request->input('plan_date') as $tna_id => $plan_date) {
+            OrderTna::create([
+                'order_id' => $order_id,
+                'tna_id' => $tna_id,
+                'plan_date' => $plan_date,
+                'actual_date' => $request->input('actual_date')[$tna_id],
+                'remarks' => $request->input('remarks')[$tna_id],
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function printTna(Request $request, $id)
+    {
+        $order = Order::with('tnas', 'tnas.tna')->find($id);
+
+        return view('admin.order.order.print_tna', compact('order'));
+    }
+
 }

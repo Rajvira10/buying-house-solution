@@ -519,8 +519,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('delete', 'OrderController@destroy')->name('orders.destroy');
 
-            Route::get('print-order/{order_id}', 'OrderController@printOrder')->name('orders.print_order');
+            Route::post('store-tna', 'OrderController@storeTna')->name('orders.store_tna');
+            
+            Route::post('update_tna', 'OrderController@updateTna')->name('orders.update_tna');
 
+            Route::get('print_tna/{order_id}', 'OrderController@printTna')->name('orders.print_tna');
         });
 
         Route::group(['prefix' => 'expense-category'], function(){

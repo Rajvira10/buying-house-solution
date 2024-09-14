@@ -12,18 +12,32 @@
                     <div class="card-body">
                         <!-- Order Info -->
                         <div class="row mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h5>Order Date: <span class="text-muted">{{ $order->order_date->format('d-m-Y') }}</span>
                                 </h5>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <h5>Query No: <span class="text-muted">{{ $order->queryModel->query_no }}</span></h5>
+                            </div>
+                            <div class="col-md-4">
                                 <h5>Total Quantity: <span class="text-muted">{{ $order->total_quantity }}</span></h5>
                             </div>
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h5>Query No: <span class="text-muted">{{ $order->queryModel->query_no }}</span></h5>
+                            <div class="col-md-4">
+                                <h5>Product Type: <span
+                                        class="text-muted">{{ $order->queryModel->product_type->name }}</span>
+                                </h5>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Buyer: <span class="text-muted">{{ $order->queryModel->buyer->user->username }}</span>
+                                </h5>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>Merchandiser: <span
+                                        class="text-muted">{{ $order->queryModel->merchandiser->user->username }}</span>
+                                </h5>
                             </div>
                         </div>
 

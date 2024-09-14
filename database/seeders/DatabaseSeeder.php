@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\TNASeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\UserSeeder;
@@ -37,7 +38,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AccountSeeder::class,
             WarehouseSeeder::class,
-            DepartmentSeeder::class
+            DepartmentSeeder::class,
+            TNASeeder::class,
         ]);
 
         $this->call(CountriesTableSeeder::class);

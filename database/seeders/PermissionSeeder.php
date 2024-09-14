@@ -2118,6 +2118,48 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'order.add_tna')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.add_tna";
+            $permission->alias = "Add TNA";
+            $permission->description = "To add a TNA to an order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+        
+        $permission = Permission::where('name', '=', 'order.edit_tna')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.edit_tna";
+            $permission->alias = "Edit TNA";
+            $permission->description = "To edit a TNA of an order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'order.print_tna')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "order.print_tna";
+            $permission->alias = "Print TNA";
+            $permission->description = "To print the TNA of an order";
+            $permission->permission_group = "Order";
+
+            $permission->save();
+        }
+
         // PERMISSION GROUP - EXPENSE
 
         // $permission = Permission::where('name', '=', 'expense_categories.index')->first();
