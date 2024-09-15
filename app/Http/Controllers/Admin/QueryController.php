@@ -117,7 +117,7 @@ class QueryController extends Controller
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> History</a></li>';
                     }
 
-                    if(in_array('query.view_merchandiser_assign_history', session('user_permissions')) && $category->merchandiser)
+                    if(in_array('query.view_merchandiser_assign_history', session('user_permissions')))
                     {
                         $edit_button .= '<li><a href="'.route('queries.merchandiser_assign_history', $category->id).'" class
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> Merchandiser Assign History</a></li>';

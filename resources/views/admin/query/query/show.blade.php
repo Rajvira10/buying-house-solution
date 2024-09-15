@@ -147,7 +147,7 @@
                                             <div class="col-md-12">
                                                 <h6 class="text-secondary">Sample Specification Sheets:</h6>
 
-                                                @if (in_array('query.create_specification_sheet', session('user_permissions')))
+                                                @if (in_array('query.store_specification_sheet', session('user_permissions')))
                                                     <button type="button" class="btn btn-primary btn-sm"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#addSpecSheetModal{{ $item->id }}">
