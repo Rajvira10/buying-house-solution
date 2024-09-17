@@ -10,6 +10,7 @@ use App\Models\BuyerContactPerson;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Services\GenerateRandomPassword;
 
 class BuyerController extends Controller
 {
@@ -122,7 +123,6 @@ class BuyerController extends Controller
         $request->validate([
             'username' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
             'phone' => 'nullable',
             'address' => 'nullable',
         ]);
@@ -138,7 +138,9 @@ class BuyerController extends Controller
 
                 $user->email = $request->email;
                 
-                $user->password = Hash::make($request->password);
+                $password = GenerateRandomPassword::generate();
+
+                $user->password = Hash::make($password);
 
                 $user->type = 'buyer';
                 
@@ -156,10 +158,11 @@ class BuyerController extends Controller
 
                 DB::commit();
 
-                return redirect()->route('buyers.index')->with('success', 'Buyer Created Successfully');
+                return redirect()->route('buyers.index')->with(['success' => 'Buyer Created Successfully', 'password' => $password, 'email' => $request->email]);
 
             } catch (\Throwable $th) {
                 DB::rollBack();
+                dd($th->getMessage());
                 return redirect()->back()->with('error', $th->getMessage());
             }
     }
@@ -309,5 +312,6 @@ class BuyerController extends Controller
             }
         }
     }
+
 
 }

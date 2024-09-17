@@ -32,6 +32,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
         Route::get('dashboard', 'DashboardController@index')->name('admin-dashboard');
 
+        Route::post('change-password', 'AuthenticationController@changePassword')->name('admin-change-password');
+
 
         Route::group(['prefix' => 'user'], function(){
 
@@ -519,9 +521,13 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('delete', 'OrderController@destroy')->name('orders.destroy');
 
+            Route::get('show-tna/{order_id}', 'OrderController@showTna')->name('orders.show_tna');
+
             Route::post('store-tna', 'OrderController@storeTna')->name('orders.store_tna');
             
             Route::post('update_tna', 'OrderController@updateTna')->name('orders.update_tna');
+
+            Route::post('delete_tna', 'OrderController@destroyTna')->name('orders.delete_tna');
 
             Route::get('print_tna/{order_id}', 'OrderController@printTna')->name('orders.print_tna');
         });

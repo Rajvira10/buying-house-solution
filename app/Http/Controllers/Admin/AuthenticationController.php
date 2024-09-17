@@ -73,4 +73,35 @@ class AuthenticationController extends Controller
 
         return redirect()->route('admin-login');
     }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required | string',
+            'new_password' => 'required | string | min:8',
+            'confirm_password' => 'required | string | same:new_password'
+        ], [
+            'current_password.required' => 'Please enter your current password !',
+            'current_password.string' => 'Only alphabets, numbers & special characters are allowed. Must be a string !',
+            'new_password.required' => 'Please enter your new password !',
+            'new_password.string' => 'Only alphabets, numbers & special characters are allowed. Must be a string !',
+            'new_password.min' => 'Password must be at least 8 characters long !',
+            'confirm_password.required' => 'Please confirm your new password !',
+            'confirm_password.string' => 'Only alphabets, numbers & special characters are allowed. Must be a string !',
+            'confirm_password.same' => 'New password & confirm password must be same !'
+        ]);
+
+        if(Auth::guard('admin')->attempt(['email' => Auth::guard('admin')->user()->email, 'password' => $request->current_password]))
+        {
+            $user = Auth::guard('admin')->user();
+
+            $user->password = bcrypt($request->new_password);
+
+            $user->save();
+
+            return back()->with(['success' => 'Password changed successfully !']);
+        }
+
+        return back()->with(['error' => 'Invalid Current Password !']);
+    }
 }

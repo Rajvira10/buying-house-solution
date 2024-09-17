@@ -74,6 +74,20 @@
                 }
             });
 
+            @if (session('password'))
+                Swal.fire({
+                    title: '<span style="color: #4CAF50;">Buyer Created</span>',
+                    html: `
+            <p><strong>Email:</strong> <span style="color: #2196F3;">{{ session('email') }}</span></p>
+            <p><strong>Password:</strong> <span style="color: #FF5722;">{{ session('password') }}</span></p>
+        `,
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+            @endif
+
+
+
             var dTable = $('#expenseCategoryTable').DataTable({
                 order: [],
                 lengthMenu: [

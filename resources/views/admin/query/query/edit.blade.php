@@ -60,7 +60,7 @@
                                             <label for="employee_id"
                                                 class="form-label fw-bold">{{ __('Select Merchandiser') }}
                                             </label>
-                                            <select class="form-select select-category" name="employee_id" >
+                                            <select class="form-select select-category" name="employee_id">
                                                 <option value="" selected disabled>Select a Merchandiser</option>
                                                 @foreach ($merchandisers as $merchandiser)
                                                     <option value="{{ $merchandiser->id }}"
@@ -119,13 +119,18 @@
                                                                     value="{{ $item->approximate_quantity }}" required>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <label for="target_price"
-                                                                    class="form-label">{{ __('Target Price') }} <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="number" class="form-control"
-                                                                    name="products[{{ $index }}][target_price]"
-                                                                    value="{{ $item->target_price }}" required>
+                                                                <label for="target_price" class="form-label">
+                                                                    {{ __('Target Price') }} <span
+                                                                        class="text-danger">*</span>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text">$</span>
+                                                                    <input type="number" class="form-control"
+                                                                        name="products[{{ $index }}][target_price]"
+                                                                        value="{{ $item->target_price }}" required>
+                                                                </div>
                                                             </div>
+
 
                                                             <!-- Dates -->
                                                             <div class="col-md-6">
@@ -160,7 +165,7 @@
                                                                     name="products[{{ $index }}][product_model]"
                                                                     value="{{ $item->product_model }}" required>
                                                             </div>
-                                                            
+
 
                                                             <!-- Images and Measurements -->
                                                             <div class="col-md-6">
@@ -310,9 +315,16 @@
                                         <input type="number" class="form-control" name="products[${productCount - 1}][approximate_quantity]" required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="target_price" class="form-label">{{ __('Target Price') }} <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" name="products[${productCount - 1}][target_price]" required>
+                                        <label for="target_price" class="form-label">
+                                            {{ __('Target Price') }} <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" 
+                                                name="products[${productCount - 1}][target_price]" required>
+                                        </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <label for="price_submission_date" class="form-label">{{ __('Price Submission Date') }} <span class="text-danger">*</span></label>
                                         <input data-provider="flatpickr" data-date-format="d/m/Y" type="date" class="form-control price_submission_date" name="products[${productCount - 1}][price_submission_date]" required>

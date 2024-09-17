@@ -494,44 +494,12 @@
                                 $show = 'show';
                             }
                         @endphp
-                        <a class="nav-link menu-link {{ $active }}" href="#sidebarQuery"
-                            data-bs-toggle="collapse" role="button" aria-expanded="false"
-                            aria-controls="sidebarQuery">
-                            <i class="ri-questionnaire-line"></i> <span data-key="t-queries">Queries</span>
-                        </a>
-                        <div class="collapse menu-dropdown {{ $show }}" id="sidebarQuery">
-                            <ul class="nav nav-sm flex-column">
-                                @if ($permissions->nav_product_type_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('product_types.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.query.product_type.index' ? 'active' : '' }}"
-                                            data-key="t-product-type">Product Type</a>
-                                    </li>
-                                @endif
-                                @if ($permissions->nav_product_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('products.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.query.product.index' ? 'active' : '' }}"
-                                            data-key="t-product">Product</a>
-                                    </li>
-                                @endif
-                                {{-- @if ($permissions->nav_trim_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('trims.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.query.trim.index' ? 'active' : '' }}"
-                                            data-key="t-trim">Trim</a>
-                                    </li>
-                                @endif --}}
-                                @if ($permissions->nav_query_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('queries.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.query.query.index' ? 'active' : '' }}"
-                                            data-key="t-query">Queries</a>
-                                    </li>
-                                @endif
-
-                            </ul>
-                        </div>
+                        @if ($permissions->nav_query_option)
+                            <a href="{{ route('queries.index') }}" target="_self"
+                                class="nav-link {{ session('view_name') == 'admin.query.query.index' ? 'active' : '' }}"
+                                data-key="t-query">
+                                <i class="ri-question-answer-line"></i> <span>Queries</span></a>
+                        @endif
                     </li>
                 @endif
 
@@ -550,6 +518,49 @@
                         </a>
 
                     </li>
+                @endif
+
+                @if ($permissions->nav_config_group)
+                    <li class="nav-item">
+                        @php
+                            $active = $show = '';
+                            if (
+                                in_array(session('view_name'), [
+                                    'admin.query.product_type.index',
+                                    'admin.query.product.index',
+                                ])
+                            ) {
+                                $active = 'active';
+                                $show = 'show';
+                            }
+                        @endphp
+                        <a class="nav-link menu-link {{ $active }}" href="#sidebarConfig"
+                            data-bs-toggle="collapse" role="button" aria-expanded="false"
+                            aria-controls="sidebarConfig">
+                            <i class=" ri-tools-fill"></i> <span data-key="t-transactions">Config</span>
+                        </a>
+                        <div class="collapse menu-dropdown {{ $show }}" id="sidebarConfig">
+                            <ul class="nav nav-sm flex-column">
+                                @if ($permissions->nav_product_type_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('product_types.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.query.product_type.index' ? 'active' : '' }}"
+                                            data-key="t-product-type">Product Type</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_product_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('products.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.query.product.index' ? 'active' : '' }}"
+                                            data-key="t-product">Product</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+
+
+
                 @endif
 
                 {{-- @if ($permissions->nav_account_group)

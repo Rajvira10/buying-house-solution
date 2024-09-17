@@ -37,10 +37,10 @@
                                     onsubmit="return disableOnSubmit()">
                                     @csrf
                                     <div class="row mb-3">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="username">
-                                                    Username
+                                                    Name
                                                     <span class="text-danger">*</span>
                                                 </label>
                                                 <input id="username" type="text"
@@ -54,7 +54,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="Email Address">
                                                     Email Address
@@ -71,8 +71,6 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="phone">
@@ -89,7 +87,10 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                    </div>
+                                    <div class="row mb-3">
+
+                                        {{-- <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label for="password">
                                                     Password
@@ -115,7 +116,7 @@
                                                 <input id="password_confirmation" type="password" class="form-control"
                                                     name="password_confirmation" placeholder="">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm-6">

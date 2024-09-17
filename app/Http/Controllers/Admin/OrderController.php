@@ -71,6 +71,15 @@ class OrderController extends Controller
                                             </button>
                                         </li>';
                     }
+                    
+                    if(in_array('order.view_tna', session('user_permissions')) && $category->tnas->count() > 0)
+                    {
+                        $edit_button .= '<li>
+                                            <a href="'.route('orders.show_tna', $category->id).'" class="dropdown-item">
+                                                <i class="ri-eye-fill align-bottom me-2"></i> View TNA
+                                            </a>
+                                        </li>';
+                    }
 
                     if(in_array('order.print_tna', session('user_permissions')) && $category->tnas->count() > 0)
                     {
@@ -173,4 +182,53 @@ class OrderController extends Controller
         return view('admin.order.order.print_tna', compact('order'));
     }
 
+    public function showTna(Request $request, $id)
+    {
+        $request->session()->now('view_name', 'admin.orders.order.index');
+
+        $order = Order::with('tnas', 'tnas.tna')->find($id);
+
+        return view('admin.order.order.show_tna', compact('order'));
+    }
+
+    public function updateTna(Request $request)
+    {
+        $order_id = $request->input('order_id');
+        try {
+            foreach ($request->input('plan_date') as $index => $plan_date) {
+                $orderTna = OrderTna::where('order_id', $order_id)
+                ->where('tna_id', $request->tna_id[$index])
+                ->first();
+
+                $orderTna->update([
+                    'plan_date' => $plan_date,
+                    'actual_date' => $request->input('actual_date')[$index],
+                    'remarks' => $request->input('remarks')[$index],
+                ]);
+            }
+
+            return back()->with('success', 'TNA Updated Successfully');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            return back()->with('error', 'Something went wrong!');
+        }
+       
+    }
+
+    public function destroyTna(Request $request)
+    {
+        if($request->ajax()){
+            try {
+                $orderTnas = OrderTna::where('order_id', $request->order_id)
+                ->get();
+
+                $orderTnas->each->delete();
+                
+                return response()->json(['success' => 'TNA Deleted Successfully']);
+            } catch (\Throwable $th) {
+                dd($th->getMessage());
+                return response()->json(['error' => 'Something went wrong!']);
+            }
+        }
+    }
 }

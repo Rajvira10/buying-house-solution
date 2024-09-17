@@ -82,17 +82,13 @@
                                         <!-- Product forms will be added here -->
                                     </div>
 
-                                    <!-- Add Product Button -->
-                                    <div class="mb-4">
-                                        <button type="button" class="btn btn-secondary" id="add-product">
-                                            <i class="ri-add-line me-1"></i> Add Product
-                                        </button>
-                                    </div>
+                                    <div class="mb-4 flex justify-content-between align-items-center w-100">
 
-                                    <!-- Submit Button -->
-                                    <div class="text-end">
                                         <button id="submit" type="submit" class="btn btn-primary">
                                             <i class="ri-save-line me-1"></i> Submit Query
+                                        </button>
+                                        <button type="button" class="btn btn-success" id="add-product">
+                                            <i class="ri-add-line me-1"></i> Add More
                                         </button>
                                     </div>
                                 </form>
@@ -138,10 +134,15 @@
                             <input type="number" class="form-control" name="products[0][approximate_quantity]" required>
                         </div>
                         <div class="col-md-6">
-                            <label for="target_price" class="form-label">{{ __('Target Price') }} <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="products[0][target_price]" required>
+                            <label for="target_price" class="form-label">
+                                {{ __('Target Price') }} <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" name="products[0][target_price]" required>
+                            </div>
                         </div>
+
 
                         <!-- Dates -->
                         <div class="col-md-6">

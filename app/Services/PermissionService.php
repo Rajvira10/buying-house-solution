@@ -63,13 +63,16 @@ class PermissionService
 
     public $nav_query_group = false;
 
-    public $nav_product_type_option = false;
-
-    public $nav_product_option = false;
-
     public $nav_trim_option = false;
 
     public $nav_query_option = false;
+
+
+    public $nav_config_group = false;
+
+    public $nav_product_type_option = false;
+
+    public $nav_product_option = false;
 
 
     public $nav_order_group = false;
@@ -281,12 +284,27 @@ class PermissionService
 
         // Query Group
 
-        if(in_array('query.index', $permissions) || in_array('trim.index', $permissions) || in_array('product.index', $permissions) || in_array('product_type.index', $permissions))
+        if(in_array('query.index', $permissions) || in_array('trim.index', $permissions))
         {
             $this->nav_query_group = true;
         }
+
+
+        if(in_array('trim.index', $permissions))
         {
-            $this->nav_query_group = true;
+            $this->nav_trim_option = true;
+        }
+
+        if(in_array('query.index', $permissions))
+        {
+            $this->nav_query_option = true;
+        }
+
+        // Config Group
+    
+        if(in_array('product.index', $permissions) || in_array('product_type.index', $permissions))
+        {
+            $this->nav_config_group = true;
         }
 
         if(in_array('product_type.index', $permissions))
@@ -297,16 +315,6 @@ class PermissionService
         if(in_array('product.index', $permissions))
         {
             $this->nav_product_option = true;
-        }
-
-        if(in_array('trim.index', $permissions))
-        {
-            $this->nav_trim_option = true;
-        }
-
-        if(in_array('query.index', $permissions))
-        {
-            $this->nav_query_option = true;
         }
 
         // Order Group
@@ -491,13 +499,15 @@ class PermissionService
 
         $this->nav_query_group =  true;
 
-        $this->nav_product_type_option =  true;
-
-        $this->nav_product_option =  true;
-
         $this->nav_trim_option =  true;
 
         $this->nav_query_option =  true;
+
+        $this->nav_config_group =  true;
+
+        $this->nav_product_type_option =  true;
+
+        $this->nav_product_option =  true;
 
         $this->nav_order_group =  true;
 
@@ -540,6 +550,12 @@ class PermissionService
         $this->nav_transaction_list_option =  true;
 
         $this->nav_report_group =  true;
+
+        $this->nav_config_group =  true;
+
+        $this->nav_product_type_option =  true;
+
+        $this->nav_product_option =  true;
 
         $this->nav_setting_group =  true;
     

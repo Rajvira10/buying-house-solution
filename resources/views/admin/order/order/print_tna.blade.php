@@ -30,13 +30,15 @@
                 <th>REMARKS</th>
         <tbody>
             @foreach ($order->tnas as $tna)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $tna->tna->name }}</td>
-                    <td>{{ $tna->plan_date ? $tna->plan_date->format('d-m-Y') : '' }}</td>
-                    <td>{{ $tna->actual_date ? $tna->actual_date->format('d-m-Y') : '' }}</td>
-                    <td>{{ $tna->remarks }}</td>
-                </tr>
+                @if ($tna->plan_date)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $tna->tna->name }}</td>
+                        <td>{{ $tna->plan_date ? $tna->plan_date->format('d-m-Y') : '' }}</td>
+                        <td>{{ $tna->actual_date ? $tna->actual_date->format('d-m-Y') : '' }}</td>
+                        <td>{{ $tna->remarks }}</td>
+                    </tr>
+                @endif
             @endforeach
         </tbody>
     </table>
