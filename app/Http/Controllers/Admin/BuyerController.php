@@ -158,6 +158,9 @@ class BuyerController extends Controller
 
                 DB::commit();
 
+                if($request->modal == 'true'){
+                    return back()->with(['success' => 'Buyer Created Successfully', 'password' => $password, 'email' => $request->email]);
+                }
                 return redirect()->route('buyers.index')->with(['success' => 'Buyer Created Successfully', 'password' => $password, 'email' => $request->email]);
 
             } catch (\Throwable $th) {

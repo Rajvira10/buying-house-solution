@@ -12,6 +12,7 @@ use App\Models\Factory;
 use App\Models\Product;
 use App\Models\Employee;
 use App\Models\QueryItem;
+use App\Models\Department;
 use App\Models\ProductType;
 use Illuminate\Http\Request;
 use App\Models\QueryMerchandiser;
@@ -257,7 +258,9 @@ class QueryController extends Controller
             $query->where('name', 'merchandiser');
         })->get();
 
-        return view('admin.query.query.create', compact('buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
+        $departments = Department::all();
+
+        return view('admin.query.query.create', compact('buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers', 'departments'));
     }
 
     public function edit(Request $request, $query_id)

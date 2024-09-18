@@ -33,46 +33,67 @@
                                             <div class="col-md-4">
                                                 <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }}
                                                     <span class="text-danger">*</span></label>
-                                                <select class="form-select select-category" name="buyer_id" id="buyer_id"
-                                                    required>
-                                                    @if ($logged_in_user_is_buyer != null)
-                                                        <option value="{{ $logged_in_user_is_buyer->id }}" selected>
-                                                            {{ $logged_in_user_is_buyer->user->username }}
-                                                        </option>
-                                                    @else
-                                                        <option value="" disabled selected>Select a Buyer</option>
-                                                        @foreach ($buyers as $buyer)
-                                                            <option value="{{ $buyer->id }}">
-                                                                {{ $buyer->user->username }}
+                                                <div class="d-flex">
+                                                    <select class="form-select select-category" name="buyer_id"
+                                                        id="buyer_id" required>
+                                                        @if ($logged_in_user_is_buyer != null)
+                                                            <option value="{{ $logged_in_user_is_buyer->id }}" selected>
+                                                                {{ $logged_in_user_is_buyer->user->username }}
                                                             </option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
+                                                        @else
+                                                            <option value="" disabled selected>Select a Buyer</option>
+                                                            @foreach ($buyers as $buyer)
+                                                                <option value="{{ $buyer->id }}">
+                                                                    {{ $buyer->user->username }}
+                                                                </option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                    <button type="button" class="btn btn-outline-secondary ms-2"
+                                                        data-bs-toggle="modal" data-bs-target="#createBuyerModal">
+                                                        <i class="ri-add-line"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="product_type_id"
                                                     class="form-label fw-bold">{{ __('Product Type') }}
                                                     <span class="text-danger">*</span></label>
-                                                <select class="form-select select-category" name="product_type_id" required>
-                                                    <option value="" selected disabled>Select a product type</option>
-                                                    @foreach ($product_types as $product_type)
-                                                        <option value="{{ $product_type->id }}">{{ $product_type->name }}
+                                                <div class="d-flex">
+                                                    <select class="form-select select-category" name="product_type_id"
+                                                        id="product_type_id" required>
+                                                        <option value="" selected disabled>Select a product type
                                                         </option>
-                                                    @endforeach
-                                                </select>
+                                                        @foreach ($product_types as $product_type)
+                                                            <option value="{{ $product_type->id }}">
+                                                                {{ $product_type->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button type="button" class="btn btn-outline-secondary ms-2"
+                                                        data-bs-toggle="modal" data-bs-target="#createProductTypeModal">
+                                                        <i class="ri-add-line"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <label for="employee_id"
-                                                    class="form-label fw-bold">{{ __('Select Merchandiser') }}
-                                                </label>
-                                                <select class="form-select select-category" name="employee_id">
-                                                    <option value="" selected disabled>Select a Merchandiser</option>
-                                                    @foreach ($merchandisers as $merchandiser)
-                                                        <option value="{{ $merchandiser->id }}">
-                                                            {{ $merchandiser->user->username }}
+                                                    class="form-label fw-bold">{{ __('Select Merchandiser') }}</label>
+                                                <div class="d-flex">
+                                                    <select class="form-select select-category" name="employee_id"
+                                                        id="employee_id">
+                                                        <option value="" selected disabled>Select a Merchandiser
                                                         </option>
-                                                    @endforeach
-                                                </select>
+                                                        @foreach ($merchandisers as $merchandiser)
+                                                            <option value="{{ $merchandiser->id }}">
+                                                                {{ $merchandiser->user->username }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button type="button" class="btn btn-outline-secondary ms-2"
+                                                        data-bs-toggle="modal" data-bs-target="#createMerchandiserModal">
+                                                        <i class="ri-add-line"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -191,9 +212,534 @@
             </div>
         </div>
     </template>
+
+
+    <div class="modal modal-xl fade" id="createBuyerModal" tabindex="-1" aria-labelledby="createBuyerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary  pb-4">
+                    <h5 class="modal-title text-white" id="createBuyerModalLabel">Create Buyer</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('buyers.store') }}" method="post" class="form-group"
+                        onsubmit="return disableOnSubmit()">
+                        @csrf
+                        <input type="hidden" name="modal" value="true">
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="username">
+                                        Name
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="username" type="text"
+                                        class="form-control @error('username') is-invalid @enderror" name="username"
+                                        value="{{ old('username') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('username')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="Email Address">
+                                        Email Address
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="email" type="text"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('email')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="phone">
+                                        Phone
+                                    </label>
+                                    <input id="phone" type="text"
+                                        class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                        value="{{ old('phone') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('phone')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+
+                            {{-- <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="password">
+                                                    Password
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input id="password" type="password"
+                                                    class="form-control @error('password') is-invalid @enderror"
+                                                    name="password" placeholder="">
+                                                <div class="help-block with-errors"></div>
+                                                @error('password')
+                                                    <span class="text-danger-error" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="password_confirmation">
+                                                    Confirm Password
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input id="password_confirmation" type="password" class="form-control"
+                                                    name="password_confirmation" placeholder="">
+                                            </div>
+                                        </div> --}}
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="address">
+                                        Address
+                                    </label>
+                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" rows="3">{{ old('address') }}</textarea>
+                                    <div class="help-block with-errors"></div>
+                                    @error('address')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="submit" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-xl fade" id="createProductTypeModal" tabindex="-1"
+        aria-labelledby="createProductTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary pb-4">
+                    <h5 class="modal-title text-white" id="createProductTypeModalLabel">Create Product Type</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('product_types.store') }}" method="post" class="form-group"
+                        onsubmit="return disableOnSubmit()">
+                        @csrf
+                        <input type="hidden" name="modal" value="true">
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="name">
+                                        Name
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="name" type="text"
+                                        class="form-control @error('name') is-invalid @enderror" name="name"
+                                        value="{{ old('name') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('name')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="submit" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-xl" id="createMerchandiserModal" tabindex="-1"
+        aria-labelledby="createMerchandiserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+                <div class="modal-header bg-primary pb-4">
+                    <h5 class="modal-title text-white" id="createMerchandiserModalLabel">Create Merchandiser</h5>
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('employees.store') }}" method="post" class="form-group"
+                        onsubmit="return disableOnSubmit()" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="modal" value="true">
+
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="username">
+                                        {{ __('Name') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="username" type="text"
+                                        class="form-control @error('username') is-invalid @enderror" name="username"
+                                        value="{{ old('username') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('username')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="password">
+                                        Password
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('password')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="password_confirmation">
+                                        Confirm Password
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="password_confirmation" type="password" class="form-control"
+                                        name="password_confirmation" placeholder="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="department_id">
+                                        {{ __('Department') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <select id="department_id"
+                                        class="form-control @error('department_id') is-invalid @enderror"
+                                        name="department_id" readonly>
+                                        <option value="">Select a department</option>
+                                        @foreach ($departments as $department)
+                                            <option class="department-field" value="{{ $department->id }}"
+                                                {{ $department->name == 'Merchandiser' ? 'selected' : '' }}>
+                                                {{ $department->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="help-block with-errors"></div>
+                                    @error('department_id')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="designation">
+                                        {{ __('Designation') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="designation" type="text"
+                                        class="form-control @error('designation') is-invalid @enderror" name="designation"
+                                        value="{{ old('designation') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('designation')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="email">
+                                        {{ __('Email') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="email" type="text"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('email')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="nid">
+                                        {{ __('NID') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="nid" type="text"
+                                        class="form-control @error('nid') is-invalid @enderror" name="nid"
+                                        value="{{ old('nid') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('nid')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="contact_no">
+                                        {{ __('Contact No') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="contact_no" type="text"
+                                        class="form-control @error('contact_no') is-invalid @enderror" name="contact_no"
+                                        value="{{ old('contact_no') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('contact_no')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="image">
+                                        {{ __('Image') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="image" type="file"
+                                        class="form-control @error('image') is-invalid @enderror" name="image"
+                                        value="{{ old('image') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('image')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="cv">
+                                        {{ __('CV') }}
+                                    </label>
+                                    <input id="cv" type="file"
+                                        class="form-control @error('cv') is-invalid @enderror" name="cv"
+                                        value="{{ old('cv') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('cv')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="present_address">
+                                        {{ __('Present Address') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="present_address" type="text"
+                                        class="form-control @error('present_address') is-invalid @enderror"
+                                        name="present_address" value="{{ old('present_address') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('address')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="permanent_address">
+                                        {{ __('Permanent Address') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="permanent_address" type="text"
+                                        class="form-control @error('permanent_address') is-invalid @enderror"
+                                        name="permanent_address" value="{{ old('permanent_address') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('address')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="joining_date">
+                                        {{ __('Joining Date') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input data-provider="flatpickr" data-date-format="d/m/Y"
+                                        data-default-date="{{ date('d/m/Y') }}" id="joining_date" type="date"
+                                        class="form-control @error('joining_date') is-invalid @enderror"
+                                        name="joining_date" value="{{ old('joining_date') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('joining_date')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="gross_salary">
+                                        {{ __('Gross Salary') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="gross_salary" type="number" step="any"
+                                        class="form-control @error('gross_salary') is-invalid @enderror"
+                                        name="gross_salary" value="{{ old('gross_salary') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('gross_salary')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="current_salary_starting_date">
+                                        {{ __('Current Salary Starting Date') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input data-provider="flatpickr" data-date-format="d/m/Y"
+                                        data-default-date="{{ date('d/m/Y') }}" id="current_salary_starting_date"
+                                        type="date"
+                                        class="form-control @error('current_salary_starting_date') is-invalid @enderror"
+                                        name="current_salary_starting_date"
+                                        value="{{ old('current_salary_starting_date') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('current_salary_starting_date')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="h_rent_percent">
+                                        {{ __('House Rent Allowance Percentage (%)') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="h_rent_percent" type="number" step="any"
+                                        class="form-control @error('h_rent_percent') is-invalid @enderror"
+                                        name="h_rent_percent" value="{{ old('h_rent_percent') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('h_rent_percent')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="med_percent">
+                                        {{ __('Medical Allowance Percentage (%)') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="med_percent" type="number" step="any"
+                                        class="form-control @error('med_percent') is-invalid @enderror"
+                                        name="med_percent" value="{{ old('med_percent') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('med_percent')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="conv_percent">
+                                        {{ __('Conveyance Allowance Percentage (%)') }}
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input id="conv_percent" type="number" step="any"
+                                        class="form-control @error('conv_percent') is-invalid @enderror"
+                                        name="conv_percent" value="{{ old('conv_percent') }}" placeholder="">
+                                    <div class="help-block with-errors"></div>
+                                    @error('conv_percent')
+                                        <span class="text-danger-error" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="submit" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('custom-script')
+    @include('admin.message')
     <script>
         const disableOnSubmit = () => {
             const button = document.querySelector('#submit');
@@ -206,8 +752,6 @@
             return true;
         }
 
-
-
         document.addEventListener("DOMContentLoaded", function() {
 
             const selectCategory = document.querySelectorAll(".select-category");
@@ -216,6 +760,7 @@
                 new Selectr(selectCategory[i]);
             }
 
+            $('.select-with-button .selectr-container').css('z-index', '1056');
 
             const productsContainer = document.getElementById('products-container');
             const addProductButton = document.getElementById('add-product');

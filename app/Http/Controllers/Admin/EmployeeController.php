@@ -321,6 +321,10 @@ class EmployeeController extends Controller
 
             DB::commit();
 
+            if($request->modal == 'true'){
+                return back()->with(['success' => 'Merchandiser Created Successfully', 'password' => $request->password, 'email' => $request->email]);
+            }
+
             return redirect()->route('employees.index')->with('success', 'Employee Created Successfully');
             
         } catch (\Throwable $th) {

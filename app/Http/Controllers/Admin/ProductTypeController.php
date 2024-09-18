@@ -101,6 +101,10 @@ class ProductTypeController extends Controller
 
         $product_type->save();
 
+        if($request->modal == 'true'){
+            return back()->with('success', 'Product Type Created Successfully');
+        }
+
         return redirect()->route('product_types.index')->with('success', 'Product Type Created Successfully');
 
     }
