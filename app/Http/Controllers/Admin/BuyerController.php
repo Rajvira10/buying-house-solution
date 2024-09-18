@@ -138,7 +138,7 @@ class BuyerController extends Controller
 
                 $user->email = $request->email;
                 
-                $password = GenerateRandomPassword::generate();
+                $password = 'buyer123';
 
                 $user->password = Hash::make($password);
 
