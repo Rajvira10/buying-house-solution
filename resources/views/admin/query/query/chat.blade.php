@@ -149,10 +149,11 @@
             background-color: #eef2f7;
             border-radius: 1rem 1rem 1rem 0;
             padding: 1rem 1.25rem;
-            margin-right: 30%;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             font-size: 14px;
             line-height: 1.5;
+            min-width: fit-content;
+            max-width: 45%;
             transition: background-color 0.3s ease;
         }
 
@@ -164,7 +165,8 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             font-size: 14px;
             line-height: 1.5;
-            min-width: max-content;
+            min-width: fit-content;
+            max-width: 45%;
             transition: background-color 0.3s ease;
         }
 
@@ -258,23 +260,25 @@
             <li class="${isCurrentUser ? 'right' : 'left'}">
                 <div class="conversation-list">
                     <div class="d-flex">
-                        <div class="flex-grow-1">
+                        <div class=${isCurrentUser ? 'flex-grow-1 flex flex-col align-items-end' : 'flex flex-col items-start'}>
                             <h5 class="conversation-name">${message.user.username}</h5>
                             <div class="ctext-wrap d-flex flex-column">
                                 ${message.attachment ? `
-                                        <div class="mb-1">
-                                            <a href="${message.attachment}" target="_blank"  class="${isCurrentUser ? 'text-white' : 'text-dark'} flex align-items-center" style="cursor: pointer">
-                                                <i class="ri-file-text-fill"></i> 
-                                                <span>View Attachment</span>
-                                                
-                                            </a>
-                                        </div>` : ''}
-                                <p class="mb-0">${message.message}</p>
+                                                                            <div class="mb-1">
+                                                                                <a href="${message.attachment}" target="_blank"  class="${isCurrentUser ? 'text-white' : 'text-dark'} flex align-items-center" style="cursor: pointer">
+                                                                                    <i class="ri-file-text-fill"></i> 
+                                                                                    <span>View Attachment</span>
+                                                                                    
+                                                                                </a>
+                                                                            </div>` : ''}
+                                <p class="mb-0 text-start">${message.message}</p>
                             </div>
-                            <p class="chat-time mb-0">
-                                <i class="ri-time-line align-middle"></i>
-                                <span class="align-middle">${formatDate(message.created_at)}</span>
-                            </p>
+                            <div class="d-flex justify-content-${isCurrentUser ? 'end' : 'start'} w-100">
+        <p class="chat-time mb-0" style="align-self: flex-end;">
+            <i class="ri-time-line"></i>
+            <span>${formatDate(message.created_at)}</span>
+        </p>
+    </div>
                         </div>
                     </div>
                 </div>
