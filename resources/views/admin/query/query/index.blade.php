@@ -224,6 +224,7 @@
                     }
                 ],
             });
+
         });
         const deleteQuery = (id) => {
             Swal.fire({
@@ -263,34 +264,62 @@
             })
         }
 
+        const showRejectionNote = (note) => {
+            Swal.fire({
+                title: 'Rejection Note',
+                text: `${note}`,
+                icon: 'info',
+                confirmButtonColor: '#556ee6',
+            });
+        }
+
         const changeQueryStatus = (id) => {
             Swal.fire({
                 title: 'Change Query Status',
                 html: `
-            <select id="queryStatus" class="form-control">
+            <select id="queryStatus" class="form-control mb-3">
                 <option value="Pending">Pending</option>
                 <option value="Rejected">Rejected</option>
-                <option value="Approved">Approved</option>
+                <option value="Sent For Approval">Send For Approval</option>
             </select>
+            <textarea id="rejection_note" class="form-control d-none" placeholder="Rejection Note"></textarea>
         `,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#556ee6',
                 cancelButtonColor: '#f46a6a',
                 confirmButtonText: 'Yes, change it!',
+                didOpen: () => {
+                    $('#queryStatus').change(function() {
+                        const selectedStatus = $(this).val();
+                        if (selectedStatus === 'Rejected') {
+                            $('#rejection_note').removeClass('d-none');
+                        } else {
+                            $('#rejection_note').addClass('d-none');
+                        }
+                    });
+                },
                 preConfirm: () => {
                     const status = document.getElementById('queryStatus').value;
-                    return status;
+                    const rejectionNote = document.getElementById('rejection_note').value;
+                    return {
+                        status,
+                        rejectionNote
+                    };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const selectedStatus = result.value;
+                    const {
+                        status,
+                        rejectionNote
+                    } = result.value;
                     $.ajax({
                         url: "{{ route('queries.change_status') }}",
                         method: 'POST',
                         data: {
                             query_id: id,
-                            status: selectedStatus,
+                            status: status,
+                            rejection_note: rejectionNote,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
@@ -311,7 +340,8 @@
                     });
                 }
             });
-        }
+        };
+
 
         const assignMerchandiser = (id) => {
             Swal.fire({

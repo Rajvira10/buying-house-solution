@@ -68,6 +68,10 @@ class QueryController extends Controller
                     {
                         return '<span class="badge bg-soft-success text-success">Approved</span>';
                     }
+                    elseif($category->status == "Sent For Approval")
+                    {
+                        return '<span class="badge bg-soft-primary text-primary">Sent For Approval</span>';
+                    }
                     elseif($category->status == 'Rejected')
                     {
                         return '<span class="badge bg-soft-danger text-danger">Rejected</span>';
@@ -120,6 +124,15 @@ class QueryController extends Controller
                                             <i class="ri-checkbox-circle-fill me-2"></i> Change Status
                                         </button></li>';
                     }
+
+
+                    if($category->status == 'Rejected')
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="showRejectionNote(\'' . addslashes($category->rejection_note) . '\')">
+                                            <i class="ri-error-warning-fill me-2"></i> Show Rejection Note
+                                        </button></li>';
+                    }
+
 
                     if(in_array('query.history', session('user_permissions')))
                     {
@@ -590,6 +603,7 @@ class QueryController extends Controller
 
             if ($query != null) {
                 $query->status = $request->status;
+                $query->rejection_note = $request->rejection_note;
                 $query->save();
 
                 return response()->json(['success' => 'Query Status Changed Successfully']);
