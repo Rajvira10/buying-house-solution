@@ -47,8 +47,8 @@
                                                 <td>{{ $query->query_date->format('Y-m-d') }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Buyer:</strong></td>
-                                                <td>{{ $query->buyer->user->username }}
+                                                <td><strong>Brand:</strong></td>
+                                                <td>{{ $query->brand->name }}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -142,71 +142,71 @@
                                         </div>
                                     </div>
                                     @if ($query->status == 'Approved')
-                                    @if (in_array('query.view_specification_sheet', session('user_permissions')))
-                                        <div class="row mt-4">
-                                            <div class="col-md-12">
-                                                <h6 class="text-secondary">Sample Specification Sheets:</h6>
+                                        @if (in_array('query.view_specification_sheet', session('user_permissions')))
+                                            <div class="row mt-4">
+                                                <div class="col-md-12">
+                                                    <h6 class="text-secondary">Sample Specification Sheets:</h6>
 
-                                                @if (in_array('query.store_specification_sheet', session('user_permissions')))
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#addSpecSheetModal{{ $item->id }}">
-                                                        Add Specification Sheet
-                                                    </button>
-                                                @endif
+                                                    @if (in_array('query.store_specification_sheet', session('user_permissions')))
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#addSpecSheetModal{{ $item->id }}">
+                                                            Add Specification Sheet
+                                                        </button>
+                                                    @endif
 
-                                                <table class="table table-bordered mt-3">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Factory</th>
-                                                            <th>Date</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($item->specificationSheets as $sheet)
+                                                    <table class="table table-bordered mt-3">
+                                                        <thead>
                                                             <tr>
-                                                                <td>{{ $sheet->factory->name }}</td>
-                                                                <td>{{ $sheet->date->format('Y-m-d') }}</td>
-                                                                <td>
-                                                                    <button type="button" class="btn btn-info btn-sm"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#viewSpecSheetModal{{ $sheet->id }}">
-                                                                        View
-                                                                    </button>
-                                                                    @if (in_array('query.update_specification_sheet', session('user_permissions')))
-                                                                        <button type="button"
-                                                                            class="btn btn-warning btn-sm"
-                                                                            data-bs-toggle="modal"
-                                                                            data-bs-target="#editSpecSheetModal{{ $sheet->id }}">
-                                                                            Edit
-
-                                                                        </button>
-                                                                    @endif
-                                                                    @if (in_array('query.print_specification_sheet', session('user_permissions')))
-                                                                        <a href="{{ route('queries.print_specification_sheet', $sheet->id) }}"
-                                                                            class="btn btn-secondary btn-sm"
-                                                                            target="_blank">Print</a>
-                                                                    @endif
-                                                                    @if (in_array('query.destroy_specification_sheet', session('user_permissions')))
-                                                                        <form
-                                                                            action="{{ route('queries.destroy_specification_sheet', $sheet->id) }}"
-                                                                            method="POST" class="d-inline">
-                                                                            @csrf
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger btn-sm"
-                                                                                onclick="return confirm('Are you sure you want to delete this specification sheet?')">Delete</button>
-                                                                        </form>
-                                                                    @endif
-                                                                </td>
+                                                                <th>Factory</th>
+                                                                <th>Date</th>
+                                                                <th>Actions</th>
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($item->specificationSheets as $sheet)
+                                                                <tr>
+                                                                    <td>{{ $sheet->factory->name }}</td>
+                                                                    <td>{{ $sheet->date->format('Y-m-d') }}</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-info btn-sm"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#viewSpecSheetModal{{ $sheet->id }}">
+                                                                            View
+                                                                        </button>
+                                                                        @if (in_array('query.update_specification_sheet', session('user_permissions')))
+                                                                            <button type="button"
+                                                                                class="btn btn-warning btn-sm"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#editSpecSheetModal{{ $sheet->id }}">
+                                                                                Edit
 
+                                                                            </button>
+                                                                        @endif
+                                                                        @if (in_array('query.print_specification_sheet', session('user_permissions')))
+                                                                            <a href="{{ route('queries.print_specification_sheet', $sheet->id) }}"
+                                                                                class="btn btn-secondary btn-sm"
+                                                                                target="_blank">Print</a>
+                                                                        @endif
+                                                                        @if (in_array('query.destroy_specification_sheet', session('user_permissions')))
+                                                                            <form
+                                                                                action="{{ route('queries.destroy_specification_sheet', $sheet->id) }}"
+                                                                                method="POST" class="d-inline">
+                                                                                @csrf
+                                                                                <button type="submit"
+                                                                                    class="btn btn-danger btn-sm"
+                                                                                    onclick="return confirm('Are you sure you want to delete this specification sheet?')">Delete</button>
+                                                                            </form>
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endif
+                                        @endif
                                     @endif
                                     <div class="modal fade" id="addSpecSheetModal{{ $item->id }}" tabindex="-1"
                                         aria-labelledby="addSpecSheetModalLabel{{ $item->id }}" aria-hidden="true">

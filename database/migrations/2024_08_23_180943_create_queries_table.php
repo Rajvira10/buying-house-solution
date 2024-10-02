@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('queries', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('buyer_id');
-            $table->foreign('buyer_id')->references('id')->on('buyers')->onDelete('cascade');
+            $table->unsignedInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
             $table->unsignedInteger('employee_id')->nullable();
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->unsignedInteger('parent_id')->nullable();

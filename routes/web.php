@@ -377,6 +377,24 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
         });
 
+        Route::group(['prefix' => 'brand'], function(){
+
+            Route::get('index', 'BrandController@index')->name('brands.index');
+
+            Route::get('create', 'BrandController@create')->name('brands.create');
+
+            Route::post('store', 'BrandController@store')->name('brands.store');
+
+            Route::get('{brand_id}', 'BrandController@show')->name('brands.show');
+
+            Route::get('edit/{brand_id}', 'BrandController@edit')->name('brands.edit');
+
+            Route::post('update/{brand_id}', 'BrandController@update')->name('brands.update');
+
+            Route::post('delete', 'BrandController@destroy')->name('brands.destroy');
+
+        });
+
         Route::group(['prefix' => 'factory'], function(){
 
             Route::get('index', 'FactoryController@index')->name('factories.index');
@@ -503,6 +521,11 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('assign-merchandiser', 'QueryController@assignMerchandiser')->name('queries.assign_merchandiser');
 
+            Route::get('chat/{query_id}', 'QueryController@chat')->name('queries.chat');
+
+            Route::post('send-message', 'QueryController@sendMessage')->name('queries.send_message');
+
+            Route::get('get-messages', 'QueryController@getMessages')->name('queries.get_messages');
         });
 
         Route::group(['prefix' => 'order'], function(){

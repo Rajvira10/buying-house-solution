@@ -29,15 +29,15 @@
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }}
+                                            <label for="brand_id" class="form-label fw-bold">{{ __('Select Brand') }}
                                                 <span class="text-danger">*</span></label>
-                                            <select class="form-select select-category" name="buyer_id" id="buyer_id"
+                                            <select class="form-select select-category" name="brand_id" id="brand_id"
                                                 required>
-                                                <option value="" disabled selected>Select a Buyer</option>
-                                                @foreach ($buyers as $buyer)
-                                                    <option value="{{ $buyer->id }}"
-                                                        {{ $query->buyer_id == $buyer->id ? 'selected' : '' }}>
-                                                        {{ $buyer->user->username }}
+                                                <option value="" disabled selected>Select a Brand</option>
+                                                @foreach ($brands as $brand)
+                                                    <option value="{{ $brand->id }}"
+                                                        {{ $query->brand_id == $brand->id ? 'selected' : '' }}>
+                                                        {{ $brand->name }}
                                                     </option>
                                                 @endforeach
                                             </select>

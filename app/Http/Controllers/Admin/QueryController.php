@@ -6,11 +6,14 @@ use DataTables;
 use Carbon\Carbon;
 use App\Models\File;
 use App\Models\Trim;
+use App\Models\User;
+use App\Models\Brand;
 use App\Models\Buyer;
 use App\Models\Query;
 use App\Models\Factory;
 use App\Models\Product;
 use App\Models\Employee;
+use App\Models\QueryChat;
 use App\Models\QueryItem;
 use App\Models\Department;
 use App\Models\ProductType;
@@ -73,8 +76,8 @@ class QueryController extends Controller
                         return '<span class="badge bg-soft-info text-info">Updated</span>';
                     }
                 })
-                ->addColumn('buyer', function ($category) {
-                    return $category->buyer->user->username;
+                ->addColumn('brand', function ($category) {
+                    return $category->brand->name;
                 })
                 ->addColumn('product_names', function ($category) {
                     return $category->items->pluck('product.name')->implode(', ');
@@ -97,6 +100,12 @@ class QueryController extends Controller
 
                     $edit_button .= '<li><a href="'.route('queries.show', $category->id).'" class
                     ="dropdown-item"><i class="ri-eye-fill me-2"></i> Show</a></li>';
+
+                    if(in_array('query.chat', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><a href="'.route('queries.chat', $category->id).'" class
+                        ="dropdown-item"><i class="ri-chat-1-line me-2"></i> Chat</a></li>';
+                    }
 
                     if(in_array('order.create', session('user_permissions')) && $category->status == 'Approved')
                     {
@@ -171,14 +180,14 @@ class QueryController extends Controller
 
             if($query->parent_id != null)
             {
-                $queries = Query::with('buyer', 'items', 'items.images', 'items.measurements')
+                $queries = Query::with('brand', 'items', 'items.images', 'items.measurements')
                 ->where('parent_id', $query->parent_id)
                 ->orWhere('id', $query->parent_id)
                 ->orderBy('created_at', 'desc')
                 ->get();
             }
             else{
-                $queries = Query::with('buyer', 'items', 'items.images', 'items.measurements')
+                $queries = Query::with('brand', 'items', 'items.images', 'items.measurements')
                 ->where('parent_id', $query->id)
                 ->orWhere('id', $query->id)
                 ->orderBy('created_at', 'desc')
@@ -189,8 +198,8 @@ class QueryController extends Controller
                 ->addColumn('date', function ($category) {
                     return Carbon::parse($category->query_date)->format('d/m/Y');
                 })
-                ->addColumn('buyer', function ($category) {
-                    return $category->buyer->user->username;
+                ->addColumn('brand', function ($category) {
+                    return $category->brand->name;
                 })
                 ->addColumn('product_names', function ($category) {
                     return $category->items->pluck('product.name')->implode(', ');
@@ -227,9 +236,7 @@ class QueryController extends Controller
 
         return view('admin.query.query.history', compact('query_id', 'query'));
     }
-        
-
-        
+             
 
     public function create(Request $request)
     {
@@ -244,10 +251,10 @@ class QueryController extends Controller
 
         if($logged_in_user_is_buyer != null)
         {
-            $buyers = Buyer::where('user_id', auth()->user()->id)->with('user')->get();
+            $brands = Brand::where('buyer_id', $logged_in_user_is_buyer->id)->get();
         }
         else{
-            $buyers = Buyer::with('user')->get();
+            $brands = Brand::all();
         }
 
         $products = Product::all();
@@ -260,7 +267,9 @@ class QueryController extends Controller
 
         $departments = Department::all();
 
-        return view('admin.query.query.create', compact('buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers', 'departments'));
+        $buyers = Buyer::all();
+
+        return view('admin.query.query.create', compact('brands', 'buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers', 'departments'));
     }
 
     public function edit(Request $request, $query_id)
@@ -280,10 +289,10 @@ class QueryController extends Controller
 
             if($logged_in_user_is_buyer != null)
             {
-                $buyers = Buyer::where('user_id', auth()->user()->id)->with('user')->get();
+                $brands = Brand::where('buyer_id', $logged_in_user_is_buyer->id)->get();
             }
             else{
-                $buyers = Buyer::with('user')->get();
+                $brands = Brand::all();
             }
 
             $products = Product::all();
@@ -294,8 +303,10 @@ class QueryController extends Controller
                 $query->where('name', 'merchandiser');
             })->get();
 
-            return view('admin.query.query.edit', compact('query',  'buyers', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
-        }
+            $buyers = Buyer::all();
+
+            return view('admin.query.query.edit', compact('query',  'buyers', 'brands', 'logged_in_user_is_buyer', 'products', 'product_types', 'merchandisers'));
+        } 
         else{
             return redirect()->route('queries.index')->with('error', 'Query Not Found');
         }
@@ -305,7 +316,7 @@ class QueryController extends Controller
     {
 
         $request->validate([
-            'buyer_id' => 'required',
+            'brand_id' => 'required',
             'employee_id' => 'nullable',
             'product_type_id' => 'required',
             'products' => 'required',
@@ -325,7 +336,7 @@ class QueryController extends Controller
             
             $query = new Query();
             $query->query_date = Carbon::now();
-            $query->buyer_id = $request->buyer_id;
+            $query->brand_id = $request->brand_id;
             $query->employee_id = $request->employee_id;
             $query->product_type_id = $request->product_type_id;
             $query->save();
@@ -424,7 +435,7 @@ class QueryController extends Controller
     {
 
         $request->validate([
-            'buyer_id' => 'required',
+            'brand_id' => 'required',
             'employee_id' => 'nullable',
             'product_type_id' => 'required',
             'products' => 'required',
@@ -448,7 +459,7 @@ class QueryController extends Controller
             $query->parent_id = $old_query->parent_id ?? $old_query->id;
             $query->employee_id = $request->employee_id;
             $query->query_date = Carbon::now();
-            $query->buyer_id = $request->buyer_id;
+            $query->brand_id = $request->brand_id;
             $query->product_type_id = $request->product_type_id;
             $query->save();
 
@@ -523,6 +534,13 @@ class QueryController extends Controller
                         $query_item->measurements()->sync($item->measurements->pluck('id'));
                     }
                 }
+            }
+
+            $old_query_messages = QueryChat::where('query_id', $old_query->id)->get();
+
+            foreach ($old_query_messages as $message) {
+                $message->query_id = $query->id;
+                $message->save();
             }
 
             DB::commit();
@@ -761,5 +779,78 @@ class QueryController extends Controller
                 return response()->json(['error' => 'Query Not Found']);
             }
         }
+    }
+
+    public function chat(Request $request, $query_id)
+    {
+        if(!in_array('query.chat', session('user_permissions')))
+        {
+            return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
+        }
+        
+        $request->session()->now('view_name', 'admin.query.query.index');
+
+        $query = Query::find($query_id);
+
+        $chat_members = User::whereIn('id', QueryChat::where('query_id', $query_id)->pluck('user_id'))->get();
+
+        if($query != null){
+            return view('admin.query.query.chat', compact('query_id', 'query', 'chat_members'));
+        }
+        else{
+            return redirect()->route('queries.index')->with('error', 'Query Not Found');
+        }
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'query_id' => 'required|exists:queries,id',
+            'message' => 'required_without:attachment|max:1000',
+            'attachment' => 'nullable|file|max:5120'
+        ]);
+
+        $messageData = [
+            'query_id' => $request->query_id,
+            'user_id' => auth()->id(),
+            'message' => $request->message ?? '',
+            'type' => $request->hasFile('attachment') ? 'attachment' : 'text',
+            'status' => 'sent',
+            'sent_at' => now()
+        ];
+
+        if ($request->hasFile('attachment')) {
+            $file_name = $request->file('attachment')->hashName();
+            $path = $request->file('attachment')->storeAs('public/query_chat_attachments', $file_name);
+            $absolute_path = asset('public' . Storage::url($path));
+
+            $messageData['attachment'] = $absolute_path;
+        }
+
+        $message = QueryChat::create($messageData);
+
+        $message->load('user');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $message
+        ]);
+    }
+
+    public function getMessages(Request $request)
+    {
+        $request->validate([
+            'query_id' => 'required|exists:queries,id'
+        ]);
+
+        $messages = QueryChat::with('user')
+            ->where('query_id', $request->query_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'messages' => $messages
+        ]);
     }
 }

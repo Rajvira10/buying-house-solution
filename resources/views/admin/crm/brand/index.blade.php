@@ -5,7 +5,7 @@
 @endphp
 
 @extends('admin.layout')
-@section('title', 'Queries')
+@section('title', 'Brands')
 @section('content')
 
     <div class="main-content">
@@ -17,11 +17,11 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title mb-0">Queries</h4>
+                                        <h4 class="card-title mb-0">Brands</h4>
                                     </div>
                                     <div class="col-sm-auto">
-                                        @if (in_array('query.create', session('user_permissions')))
-                                            <a href="{{ route('queries.create') }}">
+                                        @if (in_array('brand.create', session('user_permissions')))
+                                            <a href="{{ route('brands.create') }}">
                                                 <button type="button" class="btn btn-success add-btn">
                                                     <i class="ri-add-line align-bottom me-1"></i> Add
                                                 </button>
@@ -38,13 +38,8 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
-                                                    <th>{{ __('Date') }}</th>
-                                                    <th>{{ __('Query No') }}</th>
-                                                    <th>{{ __('Brand') }}</th>
-                                                    <th>{{ __('Merchandiser') }}</th>
-                                                    <th>{{ __('Product Names') }}</th>
-                                                    <th>{{ __('Quantity') }}</th>
-                                                    <th>{{ __('Status') }}</th>
+                                                    <th>{{ __('Name') }}</th>
+                                                    <th>{{ __('Phone') }}</th>
                                                     <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
@@ -165,7 +160,7 @@
                 },
                 pagingType: "full_numbers",
                 ajax: {
-                    url: "{{ route('queries.index') }}",
+                    url: "{{ route('brands.index') }}",
                     type: "get"
                 },
                 columns: [{
@@ -175,44 +170,14 @@
                         searchable: false
                     },
                     {
-                        data: 'date',
-                        name: 'Date',
+                        data: 'name',
+                        name: 'Name',
                         orderable: true,
                         searchable: true
                     },
                     {
-                        data: 'query_no',
-                        name: 'Query No',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'brand',
-                        name: 'brand',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'merchandiser',
-                        name: 'Merchandiser',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'product_names',
-                        name: 'Product Names',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'quantity',
-                        name: 'Quantity',
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: 'status',
-                        name: 'Status',
+                        data: 'phone',
+                        name: 'Phone',
                         orderable: true,
                         searchable: true
                     },
@@ -225,7 +190,7 @@
                 ],
             });
         });
-        const deleteQuery = (id) => {
+        const deleteBrand = (id) => {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -237,10 +202,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('queries.destroy') }}",
+                        url: "{{ route('brands.destroy') }}",
                         method: 'POST',
                         data: {
-                            query_id: id,
+                            brand_id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
@@ -249,7 +214,7 @@
                         success: function(response) {
                             if (response.success) {
                                 $('#expenseCategoryTable').DataTable().ajax.reload();
-                                toaster('Query Deleted Successfully', 'success');
+                                toaster('Brand Deleted Successfully', 'success');
                             } else {
                                 toaster(response.error, 'danger');
                             }
@@ -261,154 +226,6 @@
                     });
                 }
             })
-        }
-
-        const changeQueryStatus = (id) => {
-            Swal.fire({
-                title: 'Change Query Status',
-                html: `
-            <select id="queryStatus" class="form-control">
-                <option value="Pending">Pending</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Approved">Approved</option>
-            </select>
-        `,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#556ee6',
-                cancelButtonColor: '#f46a6a',
-                confirmButtonText: 'Yes, change it!',
-                preConfirm: () => {
-                    const status = document.getElementById('queryStatus').value;
-                    return status;
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const selectedStatus = result.value;
-                    $.ajax({
-                        url: "{{ route('queries.change_status') }}",
-                        method: 'POST',
-                        data: {
-                            query_id: id,
-                            status: selectedStatus,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                $('#expenseCategoryTable').DataTable().ajax.reload();
-                                toaster('Query Status Changed Successfully', 'success');
-                            } else {
-                                toaster(response.error, 'danger');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                            toaster('Something went wrong', 'danger');
-                        }
-                    });
-                }
-            });
-        }
-
-        const assignMerchandiser = (id) => {
-            Swal.fire({
-                title: 'Assign Merchandiser',
-                html: `
-            <select id="merchandiser" class="form-control" required>
-                <option value="">Select Merchandiser</option>
-                @foreach ($merchandisers as $merchandiser)
-                    <option value="{{ $merchandiser->id }}">{{ $merchandiser->user->username }}</option>
-                @endforeach
-            </select>
-        `,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#556ee6',
-                cancelButtonColor: '#f46a6a',
-                confirmButtonText: 'Yes, assign it!',
-                preConfirm: () => {
-                    const merchandiser = document.getElementById('merchandiser').value;
-                    return merchandiser;
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const selectedMerchandiser = result.value;
-                    $.ajax({
-                        url: "{{ route('queries.assign_merchandiser') }}",
-                        method: 'POST',
-                        data: {
-                            query_id: id,
-                            merchandiser_id: selectedMerchandiser,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                $('#expenseCategoryTable').DataTable().ajax.reload();
-                                toaster('Merchandiser Assigned Successfully', 'success');
-                            } else {
-                                toaster(response.error, 'danger');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                            toaster('Something went wrong', 'danger');
-                        }
-                    });
-                }
-            });
-        }
-
-        const createOrder = (id) => {
-            //excel file upload
-            Swal.fire({
-                title: 'Create Order',
-                html: `
-            <form id="orderForm" enctype="multipart/form-data">
-                <input type="file" id="orderFile" name="orderFile" class="form-control" required>
-            </form>
-        `,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#556ee6',
-                cancelButtonColor: '#f46a6a',
-                confirmButtonText: 'Yes, create it!',
-                preConfirm: () => {
-                    const orderFile = document.getElementById('orderFile').files[0];
-                    return orderFile;
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const orderFile = new FormData();
-                    orderFile.append('orderFile', result.value);
-                    orderFile.append('query_id', id);
-                    orderFile.append('_token', '{{ csrf_token() }}');
-                    $.ajax({
-                        url: "{{ route('orders.store') }}",
-                        method: 'POST',
-                        data: orderFile,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            if (response.success) {
-                                $('#expenseCategoryTable').DataTable().ajax.reload();
-                                toaster('Order Created Successfully', 'success');
-                            } else {
-                                toaster(response.error, 'danger');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(error);
-                            toaster('Something went wrong', 'danger');
-                        }
-                    });
-                }
-            });
         }
     </script>
 @endsection

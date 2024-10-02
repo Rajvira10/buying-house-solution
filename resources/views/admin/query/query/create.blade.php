@@ -31,28 +31,24 @@
                                     <div class="mb-4">
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <label for="buyer_id" class="form-label fw-bold">{{ __('Select Buyer') }}
+                                                <label for="brand_id" class="form-label fw-bold">{{ __('Select Brand') }}
                                                     <span class="text-danger">*</span></label>
                                                 <div class="d-flex">
-                                                    <select class="form-select select-category" name="buyer_id"
-                                                        id="buyer_id" required>
-                                                        @if ($logged_in_user_is_buyer != null)
-                                                            <option value="{{ $logged_in_user_is_buyer->id }}" selected>
-                                                                {{ $logged_in_user_is_buyer->user->username }}
+                                                    <select class="form-select select-category" name="brand_id"
+                                                        id="brand_id" required>
+                                                        <option value="" disabled selected>Select a Brand</option>
+                                                        @foreach ($brands as $brand)
+                                                            <option value="{{ $brand->id }}">
+                                                                {{ $brand->name }}
                                                             </option>
-                                                        @else
-                                                            <option value="" disabled selected>Select a Buyer</option>
-                                                            @foreach ($buyers as $buyer)
-                                                                <option value="{{ $buyer->id }}">
-                                                                    {{ $buyer->user->username }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
+                                                        @endforeach
                                                     </select>
-                                                    <button type="button" class="btn btn-outline-secondary ms-2"
-                                                        data-bs-toggle="modal" data-bs-target="#createBuyerModal">
-                                                        <i class="ri-add-line"></i>
-                                                    </button>
+                                                    @if (in_array('brand.create', session('user_permissions')))
+                                                        <button type="button" class="btn btn-outline-secondary ms-2"
+                                                            data-bs-toggle="modal" data-bs-target="#createBuyerModal">
+                                                            <i class="ri-add-line"></i>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -219,27 +215,33 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary  pb-4">
-                    <h5 class="modal-title text-white" id="createBuyerModalLabel">Create Buyer</h5>
+                    <h5 class="modal-title text-white" id="createBuyerModalLabel">Create Brand</h5>
                     <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('buyers.store') }}" method="post" class="form-group"
+                    <form action="{{ route('brands.store') }}" method="post" class="form-group"
                         onsubmit="return disableOnSubmit()">
                         @csrf
                         <input type="hidden" name="modal" value="true">
                         <div class="row mb-3">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="username">
-                                        Name
+                                    <label for="buyer_id">
+                                        {{ __('Buyer') }}
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input id="username" type="text"
-                                        class="form-control @error('username') is-invalid @enderror" name="username"
-                                        value="{{ old('username') }}" placeholder="">
+                                    <select id="buyer_id"
+                                        class="form-control select-category @error('buyer_id') is-invalid @enderror"
+                                        name="buyer_id">
+                                        <option value="">Select</option>
+                                        @foreach ($buyers as $buyer)
+                                            <option value="{{ $buyer->id }}">{{ $buyer->user->username }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     <div class="help-block with-errors"></div>
-                                    @error('username')
+                                    @error('buyer_id')
                                         <span class="text-danger-error" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -248,78 +250,62 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="Email Address">
-                                        Email Address
+                                    <label for="name">
+                                        {{ __('Name') }}
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input id="email" type="text"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" placeholder="">
-                                    <div class="help-block with-errors"></div>
-                                    @error('email')
-                                        <span class="text-danger-error" role="alert">
+                                    <input id="name" type="text"
+                                        class="form-control @error('name') is-invalid @enderror" name="name"
+                                        value="{{ old('name') }}" required>
+                                    @error('name')
+                                        <span class="text-danger" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="email">
+                                        {{ __('Email') }}
+                                    </label>
+                                    <input id="email" type="email"
+                                        class="form-control @error('email') is-invalid @enderror" name="email"
+                                        value="{{ old('email') }}">
+                                    @error('email')
+                                        <span class="text-danger" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="phone">
-                                        Phone
+                                        {{ __('Phone') }}
                                     </label>
                                     <input id="phone" type="text"
                                         class="form-control @error('phone') is-invalid @enderror" name="phone"
-                                        value="{{ old('phone') }}" placeholder="">
-                                    <div class="help-block with-errors"></div>
+                                        value="{{ old('phone') }}">
                                     @error('phone')
-                                        <span class="text-danger-error" role="alert">
+                                        <span class="text-danger" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-
-                            {{-- <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="password">
-                                                    Password
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <input id="password" type="password"
-                                                    class="form-control @error('password') is-invalid @enderror"
-                                                    name="password" placeholder="">
-                                                <div class="help-block with-errors"></div>
-                                                @error('password')
-                                                    <span class="text-danger-error" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label for="password_confirmation">
-                                                    Confirm Password
-                                                    <span class="text-danger">*</span>
-                                                </label>
-                                                <input id="password_confirmation" type="password" class="form-control"
-                                                    name="password_confirmation" placeholder="">
-                                            </div>
-                                        </div> --}}
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="address">
-                                        Address
+                                        {{ __('Address') }}
                                     </label>
                                     <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" rows="3">{{ old('address') }}</textarea>
-                                    <div class="help-block with-errors"></div>
                                     @error('address')
-                                        <span class="text-danger-error" role="alert">
+                                        <span class="text-danger" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror

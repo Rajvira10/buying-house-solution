@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\File;
 use App\Models\Trim;
+use App\Models\Brand;
 use App\Models\Buyer;
 use App\Models\Query;
 use App\Models\Employee;
+use App\Models\QueryChat;
 use App\Models\QueryItem;
 use App\Models\ProductType;
 use App\Models\QueryMerchandiser;
@@ -31,10 +33,11 @@ class Query extends Model
         return $this->belongsTo(Query::class, 'parent_id');
     }
 
-    public function buyer()
+    public function brand()
     {
-        return $this->belongsTo(Buyer::class);
+        return $this->belongsTo(Brand::class);
     }
+    
 
     public function items()
     {
@@ -54,6 +57,11 @@ class Query extends Model
     public function merchandisers()
     {
         return $this->belongsToMany(QueryMerchandiser::class, 'query_merchandisers');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(QueryChat::class);
     }
     
 }

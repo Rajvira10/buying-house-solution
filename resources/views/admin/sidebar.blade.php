@@ -170,6 +170,7 @@
                                     'admin.crm.buyer.index',
                                     'admin.crm.factory.index',
                                     'admin.crm.supplier.index',
+                                    'admin.crm.brand.index',
                                 ])
                             ) {
                                 $active = 'active';
@@ -188,6 +189,13 @@
                                         <a href="{{ route('buyers.index') }}" target="_self"
                                             class="nav-link {{ session('view_name') == 'admin.crm.buyer.index' ? 'active' : '' }}"
                                             data-key="t-buyer">Buyer</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_brand_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('brands.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.brand.index' ? 'active' : '' }}"
+                                            data-key="t-brand">Brand</a>
                                     </li>
                                 @endif
                                 @if ($permissions->nav_factory_option)

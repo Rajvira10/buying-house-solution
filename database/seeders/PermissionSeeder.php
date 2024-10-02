@@ -483,6 +483,75 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'brand.index')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "brand.index";
+            $permission->alias = "View Brands";
+            $permission->description = "To view the list of brands";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'brand.create')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "brand.create";
+            $permission->alias = "Create Brands";
+            $permission->description = "To create a new brand";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'brand.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "brand.edit";
+            $permission->alias = "Edit Brands";
+            $permission->description = "To edit a brand";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'brand.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "brand.delete";
+            $permission->alias = "Delete Brands";
+            $permission->description = "To delete a brand";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'brand.show')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "brand.show";
+            $permission->alias = "View Brand Details";
+            $permission->description = "To view the details of a brand";
+            $permission->permission_group = "CRM";
+
+            $permission->save();
+        }
 
         $permission = Permission::where('name' , '=' , 'factory.index')->first();
 
@@ -685,12 +754,52 @@ class PermissionSeeder extends Seeder
             $permission->name = "product_type.index";
             $permission->alias = "View Product Types";
             $permission->description = "To view the list of product types";
-            $permission->permission_group = "Query";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'product_type.create')->first();
 
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.create";
+            $permission->alias = "Create Product Types";
+            $permission->description = "To create a new product type";
+            $permission->permission_group = "Config";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product_type.edit')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.edit";
+            $permission->alias = "Edit Product Types";
+            $permission->description = "To edit a product type";
+            $permission->permission_group = "Config";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'product_type.delete')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "product_type.delete";
+            $permission->alias = "Delete Product Types";
+            $permission->description = "To delete a product type";
+            $permission->permission_group = "Config";
+
+            $permission->save();
+        }
 
 
         // $permission = Permission::where('name', '=', 'client_source.index')->first();
@@ -1859,6 +1968,20 @@ class PermissionSeeder extends Seeder
             $permission->name = "query.index";
             $permission->alias = "View Queries";
             $permission->description = "To view the list of queries";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
+        $permission = Permission::where('name', '=', 'query.chat')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.chat";
+            $permission->alias = "Chat with Client";
+            $permission->description = "To chat with a client";
             $permission->permission_group = "Query";
 
             $permission->save();
