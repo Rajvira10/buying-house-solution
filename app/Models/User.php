@@ -70,6 +70,11 @@ class User extends Authenticatable
         return false;
     }
 
+    public function assignRole($role)
+    {
+        return $this->roles()->attach($role);
+    }
+
     public function getPermissions()
     {
         $permissions = [];

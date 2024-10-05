@@ -290,7 +290,7 @@ class PermissionService
 
         // Query Group
 
-        if(in_array('query.index', $permissions) || in_array('trim.index', $permissions))
+        if(in_array('query.index', $permissions))
         {
             $this->nav_query_group = true;
         }

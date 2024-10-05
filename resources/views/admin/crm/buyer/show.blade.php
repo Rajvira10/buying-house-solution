@@ -86,7 +86,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td><strong>Email :</strong></td>
-                                                                <td>{{ $buyer->email }}</td>
+                                                                <td>{{ $buyer->user->email }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td><strong>Phone :</strong></td>

@@ -43,23 +43,47 @@ class QueryController extends Controller
         
         if($request->ajax()){
 
-            $queries = Query::where(function ($query) {
-            $query->whereNull('parent_id')
-                    ->whereNotExists(function ($subquery) {
-                        $subquery->select(DB::raw(1))
-                                ->from('queries as children')
-                                ->whereColumn('children.parent_id', 'queries.id');
-                    });
-            })
-            ->orWhereIn('id', function ($query) {
-                $query->selectRaw('MAX(id)')
-                    ->from('queries')
-                    ->whereNotNull('parent_id')
-                    ->groupBy('parent_id');
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
+            if(in_array('see_everything', session('user_permissions')))
+            {
+                $queries = Query::where(function ($query) {
+                    $query->whereNull('parent_id')
+                            ->whereNotExists(function ($subquery) {
+                                $subquery->select(DB::raw(1))
+                                        ->from('queries as children')
+                                        ->whereColumn('children.parent_id', 'queries.id');
+                            });
+                })
+                ->orWhereIn('id', function ($query) {
+                    $query->selectRaw('MAX(id)')
+                        ->from('queries')
+                        ->whereNotNull('parent_id')
+                        ->groupBy('parent_id');
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+            }
+            else{
+                $queries = Query::where(function ($query) {
+                    $query->whereNull('parent_id')
+                            ->whereNotExists(function ($subquery) {
+                                $subquery->select(DB::raw(1))
+                                        ->from('queries as children')
+                                        ->whereColumn('children.parent_id', 'queries.id');
+                            });
+                })
+                ->orWhereIn('id', function ($query) {
+                    $query->selectRaw('MAX(id)')
+                        ->from('queries')
+                        ->whereNotNull('parent_id')
+                        ->groupBy('parent_id');
+                })
+                ->whereHas('brand.buyer.user', function ($query) {
+                    $query->where('id', auth()->user()->id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+            }
+            
             return DataTables::of($queries)
                 ->addColumn('status', function ($category) {
                     if($category->status == 'Pending')

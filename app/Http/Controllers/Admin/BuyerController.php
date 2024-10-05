@@ -156,6 +156,10 @@ class BuyerController extends Controller
 
                 $buyer->save();
 
+                $user = User::find($user->id);
+
+                $user->assignRole('buyer');
+
                 DB::commit();
 
                 if($request->modal == 'true'){
