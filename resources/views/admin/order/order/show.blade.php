@@ -50,18 +50,16 @@
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light sticky-header">
                                         <tr>
-                                            @if ($order->product_type->name == 'Knit')
-                                                <th>Image</th>
-                                            @endif
+                                            <th>Image</th>
                                             <th>Code</th>
-                                            @if ($order->product_type->name == 'Knit')
+                                            @if ($order->queryModel->product_type->name == 'Knit')
                                                 <th>Function</th>
                                                 <th>Model</th>
                                                 <th>Fit</th>
                                             @endif
                                             <th>Fabric</th>
                                             <th>Weight</th>
-                                            @if ($order->product_type->name == 'Knit')
+                                            @if ($order->queryModel->product_type->name == 'Knit')
                                                 <th>Shipment Date</th>
                                             @endif
                                         </tr>
@@ -69,22 +67,24 @@
                                     <tbody>
                                         @foreach ($order->items as $item)
                                             <tr>
-                                                @if ($order->product_type->name == 'Knit')
-                                                    <td>
+                                                <td>
+                                                    @if ($item->image == null)
+                                                        N/A
+                                                    @else
                                                         <img src="{{ asset($item->image) }}" alt="Image"
                                                             class="img-fluid" style="max-width: 100px;">
-                                                    </td>
-                                                @endif
+                                                    @endif
+                                                </td>
 
                                                 <td>{{ $item->code }}</td>
-                                                @if ($order->product_type->name == 'Knit')
+                                                @if ($order->queryModel->product_type->name == 'Knit')
                                                     <td>{{ $item->function }}</td>
                                                     <td>{{ $item->model }}</td>
                                                     <td>{{ $item->fit }}</td>
                                                 @endif
                                                 <td>{{ $item->fabric }}</td>
                                                 <td>{{ $item->weight }}</td>
-                                                @if ($order->product_type->name == 'Knit')
+                                                @if ($order->queryModel->product_type->name == 'Knit')
                                                     <td>{{ $item->shipment_date->format('d-m-Y') }}</td>
                                                 @endif
                                             </tr>
@@ -94,70 +94,179 @@
                                                 $colors = json_decode($item->colors);
                                                 $sizes = json_decode($item->sizes);
                                                 $totalQuantities = 0;
+                                                $totalTotalQuantities = 0;
                                             @endphp
 
-                                            <tr>
-                                                <td colspan="10">
-                                                    <h6 class="text-primary">Colors</h6>
-                                                    <table class="table table-sm table-bordered">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Color</th>
-                                                                <th>Color Details</th>
-                                                                @foreach ($sizes as $size)
-                                                                    <th>{{ $size }}</th>
-                                                                @endforeach
-                                                                <th>PCS X MASTER BOX</th>
-                                                                <th>MASTER BOX</th>
-                                                                <th>QNT/COL</th>
-                                                                <th>Pieces</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($colors as $index => $color)
-                                                                @php
-                                                                    $rowQuantities = is_object($color->quantities)
-                                                                        ? (array) $color->quantities
-                                                                        : $color->quantities;
-                                                                    $sumRowQuantities = is_array($rowQuantities)
-                                                                        ? array_sum($rowQuantities)
-                                                                        : 0;
-                                                                    $totalQuantities += $sumRowQuantities;
-                                                                @endphp
+                                            @if ($order->queryModel->product_type->name == 'Knit')
+                                                <tr>
+                                                    <td colspan="10">
+                                                        <h6 class="text-primary">Colors</h6>
+                                                        <table class="table table-sm table-bordered">
+                                                            <thead class="thead-light">
                                                                 <tr>
-                                                                    <td>{{ $color->name }}</td>
-                                                                    <td>{{ $color->details }}</td>
-
+                                                                    <th>Color</th>
+                                                                    <th>Color Details</th>
                                                                     @foreach ($sizes as $size)
-                                                                        <td>
-                                                                            @if (is_object($color->quantities))
-                                                                                {{ $color->quantities->$size ?? 0 }}
-                                                                            @elseif (is_array($color->quantities))
-                                                                                {{ $rowQuantities[$loop->index] ?? 0 }}
-                                                                            @else
-                                                                                0
-                                                                            @endif
-                                                                        </td>
+                                                                        <th>{{ $size }}</th>
                                                                     @endforeach
-
-                                                                    @if ($loop->first)
-                                                                        <td rowspan="{{ count($colors) }}">
-                                                                            {{ $item->pieces }}</td>
-                                                                        <td rowspan="{{ count($colors) }}">
-                                                                            {{ $item->master_box }}</td>
-                                                                    @endif
-
-                                                                    <td>{{ $sumRowQuantities * $item->master_box }}</td>
-                                                                    @if ($loop->first)
-                                                                        <td rowspan="{{ count($colors) }}">
-                                                                            {{ $item->pieces }}</td>
-                                                                    @endif
+                                                                    <th>PCS X MASTER BOX</th>
+                                                                    <th>MASTER BOX</th>
+                                                                    <th>QNT/COL</th>
+                                                                    <th>Pieces</th>
                                                                 </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($colors as $index => $color)
+                                                                    @php
+                                                                        $rowQuantities = is_object($color->quantities)
+                                                                            ? (array) $color->quantities
+                                                                            : $color->quantities;
+                                                                        $sumRowQuantities = is_array($rowQuantities)
+                                                                            ? array_sum($rowQuantities)
+                                                                            : 0;
+                                                                        $totalQuantities += $sumRowQuantities;
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td>{{ $color->name }}</td>
+                                                                        <td>{{ $color->details }}</td>
+
+                                                                        @foreach ($sizes as $size)
+                                                                            <td>
+                                                                                @if (is_object($color->quantities))
+                                                                                    {{ $color->quantities->$size ?? 0 }}
+                                                                                @elseif (is_array($color->quantities))
+                                                                                    {{ $rowQuantities[$loop->index] ?? 0 }}
+                                                                                @else
+                                                                                    0
+                                                                                @endif
+                                                                            </td>
+                                                                        @endforeach
+
+                                                                        @if ($loop->first)
+                                                                            <td rowspan="{{ count($colors) }}">
+                                                                                {{ $item->pieces / $item->master_box }}
+                                                                            </td>
+                                                                            <td rowspan="{{ count($colors) }}">
+                                                                                {{ $item->master_box }}</td>
+                                                                        @endif
+
+                                                                        <td>{{ $sumRowQuantities * $item->master_box }}
+                                                                        </td>
+                                                                        @if ($loop->first)
+                                                                            <td rowspan="{{ count($colors) }}">
+                                                                                {{ $item->pieces }}</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            @elseif($order->queryModel->product_type->name == 'Woven')
+                                                <tr>
+                                                    <td colspan="10">
+                                                        <h6 class="text-primary">Colors</h6>
+                                                        <table class="table table-sm table-bordered">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th colspan="{{ count($sizes) }}" class="text-center">
+                                                                        SIZE RATIO</th>
+                                                                    <th colspan="{{ count($sizes) }}" class="text-center">
+                                                                        QUANTITIES</th>
+
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Color</th>
+                                                                    <th>Color Details</th>
+                                                                    @foreach ($sizes as $size)
+                                                                        <th>{{ $size }}</th>
+                                                                    @endforeach
+                                                                    @foreach ($sizes as $size)
+                                                                        <th>{{ $size }}</th>
+                                                                    @endforeach
+                                                                    <th>SIZE RATIO</th>
+                                                                    <th>QNT/COL</th>
+                                                                    <th>Pieces</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+
+                                                                </tr>
+                                                                @foreach ($colors as $index => $color)
+                                                                    @php
+                                                                        $rowQuantities = is_object($color->quantities)
+                                                                            ? (array) $color->quantities
+                                                                            : $color->quantities;
+
+                                                                        if (isset($color->full_quantities)) {
+                                                                            $rowTotalQuantities = is_object(
+                                                                                $color->full_quantities,
+                                                                            )
+                                                                                ? (array) $color->full_quantities
+                                                                                : $color->full_quantities;
+
+                                                                            $sumRowTotalQuantities = is_array(
+                                                                                $rowTotalQuantities,
+                                                                            )
+                                                                                ? array_sum($rowTotalQuantities)
+                                                                                : 0;
+
+                                                                            $totalTotalQuantities += $sumRowTotalQuantities;
+                                                                        }
+
+                                                                        $sumRowQuantities = is_array($rowQuantities)
+                                                                            ? array_sum($rowQuantities)
+                                                                            : 0;
+
+                                                                        $totalQuantities += $sumRowQuantities;
+
+                                                                    @endphp
+                                                                    <tr>
+                                                                        <td>{{ $color->name }}</td>
+                                                                        <td>{{ $color->details }}</td>
+
+                                                                        @foreach ($sizes as $size)
+                                                                            <td>
+                                                                                @if (is_object($color->quantities))
+                                                                                    {{ $color->quantities->$size ?? '' }}
+                                                                                @elseif (is_array($color->quantities))
+                                                                                    {{ $rowQuantities[$loop->index] ?? '' }}
+                                                                                @endif
+                                                                            </td>
+                                                                        @endforeach
+                                                                        @if (isset($color->full_quantities))
+                                                                            @foreach ($sizes as $size)
+                                                                                <td>
+                                                                                    @if (is_object($color->full_quantities))
+                                                                                        {{ $color->full_quantities->$size ?? '' }}
+                                                                                    @elseif(is_array($color->full_quantities))
+                                                                                        {{ $rowTotalQuantities[$loop->index] ?? '' }}
+                                                                                    @endif
+                                                                                </td>
+                                                                            @endforeach
+                                                                        @endif
+
+                                                                        <td rowspan="">
+                                                                            {{ $sumRowQuantities }}</td>
+
+                                                                        <td>{{ $sumRowTotalQuantities }}</td>
+                                                                        @if ($loop->first)
+                                                                            <td rowspan="{{ count($colors) }}">
+                                                                                {{ $item->pieces }}</td>
+                                                                        @endif
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

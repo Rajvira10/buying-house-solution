@@ -132,6 +132,7 @@ class OrderController extends Controller
     
    public function store(Request $request)
     {
+
         $request->validate([
             'query_id' => 'required|integer',
             'sizes' => 'nullable',
@@ -139,7 +140,7 @@ class OrderController extends Controller
             'product_function.*' => 'nullable',
             'product_model.*' => 'nullable',
             'product_shipment_date.*' => 'nullable',
-            'product_fit.*' => 'required',
+            'product_fit.*' => 'nullable',
             'product_details.*' => 'nullable',
             'product_fabric.*' => 'nullable',
             'product_weight.*' => 'nullable',
@@ -179,8 +180,6 @@ class OrderController extends Controller
                 $image->move(public_path('uploads/products'), $image_name);
             }
 
-
-            
             $orderItem = $order->items()->create([
                 'type' => $product_type,
                 'image' => $image_name ? 'public/uploads/products/' . $image_name : '',
@@ -188,11 +187,11 @@ class OrderController extends Controller
                 'function' => $request->product_function[$index] ?? '',
                 'model' => $request->product_model[$index] ?? '',
                 'details' => $request->product_details[$index] ?? '',
-                'fit' => "",
+                'fit' => $request->product_fit[$index],
                 'fabric' => $request->product_fabric[$index],
                 'weight' => $request->product_weight[$index],
                 'sizes' => json_encode($request->sizes),
-                'master_box' => $request->product_master_box[$index],
+                'master_box' => $request->product_master_box[$index] ?? 0,
                 'shipment_date' => $request->product_shipment_date[$index] ?? now(),
                 'colors' => json_encode($request->colors[$index]),
                 'pieces' => $total_color_quantities,

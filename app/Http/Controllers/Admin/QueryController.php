@@ -80,6 +80,9 @@ class QueryController extends Controller
                 ->whereHas('brand.buyer.user', function ($query) {
                     $query->where('id', auth()->user()->id);
                 })
+                ->orWhereHas('merchandiser.user', function ($query) {
+                    $query->where('id', auth()->user()->id);
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
             }
@@ -173,7 +176,7 @@ class QueryController extends Controller
                                         </button></li>';
                     }
 
-                    if(in_array('query.edit', session('user_permissions')))
+                    if(in_array('query.edit', session('user_permissions')) && $category->status != 'Approved')
                     {
                         $edit_button .= '<li><a href="'.route('queries.edit', $category->id).'" class
                         ="dropdown-item"><i class="ri-pencil-line me-2"></i> Edit</a></li>';
@@ -494,6 +497,7 @@ class QueryController extends Controller
             $query->query_date = Carbon::now();
             $query->brand_id = $request->brand_id;
             $query->product_type_id = $request->product_type_id;
+            $query->status = $old_query->status == "Sent For Approval" ? "Sent For Approval" : "Pending";
             $query->save();
 
             $query->query_no = 'QRY' . str_pad($query->id, 5, '0', STR_PAD_LEFT);
@@ -574,6 +578,13 @@ class QueryController extends Controller
             foreach ($old_query_messages as $message) {
                 $message->query_id = $query->id;
                 $message->save();
+            }
+
+            $orders = Order::where('query_id', $old_query->id)->get();
+
+            foreach ($orders as $order) {
+                $order->query_id = $query->id;
+                $order->save();
             }
 
             DB::commit();

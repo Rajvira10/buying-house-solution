@@ -116,9 +116,16 @@
                                     <h6 class="mb-0"><i class="ri-shopping-bag-2-line"></i> Product Details</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="mb-3">
-                                        <label class="form-label">Product Image</label>
-                                        <input type="file" name="product_image[]" class="form-control">
+                                    <div class="row mb-3">
+                                        <div class="col-md-9">
+                                            <label class="form-label">Product Image</label>
+                                            <input type="file" name="product_image[]" class="form-control">
+                                        </div>
+                                        <div class="col-md-3 knit">
+                                            <label class="form-label">Fit</label>
+                                            <input type="text" name="product_fit[]" class="form-control"
+                                                placeholder="Enter Product Fit">
+                                        </div>
                                     </div>
                                     <div class="row mb-3 knit">
                                         <div class="col-md-3">
@@ -139,8 +146,8 @@
                                             <label class="form-label">
                                                 Model
                                             </label>
-                                            <input type="text" name="product_model[]" class="form-control" id="model"
-                                                placeholder="Enter Product Model">
+                                            <input type="text" name="product_model[]" class="form-control"
+                                                id="model" placeholder="Enter Product Model">
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">
@@ -180,12 +187,12 @@
                                                 placeholder="Enter Product Weight" required>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-3 knit">
                                             <label class="form-label">
                                                 Master Box
                                             </label>
                                             <input type="number" name="product_master_box[]" class="form-control"
-                                                placeholder="Enter Product Master Box Quantity" required>
+                                                id="masterBox" placeholder="Enter Product Master Box Quantity">
                                         </div>
                                     </div>
 
@@ -249,11 +256,12 @@
 
 
     <script>
-        // Wait for the DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
             const addSizeBtn = document.getElementById('addSizeBtn');
             const sizeSection = document.getElementById('sizeSection');
             const productSection = document.getElementById('productSection');
+            const masterBox = document.getElementById('masterBox');
+
             let productCounter = 0;
 
             // Add new size field
@@ -272,58 +280,107 @@
                 updateSizeQuantities();
             });
 
-            function updateSizeQuantities() {
+            function updateSizeQuantities(changedSizeInput = null) {
                 const sizeInputs = document.querySelectorAll('input[name="sizes[]"]');
                 const colorSections = document.querySelectorAll('.colorSection');
 
                 colorSections.forEach(section => {
                     const productIndex = section.dataset.productIndex;
                     const colorEntries = section.querySelectorAll('.color-entry');
+                    const queryProductType = document.getElementById('query_product_type').value;
 
                     colorEntries.forEach((colorEntry, colorIndex) => {
                         const quantitySection = colorEntry.querySelector('.sizeQuantitiesSection');
-
-                        // Check if quantitySection exists
                         if (!quantitySection) return;
 
-                        const currentQuantities = {};
+                        // Store current values
+                        const currentValues = {
+                            quantities: {},
+                            fullQuantities: {}
+                        };
 
-                        // Get existing quantities for this color
-                        quantitySection.querySelectorAll('input[type="number"]').forEach(input => {
-                            const sizeLabel = input.closest('.col-md-4')?.querySelector(
-                                '.sizeLabel')?.textContent.trim();
-                            if (sizeLabel) {
-                                currentQuantities[sizeLabel] = input.value;
+                        // Gather all current values before making any changes
+                        quantitySection.querySelectorAll('.quantityInput, .fullQuantityInput')
+                            .forEach(input => {
+                                const sizeLabel = input.closest('.col-md-4')?.querySelector(
+                                    '.sizeLabel')?.textContent.trim();
+                                if (!sizeLabel) return;
+
+                                if (input.classList.contains('quantityInput')) {
+                                    currentValues.quantities[sizeLabel] = input.value;
+                                } else if (input.classList.contains('fullQuantityInput')) {
+                                    currentValues.fullQuantities[sizeLabel] = input.value;
+                                }
+                            });
+
+                        // Generate new HTML
+                        const newHtml = Array.from(sizeInputs).map((sizeInput, sizeIndex) => {
+                            let sizeValue;
+
+                            if (changedSizeInput && sizeInput === changedSizeInput) {
+                                // Use the new value for the changed input
+                                sizeValue = changedSizeInput.value ||
+                                    `Size ${sizeIndex + 1}`;
+                            } else {
+                                sizeValue = sizeInput.value || `Size ${sizeIndex + 1}`;
                             }
-                        });
 
-                        // Clear existing quantity section
-                        quantitySection.innerHTML = '';
+                            // Find the old size value if this is the changed input
+                            let oldSizeValue;
+                            if (changedSizeInput && sizeInput === changedSizeInput) {
+                                const oldLabel = quantitySection.querySelector(
+                                        `.col-md-4:nth-child(${sizeIndex + 1}) .sizeLabel`)
+                                    ?.textContent.trim();
+                                oldSizeValue = oldLabel || `Size ${sizeIndex + 1}`;
+                            }
 
-                        // Loop through size inputs to recreate quantity fields
-                        sizeInputs.forEach((sizeInput, sizeIndex) => {
-                            const sizeValue = sizeInput.value || `Size ${sizeIndex + 1}`;
-                            const existingQuantity = currentQuantities[sizeValue] || '';
+                            // Determine which values to use
+                            const existingQuantity = currentValues.quantities[
+                                    oldSizeValue] || currentValues.quantities[sizeValue] ||
+                                '';
+                            const existingFullQuantity = currentValues.fullQuantities[
+                                oldSizeValue] || currentValues.fullQuantities[
+                                sizeValue] || '';
 
-                            const sizeInputField = `
-                    <div class="col-md-4 mb-2">
+                            return `
+                    <div class="col-md-4 mb-3">
                         <label class="form-label sizeLabel">${sizeValue}</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="ri-stack-line"></i></span>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text bg-info text-white">
+                                <i class="ri-stack-line"></i>
+                            </span>
                             <input type="number" 
                                    name="colors[${productIndex}][${colorIndex}][quantities][${sizeValue}]" 
-                                   class="form-control" 
-                                   placeholder="" 
-                                   value="${existingQuantity ?? 0}"
-                                    min="0">
+                                   class="form-control border-primary quantityInput" 
+                                   placeholder="Size Ratio" 
+                                   value="${existingQuantity}" 
+                                   min="0">
                         </div>
+                        ${queryProductType === 'Knit' ? '' : `
+                                    <div class="input-group woven">
+                                        <span class="input-group-text bg-success text-white">
+                                            <i class="ri-checkbox-multiple-line"></i>
+                                        </span>
+                                        <input type="number" 
+                                               name="colors[${productIndex}][${colorIndex}][full_quantities][${sizeValue}]" 
+                                               class="form-control border-success fullQuantityInput"
+                                               placeholder="Full Quantities" 
+                                               value="${existingFullQuantity}" 
+                                               min="0">
+                                    </div>
+                                `}
                     </div>
                 `;
-                            quantitySection.insertAdjacentHTML('beforeend', sizeInputField);
-                        });
+                        }).join('');
+
+                        // Update the DOM only once
+                        quantitySection.innerHTML = newHtml;
                     });
                 });
             }
+
+
+
 
             // Event delegation for dynamic elements
             document.addEventListener('click', function(event) {
@@ -341,20 +398,30 @@
                     const productIndex = productEntry.querySelector('.colorSection').dataset.productIndex;
                     addNewColor(productIndex, productEntry);
                 }
+
+
             });
 
             // Add new product
             document.querySelector('.addProductBtn').addEventListener('click', function() {
                 productCounter++;
+                const productType = document.getElementById('query_product_type').value;
                 const newProductEntry = `
             <div class="product-entry card mb-4">
                 <div class="card-header bg-light">
                     <h6 class="mb-0"><i class="ri-shopping-bag-2-line"></i> Product Details</h6>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Product Image</label>
-                        <input type="file" name="product_image[]" class="form-control">
+                    <div class="row mb-3">
+                        <div className="col-md-9">
+                            <label class="form-label">Product Image</label>
+                            <input type="file" name="product_image[]" class="form-control">
+                        </div>
+                        <div class="col-md-3 knit">
+                            <label class="form-label">Fit</label>
+                            <input type="text" name="product_fit[]" class="form-control" 
+                                   placeholder="Enter Product Fit" >
+                        </div>
                     </div>
                     <div class="row mb-3 knit">
                         <div class="col-md-3">
@@ -399,10 +466,10 @@
                             <input type="text" name="product_weight[]" class="form-control" 
                                    placeholder="Enter Product Weight" required>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 knit">
                             <label class="form-label">Master Box</label>
                             <input type="number" name="product_master_box[]" class="form-control" 
-                                   placeholder="Enter Product Master Box Quantity" required>
+                                   placeholder="Enter Product Master Box Quantity" ${productType === 'Knit' ? 'required' : ''}>
                         </div>
                     </div>
 
@@ -509,7 +576,7 @@
             // Update size quantities when size input changes
             document.addEventListener('input', function(event) {
                 if (event.target.classList.contains('sizeInput')) {
-                    updateSizeQuantities();
+                    updateSizeQuantities(event.target);
                 }
             });
 
@@ -767,11 +834,14 @@
                         if (type === 'Woven') {
                             $('.knit').hide();
                             $('.woven').show();
+                            $('#masterBox').prop('required', false);
                         }
                         if (type === 'Knit') {
                             $('.woven').hide();
                             $('.knit').show();
+                            $('#masterBox').prop('required', true);
                         }
+
                         $('#orderModal').modal('show');
 
                     } else {
