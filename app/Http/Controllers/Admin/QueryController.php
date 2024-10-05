@@ -817,7 +817,7 @@ class QueryController extends Controller
         $request->validate([
             'query_id' => 'required|exists:queries,id',
             'message' => 'required_without:attachment|max:1000',
-            'attachment' => 'nullable|file|max:5120'
+            'attachment' => 'nullable|file'
         ]);
 
         $messageData = [
@@ -835,6 +835,7 @@ class QueryController extends Controller
             $absolute_path = asset('public' . Storage::url($path));
 
             $messageData['attachment'] = $absolute_path;
+            $messageData['message'] = $file_name;
         }
 
         $message = QueryChat::create($messageData);

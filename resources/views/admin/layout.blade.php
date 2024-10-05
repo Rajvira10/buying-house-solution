@@ -26,7 +26,7 @@
 
         @yield('content')
 
-        @include('admin.theme-customizer')
+        {{-- @include('admin.theme-customizer') --}}
 
     </div>
 

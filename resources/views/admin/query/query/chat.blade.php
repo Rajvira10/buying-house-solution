@@ -72,6 +72,15 @@
                                         </ul>
                                     </div>
 
+                                    <!-- Progress Bar for Upload -->
+                                    <div class="p-3" id="upload-progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                id="upload-progress-bar" role="progressbar" style="width: 0%"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+
                                     <div class="p-3 border-top">
                                         <form id="chat-form" enctype="multipart/form-data">
                                             @csrf
@@ -107,9 +116,9 @@
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -249,35 +258,35 @@
             function appendMessage(message) {
                 const isCurrentUser = message.user_id == {{ auth()->id() }};
                 const messageHtml = `
-            <li class="${isCurrentUser ? 'right' : 'left'}">
-                <div class="conversation-list">
-                    <div class="d-flex">
-                        <div class=${isCurrentUser ? 'flex-grow-1 flex flex-col align-items-end' : 'flex flex-col items-start'}>
-                            <h5 class="conversation-name">${message.user.username}</h5>
-                            <div class="ctext-wrap d-flex flex-column">
-                                ${message.attachment ? `
-                                                                                    <div class="mb-1">
-                                                                                        <a href="${message.attachment}" target="_blank"  class="${isCurrentUser ? 'text-white' : 'text-dark'} flex align-items-center" style="cursor: pointer">
-                                                                                            <i class="ri-file-text-fill"></i> 
-                                                                                            <span>View Attachment</span>
-                                                                                            
-                                                                                        </a>
-                                                                                    </div>` : ''}
-                                <p class="mb-0 text-start">${message.message}</p>
-                            </div>
-                            <div class="d-flex justify-content-${isCurrentUser ? 'end' : 'start'} w-100">
-        <p class="chat-time mb-0" style="align-self: flex-end;">
-            <i class="ri-time-line"></i>
-            <span>${formatDate(message.created_at)}</span>
-        </p>
-    </div>
-                        </div>
+    <li class="${isCurrentUser ? 'right' : 'left'}">
+        <div class="conversation-list">
+            <div class="d-flex">
+                <div class="${isCurrentUser ? 'flex-grow-1 d-flex flex-column align-items-end' : 'd-flex flex-column align-items-start'}">
+                    <h5 class="conversation-name">${message.user.username}</h5>
+                    <div class="ctext-wrap d-flex flex-column ${isCurrentUser ? 'bg-primary text-white' : 'bg-light text-dark'}" style="border-radius: 10px; padding: 10px; max-width: 70%; word-wrap: break-word;">
+                        ${message.attachment ? `
+                                                    <div class="mb-1 style="cursor: pointer;"">
+                                                        <a href="${message.attachment}" target="_blank" class="d-flex align-items-center ${isCurrentUser ? 'text-white' : 'text-dark'}" >
+                                                            <i class="ri-file-text-fill me-2"></i>
+                                                            <span>${message.message}</span>
+                                                        </a>
+                                                    </div>` : ''}
+                        ${!message.attachment ? `<p class="mb-0 me-0 text-start">${message.message}</p>` : ""}
+                    </div>
+                    <div class="d-flex justify-content-${isCurrentUser ? 'end' : 'start'} w-100">
+                        <p class="chat-time mb-0" style="align-self: flex-end;">
+                            <i class="ri-time-line"></i>
+                            <span>${formatDate(message.created_at)}</span>
+                        </p>
                     </div>
                 </div>
-            </li>
-        `;
+            </div>
+        </div>
+    </li>
+    `;
                 $('#message-list').append(messageHtml);
             }
+
 
             function scrollToBottom() {
                 const chatMessages = document.getElementById('chat-messages');
@@ -288,21 +297,46 @@
                 e.preventDefault();
                 const formData = new FormData(this);
 
+                // Show progress container
+                $('#upload-progress-container').show();
+
                 $.ajax({
                     url: "{{ route('queries.send_message') }}",
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
+                    xhr: function() {
+                        const xhr = new window.XMLHttpRequest();
+                        // Upload progress event
+                        xhr.upload.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                const percentComplete = Math.round((evt.loaded / evt
+                                    .total) * 100);
+                                $('#upload-progress-bar').css('width', percentComplete +
+                                    '%');
+                                $('#upload-progress-bar').text(percentComplete + '%');
+                                $('#upload-progress-bar').attr('aria-valuenow',
+                                    percentComplete);
+                            }
+                        }, false);
+                        return xhr;
+                    },
                     success: function(response) {
+                        // Reset fields and hide progress container
                         $('#message-input').val('');
                         $('#file-input').val('');
                         $('#attachment-preview-container').hide();
+                        $('#upload-progress-container').hide();
+                        $('#upload-progress-bar').css('width', '0%').text('0%');
+
                         appendMessage(response.message);
                         scrollToBottom();
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
+                        $('#upload-progress-container').hide(); // Hide progress on error
+                        $('#upload-progress-bar').css('width', '0%').text('0%');
                     }
                 });
             });
@@ -319,6 +353,7 @@
                 $('#file-input').val('');
                 $('#attachment-preview-container').hide();
             });
+
 
             loadMessages();
             setInterval(loadMessages, 10000);
