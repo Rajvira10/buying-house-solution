@@ -33,7 +33,7 @@
                                                     <th>{{ __('Order No') }}</th>
                                                     <th>{{ __('Query No') }}</th>
                                                     <th>{{ __('Product Type') }}</th>
-                                                    <th>{{ __('Buyer') }}</th>
+                                                    <th>{{ __('Brand') }}</th>
                                                     <th>{{ __('Merchandiser') }}</th>
                                                     <th>{{ __('Total Quantity') }}</th>
                                                     <th>{{ __('Action') }}</th>
@@ -223,8 +223,8 @@
                         searchable: true
                     },
                     {
-                        data: 'buyer',
-                        name: 'buyer',
+                        data: 'brand',
+                        name: 'brand',
                         orderable: true,
                         searchable: true
                     },

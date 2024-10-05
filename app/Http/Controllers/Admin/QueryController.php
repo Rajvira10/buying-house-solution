@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use DataTables;
 use Carbon\Carbon;
+use App\Models\Tna;
 use App\Models\File;
 use App\Models\Trim;
 use App\Models\User;
 use App\Models\Brand;
 use App\Models\Buyer;
+use App\Models\Order;
 use App\Models\Query;
 use App\Models\Factory;
 use App\Models\Product;
@@ -83,8 +85,8 @@ class QueryController extends Controller
                 ->addColumn('brand', function ($category) {
                     return $category->brand->name;
                 })
-                ->addColumn('product_names', function ($category) {
-                    return $category->items->pluck('product.name')->implode(', ');
+                ->addColumn('product_type', function ($category) {
+                    return $category->product_type->name;
                 })
                 ->addColumn('quantity', function ($category) {
                     return $category->items->pluck('approximate_quantity')->implode(', ');
@@ -111,16 +113,10 @@ class QueryController extends Controller
                         ="dropdown-item"><i class="ri-chat-1-line me-2"></i> Chat</a></li>';
                     }
 
-                    if(in_array('order.create', session('user_permissions')) && $category->status == 'Approved')
-                    {
-                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="createOrder(' . $category->id . ')">
-                                            <i class="ri-file-list-3-fill me-2"></i> Create Order
-                                        </button></li>';
-                    }
 
                     if(in_array('query.change_status', session('user_permissions')))
                     {
-                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->id . ')">
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->id . ', \'' . addslashes($category->product_type->name) . '\')">
                                             <i class="ri-checkbox-circle-fill me-2"></i> Change Status
                                         </button></li>';
                     }
@@ -867,4 +863,80 @@ class QueryController extends Controller
             'messages' => $messages
         ]);
     }
+    
+    public function approve(Request $request)
+    {
+        if(!in_array('order.index', session('user_permissions')))
+        {
+            return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
+        }
+
+        $request->session()->now('view_name', 'admin.orders.order.index');
+        
+        $tnas = Tna::all();
+
+        if($request->ajax()){
+
+            $orders = Order::with('items')
+                ->whereHas('queryModel', function ($query) {
+                    $query->where('status', 'Sent For Approval');
+                })
+                ->latest()
+                ->get();
+
+
+            return DataTables::of($orders)
+                ->addColumn('brand', function ($category) {
+                    return $category->queryModel->brand->name;
+                })
+                ->addColumn('product_type', function ($category) {
+                    return $category->queryModel->product_type->name;
+                })
+                ->addColumn('merchandiser', function ($category) {
+                    return $category->queryModel->merchandiser ? $category->queryModel->merchandiser->user->username : '';
+                })
+                ->addColumn('date', function ($category) {
+                    return Carbon::parse($category->order_date)->format('d/m/Y');
+                })
+                ->addColumn('query_no', function ($category) {
+                    return $category->queryModel->query_no;
+                })
+                ->addColumn('action', function ($category) {
+                    $edit_button = '<div class="dropdown d-inline-block">
+                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="ri-more-fill align-middle"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">';
+                    if(in_array('order.index', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><a href="'.route('orders.show', $category->id).'" class
+                        ="dropdown-item"><i class="ri-eye-fill me-2"></i> View</a></li>';
+                    }
+                    // if(in_array('order.edit', session('user_permissions')))
+                    // {
+                    //     $edit_button .= '<li><a href="'.route('factories.edit', $category->id).'" class
+                    //     ="dropdown-item"><i class="ri-pencil-line me-2"></i> Edit</a></li>';
+                    // }
+                    
+                    if(in_array('order.create', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->queryModel->id . ')">
+                                            <i class="ri-checkbox-circle-fill me-2"></i> Change Status
+                                        </button></li>';
+                    }
+
+
+
+                    
+                    $edit_button .= '</ul></div>';
+                    return $edit_button;
+                })
+                ->addIndexColumn()
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.order.order.approve', compact('tnas'));
+    }
+
 }

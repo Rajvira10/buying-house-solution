@@ -56,20 +56,12 @@
                                 </div>
                             </div>
 
-                            <!-- Chat Area -->
                             <div class="col-lg-9">
                                 <div class="chat-box bg-light" style="height: 600px;">
-                                    <!-- Chat Header -->
                                     <div class="p-3 border-bottom">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1">
                                                 <h5 class="font-size-16 mb-0">Query Chat</h5>
-                                            </div>
-                                            <div class="flex-shrink-0">
-                                                <button class="btn btn-light btn-sm" data-bs-toggle="tooltip"
-                                                    title="Refresh Chat">
-                                                    <i class="ri-refresh-line"></i>
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -264,13 +256,13 @@
                             <h5 class="conversation-name">${message.user.username}</h5>
                             <div class="ctext-wrap d-flex flex-column">
                                 ${message.attachment ? `
-                                                                            <div class="mb-1">
-                                                                                <a href="${message.attachment}" target="_blank"  class="${isCurrentUser ? 'text-white' : 'text-dark'} flex align-items-center" style="cursor: pointer">
-                                                                                    <i class="ri-file-text-fill"></i> 
-                                                                                    <span>View Attachment</span>
-                                                                                    
-                                                                                </a>
-                                                                            </div>` : ''}
+                                                                                    <div class="mb-1">
+                                                                                        <a href="${message.attachment}" target="_blank"  class="${isCurrentUser ? 'text-white' : 'text-dark'} flex align-items-center" style="cursor: pointer">
+                                                                                            <i class="ri-file-text-fill"></i> 
+                                                                                            <span>View Attachment</span>
+                                                                                            
+                                                                                        </a>
+                                                                                    </div>` : ''}
                                 <p class="mb-0 text-start">${message.message}</p>
                             </div>
                             <div class="d-flex justify-content-${isCurrentUser ? 'end' : 'start'} w-100">

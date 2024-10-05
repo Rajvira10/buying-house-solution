@@ -526,6 +526,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             Route::post('send-message', 'QueryController@sendMessage')->name('queries.send_message');
 
             Route::get('get-messages', 'QueryController@getMessages')->name('queries.get_messages');
+
+            Route::get('approve', 'QueryController@approve')->name('queries.approve');
         });
 
         Route::group(['prefix' => 'order'], function(){

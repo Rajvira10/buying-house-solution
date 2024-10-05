@@ -51,7 +51,6 @@
                                                     <option value="{{ $product_type->id }}"
                                                         {{ $query->product_type_id == $product_type->id ? 'selected' : '' }}>
                                                         {{ $product_type->name }}
-                                                        >{{ $product_type->name }}
                                                     </option>
                                                 @endforeach
                                             </select>

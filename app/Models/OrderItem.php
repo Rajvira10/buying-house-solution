@@ -15,6 +15,7 @@ class OrderItem extends Model
 
     protected $casts = [
         'shipment_date' => 'datetime',
+        'colors' => 'array',
     ];
 
     public function order()

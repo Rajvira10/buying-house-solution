@@ -159,63 +159,6 @@
                     </li>
                 @endif
 
-                @if ($permissions->nav_crm_group)
-
-                    <li class="nav-item">
-
-                        @php
-                            $active = $show = '';
-                            if (
-                                in_array(session('view_name'), [
-                                    'admin.crm.buyer.index',
-                                    'admin.crm.factory.index',
-                                    'admin.crm.supplier.index',
-                                    'admin.crm.brand.index',
-                                ])
-                            ) {
-                                $active = 'active';
-                                $show = 'show';
-                            }
-                        @endphp
-
-                        <a class="nav-link menu-link {{ $active }}" href="#sidebarCRM" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="sidebarCRM">
-                            <i class="ri-customer-service-2-line"></i> <span data-key="t-crm">CRM</span>
-                        </a>
-                        <div class="collapse menu-dropdown {{ $show }}" id="sidebarCRM">
-                            <ul class="nav nav-sm flex-column">
-                                @if ($permissions->nav_buyer_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('buyers.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.buyer.index' ? 'active' : '' }}"
-                                            data-key="t-buyer">Buyer</a>
-                                    </li>
-                                @endif
-                                @if ($permissions->nav_brand_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('brands.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.brand.index' ? 'active' : '' }}"
-                                            data-key="t-brand">Brand</a>
-                                    </li>
-                                @endif
-                                @if ($permissions->nav_factory_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('factories.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.factory.index' ? 'active' : '' }}"
-                                            data-key="t-factory">Factory</a>
-                                    </li>
-                                @endif
-                                @if ($permissions->nav_supplier_option)
-                                    <li class="nav-item">
-                                        <a href="{{ route('suppliers.index') }}" target="_self"
-                                            class="nav-link {{ session('view_name') == 'admin.crm.supplier.index' ? 'active' : '' }}"
-                                            data-key="t-supplier">Supplier</a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    </li>
-                @endif
 
                 {{-- @if ($permissions->nav_call_group)
                     <li class="nav-item">
@@ -536,6 +479,10 @@
                                 in_array(session('view_name'), [
                                     'admin.query.product_type.index',
                                     'admin.query.product.index',
+                                    'admin.crm.buyer.index',
+                                    'admin.crm.brand.index',
+                                    'admin.crm.factory.index',
+                                    'admin.crm.supplier.index',
                                 ])
                             ) {
                                 $active = 'active';
@@ -561,6 +508,34 @@
                                         <a href="{{ route('products.index') }}" target="_self"
                                             class="nav-link {{ session('view_name') == 'admin.query.product.index' ? 'active' : '' }}"
                                             data-key="t-product">Product</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_buyer_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('buyers.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.buyer.index' ? 'active' : '' }}"
+                                            data-key="t-buyer">Buyer</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_brand_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('brands.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.brand.index' ? 'active' : '' }}"
+                                            data-key="t-brand">Brand</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_factory_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('factories.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.factory.index' ? 'active' : '' }}"
+                                            data-key="t-factory">Factory</a>
+                                    </li>
+                                @endif
+                                @if ($permissions->nav_supplier_option)
+                                    <li class="nav-item">
+                                        <a href="{{ route('suppliers.index') }}" target="_self"
+                                            class="nav-link {{ session('view_name') == 'admin.crm.supplier.index' ? 'active' : '' }}"
+                                            data-key="t-supplier">Supplier</a>
                                     </li>
                                 @endif
                             </ul>

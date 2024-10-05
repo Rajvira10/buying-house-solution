@@ -23,6 +23,8 @@ class Query extends Model
         'query_date' => 'datetime',
     ];
 
+    protected $guarded = [];
+
     public function children()
     {
         return $this->hasMany(Query::class, 'parent_id');

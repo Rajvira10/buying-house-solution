@@ -17,8 +17,8 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->string('disculpe')->nullable();
-            $table->string('brand')->nullable();
+            $table->string('type')->nullable();
+            $table->string('image')->nullable();
             $table->string('code')->nullable();
             $table->string('function')->nullable();
             $table->string('model')->nullable();
@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('fit')->nullable();
             $table->string('fabric')->nullable();
             $table->string('weight')->nullable();
+            $table->string('sizes')->nullable();
+            $table->json('colors')->nullable();
+            $table->integer('master_box')->default(0);
             $table->bigInteger('pieces')->default(0);
             $table->dateTime('shipment_date')->default(now());
             $table->timestamps();

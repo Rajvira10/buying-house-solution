@@ -5,7 +5,7 @@
 @endphp
 
 @extends('admin.layout')
-@section('title', 'Product Types')
+@section('title', 'Queries')
 @section('content')
 
     <div class="main-content">
@@ -17,17 +17,8 @@
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="col">
-                                        <h4 class="card-title mb-0">Product Types</h4>
+                                        <h4 class="card-title mb-0">Queries</h4>
                                     </div>
-                                    {{-- <div class="col-sm-auto">
-                                        @if (in_array('product_type.create', session('user_permissions')))
-                                            <a href="{{ route('product_types.create') }}">
-                                                <button type="button" class="btn btn-success add-btn">
-                                                    <i class="ri-add-line align-bottom me-1"></i> Add
-                                                </button>
-                                            </a>
-                                        @endif
-                                    </div> --}}
                                 </div>
                             </div>
 
@@ -38,8 +29,13 @@
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>{{ __('#') }}</th>
-                                                    <th>{{ __('Name') }}</th>
-                                                    {{-- <th>{{ __('Action') }}</th> --}}
+                                                    <th>{{ __('Date') }}</th>
+                                                    <th>{{ __('Query No') }}</th>
+                                                    <th>{{ __('Product Type') }}</th>
+                                                    <th>{{ __('Brand') }}</th>
+                                                    <th>{{ __('Merchandiser') }}</th>
+                                                    <th>{{ __('Total Quantity') }}</th>
+                                                    <th>{{ __('Action') }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -54,6 +50,39 @@
                         <!-- end col -->
                     </div>
                     <!-- end col -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for adding TNAs -->
+    <div class="modal fade" id="addTnaModal" tabindex="-1" aria-labelledby="addTnaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTnaModalLabel">Add TNA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="tnaForm">
+                        <input type="hidden" id="order_id" name="order_id">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>TNA</th>
+                                    <th>Plan Date</th>
+                                    <th>Actual Date</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tnaTableBody">
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveTnaBtn">Save</button>
                 </div>
             </div>
         </div>
@@ -159,7 +188,7 @@
                 },
                 pagingType: "full_numbers",
                 ajax: {
-                    url: "{{ route('product_types.index') }}",
+                    url: "{{ route('queries.approve') }}",
                     type: "get"
                 },
                 columns: [{
@@ -169,21 +198,51 @@
                         searchable: false
                     },
                     {
-                        data: 'name',
-                        name: 'Name',
+                        data: 'date',
+                        name: 'date',
                         orderable: true,
                         searchable: true
                     },
-                    // {
-                    //     data: 'action',
-                    //     name: 'action',
-                    //     orderable: false,
-                    //     searchable: false
-                    // }
+                    {
+                        data: 'query_no',
+                        name: 'query_no',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'product_type',
+                        name: 'product_type',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'brand',
+                        name: 'brand',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'merchandiser',
+                        name: 'merchandiser',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'total_quantity',
+                        name: 'total_quantity',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
                 ],
             });
         });
-        const deleteProductType = (id) => {
+        const deleteOrder = (id) => {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -195,10 +254,10 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: "{{ route('product_types.destroy') }}",
+                        url: "{{ route('orders.destroy') }}",
                         method: 'POST',
                         data: {
-                            product_type_id: id,
+                            order_id: id,
                             _token: '{{ csrf_token() }}'
                         },
                         headers: {
@@ -207,7 +266,7 @@
                         success: function(response) {
                             if (response.success) {
                                 $('#expenseCategoryTable').DataTable().ajax.reload();
-                                toaster('Product Type Deleted Successfully', 'success');
+                                toaster('Order Deleted Successfully', 'success');
                             } else {
                                 toaster(response.error, 'danger');
                             }
@@ -220,5 +279,79 @@
                 }
             })
         }
+
+        const changeQueryStatus = (id) => {
+            Swal.fire({
+                title: 'Change Query Status',
+                html: `
+            <select id="queryStatus" class="form-control mb-3">
+                <option value="Approved">Approve</option>
+                <option value="Rejected">Reject</option>
+            </select>
+            <textarea id="rejection_note" class="form-control d-none" placeholder="Rejection Note"></textarea>
+        `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#556ee6',
+                cancelButtonColor: '#f46a6a',
+                confirmButtonText: 'Yes, change it!',
+                didOpen: () => {
+                    $('#queryStatus').change(function() {
+                        const selectedStatus = $(this).val();
+                        if (selectedStatus === 'Rejected') {
+                            $('#rejection_note').removeClass('d-none');
+                        } else {
+                            $('#rejection_note').addClass('d-none');
+                        }
+                    });
+                },
+                preConfirm: () => {
+                    const status = document.getElementById('queryStatus').value;
+                    const rejectionNote = document.getElementById('rejection_note').value;
+                    return {
+                        status,
+                        rejectionNote
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const {
+                        status,
+                        rejectionNote
+                    } = result.value;
+
+                    if (status === 'Sent For Approval') {
+                        $('#query_id').val(id);
+                        $('#orderModal').modal('show');
+                    } else {
+                        $.ajax({
+                            url: "{{ route('queries.change_status') }}",
+                            method: 'POST',
+                            data: {
+                                query_id: id,
+                                status: status,
+                                rejection_note: rejectionNote,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    $('#expenseCategoryTable').DataTable().ajax.reload();
+                                    toaster('Query Status Changed Successfully', 'success');
+                                } else {
+                                    toaster(response.error, 'danger');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(error);
+                                toaster('Something went wrong', 'danger');
+                            }
+                        });
+                    }
+                }
+            });
+        };
     </script>
 @endsection

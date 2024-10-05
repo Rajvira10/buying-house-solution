@@ -11,6 +11,7 @@ use Database\Seeders\AccountSeeder;
 use Database\Seeders\WarehouseSeeder;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\PermissionSeeder;
+use Database\Seeders\ProductTypeSeeder;
 use Database\Seeders\StatesTableSeeder;
 use Database\Seeders\CountriesTableSeeder;
 use Database\Seeders\CitiesTableChunkOneSeeder;
@@ -40,6 +41,7 @@ class DatabaseSeeder extends Seeder
             WarehouseSeeder::class,
             DepartmentSeeder::class,
             TNASeeder::class,
+            ProductTypeSeeder::class,
         ]);
 
         $this->call(CountriesTableSeeder::class);
