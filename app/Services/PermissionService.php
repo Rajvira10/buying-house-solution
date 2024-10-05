@@ -24,15 +24,7 @@ class PermissionService
     public $nav_payroll_option = false;
 
 
-    public $nav_crm_group = false;
-
-    public $nav_factory_option = false;
-
-    public $nav_buyer_option = false;
-
-    public $nav_supplier_option = false;
-
-    public $nav_brand_option = false;
+    
 
     public $nav_call_group = false;
 
@@ -75,6 +67,14 @@ class PermissionService
     public $nav_product_type_option = false;
 
     public $nav_product_option = false;
+
+    public $nav_factory_option = false;
+
+    public $nav_buyer_option = false;
+
+    public $nav_supplier_option = false;
+
+    public $nav_brand_option = false;
 
 
     public $nav_order_group = false;
@@ -190,7 +190,6 @@ class PermissionService
             $this->nav_payroll_option = true;
         }
 
-        // CRM Group
 
         if(in_array('factory.index', $permissions) || in_array('buyer.index', $permissions) || in_array('supplier.index', $permissions) || in_array('brand.index', $permissions))
         {
@@ -309,9 +308,29 @@ class PermissionService
 
         // Config Group
     
-        if(in_array('product.index', $permissions) || in_array('product_type.index', $permissions))
+        if(in_array('product.index', $permissions) || in_array('product_type.index', $permissions ) || in_array('brand.index', $permissions) || in_array('supplier.index', $permissions) || in_array('buyer.index', $permissions) || in_array('factory.index', $permissions))
         {
             $this->nav_config_group = true;
+        }
+
+        if(in_array('factory.index', $permissions))
+        {
+            $this->nav_factory_option = true;
+        }
+
+        if(in_array('buyer.index', $permissions))
+        {
+            $this->nav_buyer_option = true;
+        }
+
+        if(in_array('supplier.index', $permissions))
+        {
+            $this->nav_supplier_option = true;
+        }
+
+        if(in_array('brand.index', $permissions))
+        {
+            $this->nav_brand_option = true;
         }
 
         if(in_array('product_type.index', $permissions))
@@ -469,8 +488,6 @@ class PermissionService
         $this->nav_salary_sheet_option =  true;
 
         $this->nav_payroll_option =  true;
-
-        $this->nav_crm_group =  true;
 
         $this->nav_factory_option =  true;
 

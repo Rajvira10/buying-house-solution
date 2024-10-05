@@ -867,14 +867,12 @@ class QueryController extends Controller
     
     public function approve(Request $request)
     {
-        if(!in_array('order.index', session('user_permissions')))
+        if(!in_array('query.approve', session('user_permissions')))
         {
             return redirect()->route('admin-dashboard')->with('error', 'You are not authorized');
         }
 
         $request->session()->now('view_name', 'admin.orders.order.index');
-        
-        $tnas = Tna::all();
 
         if($request->ajax()){
 
@@ -925,9 +923,6 @@ class QueryController extends Controller
                                             <i class="ri-checkbox-circle-fill me-2"></i> Change Status
                                         </button></li>';
                     }
-
-
-
                     
                     $edit_button .= '</ul></div>';
                     return $edit_button;
@@ -937,7 +932,7 @@ class QueryController extends Controller
                 ->make(true);
         }
 
-        return view('admin.order.order.approve', compact('tnas'));
+        return view('admin.order.order.approve');
     }
 
 }

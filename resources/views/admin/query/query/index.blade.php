@@ -20,7 +20,7 @@
                                         <h4 class="card-title mb-0">Queries</h4>
                                     </div>
                                     <div class="col-sm-auto">
-                                        @if (in_array('order.create', session('user_permissions')))
+                                        @if (in_array('query.approve', session('user_permissions')))
                                             <a href="{{ route('queries.approve') }}">
                                                 <button type="button" class="btn btn-success add-btn">
                                                     Approve Orders
@@ -116,7 +116,7 @@
                                     <h6 class="mb-0"><i class="ri-shopping-bag-2-line"></i> Product Details</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="mb-3 knit">
+                                    <div class="mb-3">
                                         <label class="form-label">Product Image</label>
                                         <input type="file" name="product_image[]" class="form-control">
                                     </div>
@@ -313,9 +313,9 @@
                             <input type="number" 
                                    name="colors[${productIndex}][${colorIndex}][quantities][${sizeValue}]" 
                                    class="form-control" 
-                                   placeholder="Quantity" 
-                                   value="${existingQuantity}" 
-                                   required min="0">
+                                   placeholder="" 
+                                   value="${existingQuantity ?? 0}"
+                                    min="0">
                         </div>
                     </div>
                 `;

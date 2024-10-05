@@ -50,18 +50,18 @@
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light sticky-header">
                                         <tr>
-                                            @if ($order->product_type == 'Knit')
+                                            @if ($order->product_type->name == 'Knit')
                                                 <th>Image</th>
                                             @endif
                                             <th>Code</th>
-                                            @if ($order->product_type == 'Knit')
+                                            @if ($order->product_type->name == 'Knit')
                                                 <th>Function</th>
                                                 <th>Model</th>
                                                 <th>Fit</th>
                                             @endif
                                             <th>Fabric</th>
                                             <th>Weight</th>
-                                            @if ($order->product_type == 'Knit')
+                                            @if ($order->product_type->name == 'Knit')
                                                 <th>Shipment Date</th>
                                             @endif
                                         </tr>
@@ -69,7 +69,7 @@
                                     <tbody>
                                         @foreach ($order->items as $item)
                                             <tr>
-                                                @if ($order->product_type == 'Knit')
+                                                @if ($order->product_type->name == 'Knit')
                                                     <td>
                                                         <img src="{{ asset($item->image) }}" alt="Image"
                                                             class="img-fluid" style="max-width: 100px;">
@@ -77,14 +77,14 @@
                                                 @endif
 
                                                 <td>{{ $item->code }}</td>
-                                                @if ($order->product_type == 'Knit')
+                                                @if ($order->product_type->name == 'Knit')
                                                     <td>{{ $item->function }}</td>
                                                     <td>{{ $item->model }}</td>
                                                     <td>{{ $item->fit }}</td>
                                                 @endif
                                                 <td>{{ $item->fabric }}</td>
                                                 <td>{{ $item->weight }}</td>
-                                                @if ($order->product_type == 'Knit')
+                                                @if ($order->product_type->name == 'Knit')
                                                     <td>{{ $item->shipment_date->format('d-m-Y') }}</td>
                                                 @endif
                                             </tr>

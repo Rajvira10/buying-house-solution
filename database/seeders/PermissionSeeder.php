@@ -375,7 +375,6 @@ class PermissionSeeder extends Seeder
         //     $permission->save();
         // }
 
-        // PERMISSION GROUP - CRM
 
         $permission = Permission::where('name', '=', 'buyer.index')->first();
 
@@ -386,7 +385,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.index";
             $permission->alias = "View Buyers";
             $permission->description = "To view the list of buyers";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -400,7 +399,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.create";
             $permission->alias = "Create Buyers";
             $permission->description = "To create a new buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -414,7 +413,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.edit";
             $permission->alias = "Edit Buyers";
             $permission->description = "To edit a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -428,7 +427,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.delete";
             $permission->alias = "Delete Buyers";
             $permission->description = "To delete a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -442,7 +441,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.show";
             $permission->alias = "View Buyer Details";
             $permission->description = "To view the details of a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -455,7 +454,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.add_contact_person";
             $permission->alias = "Add Contact Person";
             $permission->description = "To add a new contact person to a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -467,7 +466,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.edit_contact_person";
             $permission->alias = "Edit Contact Person";
             $permission->description = "To edit a contact person of a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -479,7 +478,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "buyer.delete_contact_person";
             $permission->alias = "Delete Contact Person";
             $permission->description = "To delete a contact person of a buyer";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -492,7 +491,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "brand.index";
             $permission->alias = "View Brands";
             $permission->description = "To view the list of brands";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -506,7 +505,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "brand.create";
             $permission->alias = "Create Brands";
             $permission->description = "To create a new brand";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -520,7 +519,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "brand.edit";
             $permission->alias = "Edit Brands";
             $permission->description = "To edit a brand";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -534,7 +533,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "brand.delete";
             $permission->alias = "Delete Brands";
             $permission->description = "To delete a brand";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -548,7 +547,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "brand.show";
             $permission->alias = "View Brand Details";
             $permission->description = "To view the details of a brand";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -561,7 +560,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.index";
             $permission->alias = "View Factories";
             $permission->description = "To view the list of factories";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -573,7 +572,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.create";
             $permission->alias = "Create Factories";
             $permission->description = "To create a new factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -585,7 +584,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.edit";
             $permission->alias = "Edit Factories";
             $permission->description = "To edit a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -597,7 +596,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.delete";
             $permission->alias = "Delete Factories";
             $permission->description = "To delete a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -609,7 +608,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.show";
             $permission->alias = "View Factory Details";
             $permission->description = "To view the details of a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -621,7 +620,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.add_contact_person";
             $permission->alias = "Add Contact Person";
             $permission->description = "To add a new contact person to a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -633,7 +632,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.edit_contact_person";
             $permission->alias = "Edit Contact Person";
             $permission->description = "To edit a contact person of a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -645,7 +644,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "factory.delete_contact_person";
             $permission->alias = "Delete Contact Person";
             $permission->description = "To delete a contact person of a factory";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -657,7 +656,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.index";
             $permission->alias = "View Suppliers";
             $permission->description = "To view the list of suppliers";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -669,7 +668,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.create";
             $permission->alias = "Create Suppliers";
             $permission->description = "To create a new supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -681,7 +680,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.edit";
             $permission->alias = "Edit Suppliers";
             $permission->description = "To edit a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -693,7 +692,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.delete";
             $permission->alias = "Delete Suppliers";
             $permission->description = "To delete a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -705,7 +704,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.show";
             $permission->alias = "View Supplier Details";
             $permission->description = "To view the details of a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -717,7 +716,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.add_contact_person";
             $permission->alias = "Add Contact Person";
             $permission->description = "To add a new contact person to a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -729,7 +728,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.edit_contact_person";
             $permission->alias = "Edit Contact Person";
             $permission->description = "To edit a contact person of a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
 
@@ -741,7 +740,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "supplier.delete_contact_person";
             $permission->alias = "Delete Contact Person";
             $permission->description = "To delete a contact person of a supplier";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
             $permission->save();
         }
         
@@ -811,7 +810,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_source.index";
         //     $permission->alias = "View Client Sources";
         //     $permission->description = "To view the list of client sources";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -825,7 +824,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_source.create";
         //     $permission->alias = "Create Client Sources";
         //     $permission->description = "To create a new client source";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -839,7 +838,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_source.edit";
         //     $permission->alias = "Edit Client Sources";
         //     $permission->description = "To edit a client source";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -853,7 +852,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_source.delete";
         //     $permission->alias = "Delete Client Sources";
         //     $permission->description = "To delete a client source";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -867,7 +866,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_status.index";
         //     $permission->alias = "View Client Statuses";
         //     $permission->description = "To view the list of client statuses";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -881,7 +880,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_status.create";
         //     $permission->alias = "Create Client Statuses";
         //     $permission->description = "To create a new client status";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -895,7 +894,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_status.edit";
         //     $permission->alias = "Edit Client Statuses";
         //     $permission->description = "To edit a client status";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -909,7 +908,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client_status.delete";
         //     $permission->alias = "Delete Client Statuses";
         //     $permission->description = "To delete a client status";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -923,7 +922,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "business_category.index";
         //     $permission->alias = "View Business Categories";
         //     $permission->description = "To view the list of business categories";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -937,7 +936,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "business_category.create";
         //     $permission->alias = "Create Business Categories";
         //     $permission->description = "To create a new business category";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -951,7 +950,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "business_category.edit";
         //     $permission->alias = "Edit Business Categories";
         //     $permission->description = "To edit a business category";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -965,7 +964,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "business_category.delete";
         //     $permission->alias = "Delete Business Categories";
         //     $permission->description = "To delete a business category";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -979,7 +978,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "interested_in.index";
         //     $permission->alias = "View Interests";
         //     $permission->description = "To view the list of interests";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -993,7 +992,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "interested_in.create";
         //     $permission->alias = "Create Interests";
         //     $permission->description = "To create a new interest";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1007,7 +1006,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "interested_in.edit";
         //     $permission->alias = "Edit Interests";
         //     $permission->description = "To edit an interest";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1021,7 +1020,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "interested_in.delete";
         //     $permission->alias = "Delete Interests";
         //     $permission->description = "To delete an interest";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1035,7 +1034,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.index";
         //     $permission->alias = "View Clients";
         //     $permission->description = "To view the list of clients";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1049,7 +1048,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.create";
         //     $permission->alias = "Create Clients";
         //     $permission->description = "To create a new client";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1063,7 +1062,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.edit";
         //     $permission->alias = "Edit Clients";
         //     $permission->description = "To edit a client";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1077,7 +1076,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.delete";
         //     $permission->alias = "Delete Clients";
         //     $permission->description = "To delete a client";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1091,7 +1090,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.show";
         //     $permission->alias = "View Client Details";
         //     $permission->description = "To view the details of a client";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
 
         //     $permission->save();
         // }
@@ -1104,7 +1103,7 @@ class PermissionSeeder extends Seeder
         //     $permission->name = "client.add_contact_person";
         //     $permission->alias = "Add Contact Person";
         //     $permission->description = "To add a new contact person to a client";
-        //     $permission->permission_group = "CRM";
+        //     $permission->permission_group = "Config";
         //     $permission->save();
         // }
         
@@ -1842,7 +1841,7 @@ class PermissionSeeder extends Seeder
             $permission->name = "product_type.delete";
             $permission->alias = "Delete Product Types";
             $permission->description = "To delete a product type";
-            $permission->permission_group = "CRM";
+            $permission->permission_group = "Config";
 
             $permission->save();
         }
@@ -2183,7 +2182,23 @@ class PermissionSeeder extends Seeder
             $permission->save();
         }
 
+        $permission = Permission::where('name', '=', 'query.approve')->first();
+
+        if($permission == null)
+        {
+            $permission = new Permission();
+
+            $permission->name = "query.approve";
+            $permission->alias = "Approve PO Sheet";
+            $permission->description = "To approve a query and PO sheet";
+            $permission->permission_group = "Query";
+
+            $permission->save();
+        }
+
         // PERMISSION GROUP - ORDER
+
+
 
         $permission = Permission::where('name', '=', 'order.index')->first();
 
