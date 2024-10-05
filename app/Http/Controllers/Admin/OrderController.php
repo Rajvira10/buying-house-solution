@@ -10,6 +10,7 @@ use App\Models\Query;
 use App\Models\OrderTna;
 use Illuminate\Http\Request;
 use App\Imports\OrdersImport;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 
