@@ -96,6 +96,24 @@
                                                                 <td><strong>Address :</strong></td>
                                                                 <td>{{ $brand->address }}</td>
                                                             </tr>
+                                                            @foreach ($brand->banks as $bank)
+                                                                <tr>
+                                                                    <td><strong>Bank Name :</strong></td>
+                                                                    <td>{{ $bank->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Account Number :</strong></td>
+                                                                    <td>{{ $bank->account_no }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Branch :</strong></td>
+                                                                    <td>{{ $bank->branch }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Swift Code :</strong></td>
+                                                                    <td>{{ $bank->swift_code }}</td>
+                                                                </tr>
+                                                            @endforeach
                                                         </table>
                                                     </div>
                                                 </div>

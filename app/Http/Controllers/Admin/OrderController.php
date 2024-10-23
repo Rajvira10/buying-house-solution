@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Tna;
 use App\Models\Order;
 use App\Models\Query;
+use App\Models\Setting;
 use App\Models\OrderTna;
 use Illuminate\Http\Request;
 use App\Imports\OrdersImport;
@@ -95,6 +96,17 @@ class OrderController extends Controller
                                             </a>
                                         </li>';
                     }
+
+                    if(in_array('order.index', session('user_permissions')))
+                    {
+                        //print sales contract
+                        $edit_button .= '<li>
+                                            <a href="'.route('orders.print_sales_contract', $category->id).'" class="dropdown-item">
+                                                <i class="ri-printer-line align-bottom me-2"></i> Print Sales Contract
+                                            </a>
+                                        </li>';
+
+                    }
                     
                     if(in_array('order.delete', session('user_permissions')))
                     {
@@ -116,6 +128,18 @@ class OrderController extends Controller
         return view('admin.order.order.index', compact('tnas'));
     }
 
+    public function printSalesContract(Request $request, $id)
+    {
+        $order = Order::with('items', 'queryModel.brand', 'queryModel.product_type', 'queryModel.merchandiser.user')
+            ->findOrFail($id);
+
+        $settings = Setting::first();
+
+        $sale_contract_number = 'VSL/' . $order->order_no . '/' . date('Y');
+
+        return view('admin.order.order.print_sales_contract', compact('order', 'sale_contract_number', 'settings'));
+    }
+
     public function show(Request $request)
     {
         if(!in_array('order.index', session('user_permissions')))
@@ -130,21 +154,19 @@ class OrderController extends Controller
         return view('admin.order.order.show', compact('order'));
     }
     
-   public function store(Request $request)
+    public function store(Request $request)
     {
+
 
         $request->validate([
             'query_id' => 'required|integer',
             'sizes' => 'nullable',
-            'product_code.*' => 'nullable',
-            'product_function.*' => 'nullable',
-            'product_model.*' => 'nullable',
-            'product_shipment_date.*' => 'nullable',
-            'product_fit.*' => 'nullable',
-            'product_details.*' => 'nullable',
-            'product_fabric.*' => 'nullable',
-            'product_weight.*' => 'nullable',
-            'product_master_box.*' => 'nullable',
+            'sizes.*' => 'required',
+            'style_no.*' => 'nullable',
+            'item.*' => 'nullable',
+            'factory_cost.*' => 'nullable',
+            'final_cost.*' => 'nullable',
+            'shipment_date.*' => 'nullable',
             'colors' => 'required',
             'colors.*' => 'required',   
             'product_image.*' => 'nullable',
@@ -162,7 +184,7 @@ class OrderController extends Controller
 
         $total_quantities = 0;
 
-        foreach ($request->product_fabric as $index => $product_code) {
+        foreach ($request->item as $index => $product) {
             $total_color_quantities = 0;
             foreach($request->colors[$index] as $color_quantity){
                 foreach($color_quantity['quantities'] as $quantity){
@@ -181,20 +203,16 @@ class OrderController extends Controller
             }
 
             $orderItem = $order->items()->create([
-                'type' => $product_type,
                 'image' => $image_name ? 'public/uploads/products/' . $image_name : '',
-                'code' => $request->product_code[$index] ?? '',
-                'function' => $request->product_function[$index] ?? '',
-                'model' => $request->product_model[$index] ?? '',
-                'details' => $request->product_details[$index] ?? '',
-                'fit' => $request->product_fit[$index],
-                'fabric' => $request->product_fabric[$index],
-                'weight' => $request->product_weight[$index],
                 'sizes' => json_encode($request->sizes),
-                'master_box' => $request->product_master_box[$index] ?? 0,
-                'shipment_date' => $request->product_shipment_date[$index] ?? now(),
+                'style_no' => $request->style_no[$index] ?? '',
+                'item' => $request->item[$index] ?? '',
+                'factory_cost' => $request->factory_cost[$index] ?? 0,
+                'final_cost' => $request->final_cost[$index] ?? 0,
+                'shipment_date' => $request->shipment_date[$index] ?? now(),
                 'colors' => json_encode($request->colors[$index]),
                 'pieces' => $total_color_quantities,
+                
             ]);
         }
 
@@ -202,6 +220,7 @@ class OrderController extends Controller
             'order_no' => 'ORD-' . $order->id,
             'total_quantity' => $total_quantities,
         ]);
+        
 
         $query = Query::find($request->query_id);
         $query->update([
@@ -219,6 +238,83 @@ class OrderController extends Controller
             return back()->with('error', 'Something went wrong!');
         }
     }
+
+    public function edit($id)
+    {
+        $order = Order::with('items', 'queryModel.brand', 'queryModel.product_type', 'queryModel.merchandiser.user')
+            ->findOrFail($id);
+        
+        return view('admin.order.order.edit', compact('order'));
+    } 
+
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'sizes' => 'nullable',
+        'sizes.*' => 'required',
+        'style_no.*' => 'nullable',
+        'item.*' => 'nullable',
+        'factory_cost.*' => 'nullable',
+        'final_cost.*' => 'nullable',
+        'shipment_date.*' => 'nullable',
+        'colors' => 'required',
+        'colors.*' => 'required',
+        'product_image.*' => 'nullable',
+    ]);
+
+    DB::beginTransaction();
+    try {
+        $order = Order::findOrFail($id);
+
+        $total_quantities = 0;
+
+        // Update or create items
+        foreach ($request->item as $index => $product) {
+            $total_color_quantities = 0;
+            foreach($request->colors[$index] as $color_quantity){
+                foreach($color_quantity['quantities'] as $quantity){
+                    $total_color_quantities += $quantity;
+                }
+            }
+
+            $total_quantities += $total_color_quantities;
+            
+            $image_name = $order->items[$index]->image;
+            
+            if ($request->file('product_image')[$index] ?? false) {
+                $image = $request->file('product_image')[$index];
+                $image_name = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/products'), $image_name);
+            }
+
+            // Update or create item
+            $orderItem = $order->items()->updateOrCreate(
+                ['id' => $order->items[$index]->id], // Check if the item exists
+                [
+                    'image' => $image_name ? 'public/uploads/products/' . $image_name : '',
+                    'sizes' => json_encode($request->sizes),
+                    'style_no' => $request->style_no[$index] ?? '',
+                    'item' => $request->item[$index] ?? '',
+                    'factory_cost' => $request->factory_cost[$index] ?? 0,
+                    'final_cost' => $request->final_cost[$index] ?? 0,
+                    'shipment_date' => $request->shipment_date[$index] ?? now(),
+                    'colors' => json_encode($request->colors[$index]),
+                    'pieces' => $total_color_quantities,
+                ]
+            );
+        }
+
+        $order->update([
+            'total_quantity' => $total_quantities,
+        ]);
+
+        DB::commit();
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully!');
+    } catch (\Throwable $th) {
+        DB::rollBack();
+        return back()->with('error', 'Something went wrong!');
+    }
+}
 
     public function destroy(Request $request)
     {

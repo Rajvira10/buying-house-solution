@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use DataTables;
 use App\Models\Brand;
 use App\Models\Buyer;
+use App\Models\BrandBank;
 use Illuminate\Http\Request;
 use App\Models\BrandContactPerson;
 use App\Http\Controllers\Controller;
@@ -55,6 +56,11 @@ class BrandController extends Controller
                                             </button>
                                         </li>';
                     }
+                    if(in_array('brand.create', session('user_permissions')))
+                    {
+                        $edit_button .= '<li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addBankModal" data-brand_id="'.$category->id.'"><i class="ri-bank-fill me-2"></i> Add Bank</button></li>';
+                    }
+
                     $edit_button .= '</ul></div>';
                     return $edit_button;
                 })
@@ -126,6 +132,34 @@ class BrandController extends Controller
         }
 
         return redirect()->route('brands.index')->with(['success' => 'Brand Created Successfully']);
+    }
+
+    public function storeBank(Request $request)
+    {
+        $request->validate([
+            'bank_name' => 'required',
+            'account_number' => 'required',
+            'branch' => 'required',
+            'swift_code' => 'required',
+            'brand_id' => 'required|exists:brands,id'
+        ]);
+
+        try {
+        $bank = new BrandBank();
+
+        $bank->name = $request->bank_name;
+        $bank->account_no = $request->account_number;
+        $bank->branch = $request->branch;
+        $bank->swift_code = $request->swift_code;
+        $bank->brand_id = $request->brand_id;
+
+        $bank->save();
+
+        return back()->with(['success' => 'Bank Added Successfully']);
+        } catch (\Throwable $th) {
+            dd($th);
+            return back()->with(['error' => 'Something went wrong']);
+        }
 
 
     }

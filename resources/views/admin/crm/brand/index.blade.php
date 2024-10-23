@@ -60,6 +60,43 @@
         </div>
     </div>
 
+    <div class="modal" id="addBankModal" tabindex="-1" role="dialog" aria-labelledby="addBankModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{{ route('brands.store_bank') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="brand_id" id="brand_id">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Bank</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label for="bank_name" class="form-label">Bank Name</label>
+                            <input type="text" class="form-control" id="bank_name" name="bank_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="account_number" class="form-label">Account Number</label>
+                            <input type="text" class="form-control" id="account_number" name="account_number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="branch" class="form-label">Branch</label>
+                            <input type="text" class="form-control" id="branch" name="branch" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="swift_code" class="form-label">Swift Code</label>
+                            <input type="text" class="form-control" id="swift_code" name="swift_code" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('custom-script')
@@ -190,6 +227,16 @@
                 ],
             });
         });
+
+        $('#addBankModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var brand_id = button.data('brand_id');
+            console.log(brand_id);
+            $('#brand_id').val(brand_id);
+        });
+
+
+
         const deleteBrand = (id) => {
             Swal.fire({
                 title: 'Are you sure?',

@@ -507,6 +507,10 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('update/{query_id}', 'QueryController@update')->name('queries.update');
 
+            Route::post('get-items', 'QueryController@getItems')->name('queries.get_items');
+
+            Route::post('update_factory_cost', 'QueryController@updateFactoryCost')->name('queries.update_factory_cost');
+
             Route::post('delete', 'QueryController@destroy')->name('queries.destroy');
 
             Route::post('store-specification-sheet', 'QueryController@storeSpecificationSheet')->name('queries.store_specification_sheet');
@@ -555,6 +559,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
             Route::post('delete_tna', 'OrderController@destroyTna')->name('orders.delete_tna');
 
             Route::get('print_tna/{order_id}', 'OrderController@printTna')->name('orders.print_tna');
+
+            Route::get('print-sales-contract/{id}', 'OrderController@printSalesContract')->name('orders.print_sales_contract');
         });
 
         Route::group(['prefix' => 'expense-category'], function(){
@@ -899,6 +905,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin'], function() {
 
             Route::post('update/{brand_id}', 'BrandController@update')->name('brands.update');
             
+            Route::post('delete', 'BrandController@destroy')->name('brands.destroy');
+
+            Route::post('store-bank', 'BrandController@storeBank')->name('brands.store_bank');
         });
 
 

@@ -85,12 +85,12 @@
                 <form action="{{ route('orders.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="query_id" id="query_id">
-                    <input type="hidden" name="query_product_type" id="query_product_type">
+
                     <div class="modal-body">
+                        <!-- Sizes Section -->
                         <div class="card mb-4">
                             <div class="card-header bg-light">
-                                <h6 class="mb-0">
-                                    Available Sizes</h6>
+                                <h6 class="mb-0">Available Sizes</h6>
                             </div>
                             <div class="card-body">
                                 <div id="sizeSection">
@@ -117,82 +117,35 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row mb-3">
-                                        <div class="col-md-9">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Style No</label>
+                                            <input type="text" name="style_no[]" class="form-control"
+                                                placeholder="Enter Style No" required>
+                                        </div>
+                                        <div class="col-md-4">
                                             <label class="form-label">Product Image</label>
                                             <input type="file" name="product_image[]" class="form-control">
                                         </div>
-                                        <div class="col-md-3 knit">
-                                            <label class="form-label">Fit</label>
-                                            <input type="text" name="product_fit[]" class="form-control"
-                                                placeholder="Enter Product Fit">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3 knit">
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Code
-                                            </label>
-                                            <input type="text" name="product_code[]" class="form-control" id="knitCode"
-                                                placeholder="Enter Product Code">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Function
-                                            </label>
-                                            <input type="text" name="product_function[]" class="form-control"
-                                                id="function" placeholder="Enter Product Function">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Model
-                                            </label>
-                                            <input type="text" name="product_model[]" class="form-control"
-                                                id="model" placeholder="Enter Product Model">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Shipment Date
-                                            </label>
-                                            <input type="date" name="product_shipment_date[]" class="form-control"
-                                                id="shipment_date" placeholder="Enter Product Shipment Date">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Item</label>
+                                            <input type="text" name="item[]" class="form-control"
+                                                placeholder="Enter Item Description">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-3 woven">
-                                            <label class="form-label">
-                                                Code
-                                            </label>
-                                            <input type="text" name="product_code[]" class="form-control"
-                                                id="wovenCode" placeholder="Enter Product Code">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Factory Cost</label>
+                                            <input type="number" step="0.01" name="factory_cost[]" class="form-control"
+                                                placeholder="Enter Factory Cost">
                                         </div>
-                                        <div class="col-md-3 knit">
-                                            <label class="form-label">
-                                                Details
-                                            </label>
-                                            <input type="text" name="product_details[]" class="form-control"
-                                                id="details" placeholder="Enter Product Details">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Final Cost</label>
+                                            <input type="number" step="0.01" name="final_cost[]" class="form-control"
+                                                placeholder="Enter Final Cost" required>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Fabric
-                                            </label>
-                                            <input type="text" name="product_fabric[]" class="form-control"
-                                                placeholder="Enter Product Fabric" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">
-                                                Weight
-                                            </label>
-                                            <input type="text" name="product_weight[]" class="form-control"
-                                                placeholder="Enter Product Weight" required>
-                                        </div>
-
-                                        <div class="col-md-3 knit">
-                                            <label class="form-label">
-                                                Master Box
-                                            </label>
-                                            <input type="number" name="product_master_box[]" class="form-control"
-                                                id="masterBox" placeholder="Enter Product Master Box Quantity">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Shipment Date</label>
+                                            <input type="date" name="shipment_date[]" class="form-control" required>
                                         </div>
                                     </div>
 
@@ -204,20 +157,24 @@
                                         <div class="card-body">
                                             <div class="colorSection" data-product-index="0">
                                                 <div class="color-entry mb-3">
-                                                    <div class="input-group mb-2">
+                                                    <div class="input-group mb-3">
                                                         <span class="input-group-text"><i
                                                                 class="ri-palette-fill"></i></span>
                                                         <input type="text" name="colors[0][0][name]"
                                                             class="form-control" placeholder="Color Name" required>
-                                                        <input type="text" name="colors[0][0][details]"
-                                                            class="form-control" placeholder="Color Details" required>
-
+                                                        <input type="text" name="colors[0][0][code]"
+                                                            class="form-control" placeholder="Color Code" required>
+                                                        <span class="input-group-text bg-primary text-white">
+                                                            <i class="ri-shopping-bag-line"></i>
+                                                        </span>
+                                                        <input type="number" name="colors[0][0][inner_polybag]"
+                                                            class="form-control" placeholder="Inner Polybag Count"
+                                                            min="1" required>
                                                         <button type="button" class="btn btn-outline-danger removeColor">
                                                             <i class="ri-close-fill"></i>
                                                         </button>
                                                     </div>
-                                                    <div class="row mb-2 sizeQuantitiesSection">
-                                                    </div>
+                                                    <div class="row mb-2 sizeQuantitiesSection"></div>
                                                 </div>
                                             </div>
                                             <button type="button" class="btn btn-outline-primary addColorBtn">
@@ -225,7 +182,6 @@
                                             </button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -247,7 +203,6 @@
     </div>
 
 
-
 @endsection
 
 @section('custom-script')
@@ -260,8 +215,6 @@
             const addSizeBtn = document.getElementById('addSizeBtn');
             const sizeSection = document.getElementById('sizeSection');
             const productSection = document.getElementById('productSection');
-            const masterBox = document.getElementById('masterBox');
-
             let productCounter = 0;
 
             // Add new size field
@@ -274,8 +227,7 @@
                 <button type="button" class="btn btn-outline-danger removeSize">
                     <i class="ri-close-fill"></i>
                 </button>
-            </div>
-        `;
+            </div>`;
                 sizeSection.insertAdjacentHTML('beforeend', newSizeField);
                 updateSizeQuantities();
             });
@@ -287,291 +239,200 @@
                 colorSections.forEach(section => {
                     const productIndex = section.dataset.productIndex;
                     const colorEntries = section.querySelectorAll('.color-entry');
-                    const queryProductType = document.getElementById('query_product_type').value;
 
                     colorEntries.forEach((colorEntry, colorIndex) => {
                         const quantitySection = colorEntry.querySelector('.sizeQuantitiesSection');
                         if (!quantitySection) return;
 
                         // Store current values
-                        const currentValues = {
-                            quantities: {},
-                            fullQuantities: {}
-                        };
+                        const currentRatios = {};
+                        const currentQuantities = {};
 
-                        // Gather all current values before making any changes
-                        quantitySection.querySelectorAll('.quantityInput, .fullQuantityInput')
-                            .forEach(input => {
-                                const sizeLabel = input.closest('.col-md-4')?.querySelector(
-                                    '.sizeLabel')?.textContent.trim();
-                                if (!sizeLabel) return;
+                        const ratioInputs = quantitySection.querySelectorAll('input.ratioInput');
+                        const quantityInputs = quantitySection.querySelectorAll(
+                            'input.quantityInput');
 
-                                if (input.classList.contains('quantityInput')) {
-                                    currentValues.quantities[sizeLabel] = input.value;
-                                } else if (input.classList.contains('fullQuantityInput')) {
-                                    currentValues.fullQuantities[sizeLabel] = input.value;
-                                }
-                            });
+                        ratioInputs.forEach(input => {
+                            const sizeValue = input.name.match(
+                                /\[size_ratios]\[([^\]]+)\]/)[1];
+                            currentRatios[sizeValue] = input.value;
+                        });
+
+                        quantityInputs.forEach(input => {
+                            const sizeValue = input.name.match(/\[quantities]\[([^\]]+)\]/)[
+                                1];
+                            currentQuantities[sizeValue] = input.value;
+                        });
 
                         // Generate new HTML
                         const newHtml = Array.from(sizeInputs).map((sizeInput, sizeIndex) => {
-                            let sizeValue;
-
-                            if (changedSizeInput && sizeInput === changedSizeInput) {
-                                // Use the new value for the changed input
-                                sizeValue = changedSizeInput.value ||
-                                    `Size ${sizeIndex + 1}`;
-                            } else {
-                                sizeValue = sizeInput.value || `Size ${sizeIndex + 1}`;
-                            }
-
-                            // Find the old size value if this is the changed input
-                            let oldSizeValue;
-                            if (changedSizeInput && sizeInput === changedSizeInput) {
-                                const oldLabel = quantitySection.querySelector(
-                                        `.col-md-4:nth-child(${sizeIndex + 1}) .sizeLabel`)
-                                    ?.textContent.trim();
-                                oldSizeValue = oldLabel || `Size ${sizeIndex + 1}`;
-                            }
-
-                            // Determine which values to use
-                            const existingQuantity = currentValues.quantities[
-                                    oldSizeValue] || currentValues.quantities[sizeValue] ||
-                                '';
-                            const existingFullQuantity = currentValues.fullQuantities[
-                                oldSizeValue] || currentValues.fullQuantities[
-                                sizeValue] || '';
-
+                            const sizeValue = sizeInput.value || `Size ${sizeIndex + 1}`;
                             return `
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label sizeLabel">${sizeValue}</label>
-                        <div class="input-group mb-2">
-                            <span class="input-group-text bg-info text-white">
-                                <i class="ri-stack-line"></i>
-                            </span>
-                            <input type="number" 
-                                   name="colors[${productIndex}][${colorIndex}][quantities][${sizeValue}]" 
-                                   class="form-control border-primary quantityInput" 
-                                   placeholder="Size Ratio" 
-                                   value="${existingQuantity}" 
-                                   min="0">
-                        </div>
-                        ${queryProductType === 'Knit' ? '' : `
-                                    <div class="input-group woven">
-                                        <span class="input-group-text bg-success text-white">
-                                            <i class="ri-checkbox-multiple-line"></i>
-                                        </span>
-                                        <input type="number" 
-                                               name="colors[${productIndex}][${colorIndex}][full_quantities][${sizeValue}]" 
-                                               class="form-control border-success fullQuantityInput"
-                                               placeholder="Full Quantities" 
-                                               value="${existingFullQuantity}" 
-                                               min="0">
-                                    </div>
-                                `}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label sizeLabel">${sizeValue}</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-info text-white">
+                            <i class="ri-percent-line"></i>
+                        </span>
+                        <input type="number" 
+                               name="colors[${productIndex}][${colorIndex}][size_ratios][${sizeValue}]" 
+                               class="form-control ratioInput" 
+                               placeholder="Size Ratio" 
+                               value="${currentRatios[sizeValue] || ''}"
+                               min="0">
                     </div>
-                `;
+                    <div class="input-group mb-2">
+                        <span class="input-group-text bg-success text-white">
+                            <i class="ri-stack-line"></i>
+                        </span>
+                        <input type="number" 
+                               name="colors[${productIndex}][${colorIndex}][quantities][${sizeValue}]" 
+                               class="form-control quantityInput" 
+                               placeholder="Quantity" 
+                               value="${currentQuantities[sizeValue] || ''}"
+                               min="0" required>
+                    </div>
+                </div>`;
                         }).join('');
 
-                        // Update the DOM only once
                         quantitySection.innerHTML = newHtml;
                     });
                 });
             }
 
 
+            function addNewColor(productIndex, productEntry) {
+                const colorSection = productEntry.querySelector('.colorSection');
+                const colorCounter = colorSection.querySelectorAll('.color-entry').length;
+
+                const newColorEntry = getColorEntryHTML(productIndex, colorCounter);
+                colorSection.insertAdjacentHTML('beforeend', newColorEntry);
+                updateSizeQuantities();
+            }
 
 
-            // Event delegation for dynamic elements
+            // Add new product
+            document.querySelector('.addProductBtn').addEventListener('click', function() {
+                productCounter++;
+                const newProductEntry = `
+    <div class="product-entry card mb-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h6 class="mb-0"><i class="ri-shopping-bag-2-line"></i> Product Details</h6>
+            <button type="button" class="btn btn-outline-danger btn-sm deleteProductBtn">
+                <i class="ri-delete-bin-line"></i> Delete Product
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Style No</label>
+                    <input type="text" name="style_no[]" class="form-control" placeholder="Enter Style No" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Product Image</label>
+                    <input type="file" name="product_image[]" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Item</label>
+                    <input type="text" name="item[]" class="form-control" placeholder="Enter Item Description">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label class="form-label">Factory Cost</label>
+                    <input type="number" step="0.01" name="factory_cost[]" class="form-control" placeholder="Enter Factory Cost" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Final Cost</label>
+                    <input type="number" step="0.01" name="final_cost[]" class="form-control" placeholder="Enter Final Cost" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Shipment Date</label>
+                    <input type="date" name="shipment_date[]" class="form-control" required>
+                </div>
+            </div>
+
+            <!-- Colors Section -->
+            <div class="card mt-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0"><i class="ri-palette-fill"></i> Color Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="colorSection" data-product-index="${productCounter}">
+                        ${getColorEntryHTML(productCounter, 0)}
+                    </div>
+                    <button type="button" class="btn btn-outline-primary addColorBtn">
+                        <i class="ri-add-line"></i> Add Another Color
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+                productSection.insertAdjacentHTML('beforeend', newProductEntry);
+                updateSizeQuantities();
+            });
+
+
             document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('deleteProductBtn')) {
+                    event.target.closest('.product-entry').remove();
+                }
+
                 if (event.target.classList.contains('removeSize')) {
                     event.target.closest('.input-group').remove();
                     updateSizeQuantities();
                 }
 
                 if (event.target.classList.contains('removeColor')) {
+                    const productEntry = event.target.closest('.product-entry');
                     event.target.closest('.color-entry').remove();
+                    reindexColors(productEntry); // Reindex colors after removing one
                 }
 
                 if (event.target.classList.contains('addColorBtn')) {
                     const productEntry = event.target.closest('.product-entry');
                     const productIndex = productEntry.querySelector('.colorSection').dataset.productIndex;
                     addNewColor(productIndex, productEntry);
+                    reindexColors(productEntry);
                 }
-
-
             });
 
-            // Add new product
-            document.querySelector('.addProductBtn').addEventListener('click', function() {
-                productCounter++;
-                const productType = document.getElementById('query_product_type').value;
-                const newProductEntry = `
-            <div class="product-entry card mb-4">
-                <div class="card-header bg-light">
-                    <h6 class="mb-0"><i class="ri-shopping-bag-2-line"></i> Product Details</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div className="col-md-9">
-                            <label class="form-label">Product Image</label>
-                            <input type="file" name="product_image[]" class="form-control">
-                        </div>
-                        <div class="col-md-3 knit">
-                            <label class="form-label">Fit</label>
-                            <input type="text" name="product_fit[]" class="form-control" 
-                                   placeholder="Enter Product Fit" >
-                        </div>
-                    </div>
-                    <div class="row mb-3 knit">
-                        <div class="col-md-3">
-                            <label class="form-label">Code</label>
-                            <input type="text" name="product_code[]" class="form-control" 
-                                   placeholder="Enter Product Code" >
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Function</label>
-                            <input type="text" name="product_function[]" class="form-control" 
-                                   placeholder="Enter Product Function" >
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Model</label>
-                            <input type="text" name="product_model[]" class="form-control" 
-                                   placeholder="Enter Product Model" >
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Shipment Date</label>
-                            <input type="date" name="product_shipment_date[]" class="form-control" 
-                                   placeholder="Enter Product Shipment Date" >
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-3 woven">
-                            <label class="form-label">Code</label>
-                            <input type="text" name="product_code[]" class="form-control" 
-                                   placeholder="Enter Product Code" >
-                        </div>
-                        <div class="col-md-3 knit">
-                            <label class="form-label">Details</label>
-                            <input type="text" name="product_details[]" class="form-control" 
-                                   placeholder="Enter Product Details" >
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Fabric</label>
-                            <input type="text" name="product_fabric[]" class="form-control" 
-                                   placeholder="Enter Product Fabric" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Weight</label>
-                            <input type="text" name="product_weight[]" class="form-control" 
-                                   placeholder="Enter Product Weight" required>
-                        </div>
-                        <div class="col-md-3 knit">
-                            <label class="form-label">Master Box</label>
-                            <input type="number" name="product_master_box[]" class="form-control" 
-                                   placeholder="Enter Product Master Box Quantity" ${productType === 'Knit' ? 'required' : ''}>
-                        </div>
-                    </div>
-
-                    <!-- Colors Section -->
-                    
-                    <div class="card mt-4">
-                        <div class="card-header bg-light">
-                            <h6 class="mb-0"><i class="ri-palette-fill"></i> Color Details</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="colorSection" data-product-index="${productCounter}" data-color-counter="0">
-                                ${getColorEntryHTML(productCounter, 0)}
-                            </div>
-                            <button type="button" class="btn btn-outline-primary addColorBtn">
-                                <i class="ri-add-line"></i> Add Another Color
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-
-                productSection.insertAdjacentHTML('beforeend', newProductEntry);
-                const queryProductType = document.getElementById('query_product_type').value;
-                console.log(queryProductType);
-                if (queryProductType === 'Woven') {
-                    const knit = document.querySelectorAll('.knit');
-                    knit.forEach((element) => {
-                        element.style.display = 'none';
+            function reindexColors(productEntry) {
+                const colorEntries = productEntry.querySelectorAll('.color-entry');
+                colorEntries.forEach((colorEntry, index) => {
+                    colorEntry.querySelectorAll('input, select').forEach(input => {
+                        const name = input.getAttribute('name');
+                        if (name) {
+                            const updatedName = name.replace(/\colors\[\d+\]/, `colors[${index}]`);
+                            input.setAttribute('name', updatedName);
+                        }
                     });
-                    const woven = document.querySelectorAll('.woven');
-                    woven.forEach((element) => {
-                        element.style.display = 'block';
-                    });
-                } else if (queryProductType === 'Knit') {
-                    const woven = document.querySelectorAll('.woven');
-                    woven.forEach((element) => {
-                        element.style.display = 'none';
-                    });
-                    const knit = document.querySelectorAll('.knit');
-                    knit.forEach((element) => {
-                        element.style.display = 'block';
-                    });
-                }
+                });
+            }
 
-                updateSizeQuantities();
-            });
 
-            // Helper function to get color entry HTML
             function getColorEntryHTML(productIndex, colorCounter) {
                 return `
-    <div class="color-entry mb-3">
-        <div class="input-group mb-2">
-            <span class="input-group-text"><i class="ri-palette-fill"></i></span>
-            <input type="text" name="colors[${productIndex}][${colorCounter}][name]" class="form-control" 
-                   placeholder="Color Name" required>
-            <input type="text" name="colors[${productIndex}][${colorCounter}][details]" class="form-control" 
-                   placeholder="Color Details" required>
-            <button type="button" class="btn btn-outline-danger removeColor">
-                <i class="ri-close-fill"></i>
-            </button>
-        </div>
-        <div class="row mb-2 sizeQuantitiesSection"></div>
-    </div>
-    `;
-            }
-
-            function addNewColor(productIndex, productEntry) {
-                const colorSection = productEntry.querySelector('.colorSection');
-                const colorIndex = colorSection.querySelectorAll('.color-entry').length;
-
-                const newColorEntry = `
-        <div class="color-entry mb-3">
-            <div class="input-group mb-2">
-                <span class="input-group-text"><i class="ri-palette-fill"></i></span>
-                <input type="text" name="colors[${productIndex}][${colorIndex}][name]" class="form-control" 
-                    placeholder="Color Name" required>
-                <input type="text" name="colors[${productIndex}][${colorIndex}][details]" class="form-control" 
-                    placeholder="Color Details" required>
-                <button type="button" class="btn btn-outline-danger removeColor">
-                    <i class="ri-close-fill"></i>
-                </button>
-            </div>
-            <div class="row mb-2 sizeQuantitiesSection">
-                <!-- Size quantity fields -->
-                <div class="col">
-                    <input type="number" name="colors[${productIndex}][${colorIndex}][quantities][]" 
-                        class="form-control" placeholder="M Quantity" required>
+            <div class="color-entry mb-3">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="ri-palette-fill"></i></span>
+                    <input type="text" name="colors[${productIndex}][${colorCounter}][name]" 
+                           class="form-control" placeholder="Color Name" required>
+                    <input type="text" name="colors[${productIndex}][${colorCounter}][code]" 
+                           class="form-control" placeholder="Color Code" required>
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="ri-shopping-bag-line"></i>
+                    </span>
+                    <input type="number" name="colors[${productIndex}][${colorCounter}][inner_polybag]" 
+                           class="form-control" placeholder="Inner Polybag Count" min="1" required>
+                    <button type="button" class="btn btn-outline-danger removeColor">
+                        <i class="ri-close-fill"></i>
+                    </button>
                 </div>
-                <div class="col">
-                    <input type="number" name="colors[${productIndex}][${colorIndex}][quantities][]" 
-                        class="form-control" placeholder="L Quantity" required>
-                </div>
-                <!-- Add more sizes as needed -->
-            </div>
-        </div>
-    `;
-                colorSection.insertAdjacentHTML('beforeend', newColorEntry);
-                updateSizeQuantities();
+                <div class="row mb-2 sizeQuantitiesSection"></div>
+            </div>`;
             }
-
 
             // Update size quantities when size input changes
             document.addEventListener('input', function(event) {
@@ -875,6 +736,92 @@
             });
         };
 
+        const inputFactoryCost = (id) => {
+            $.ajax({
+                url: "{{ route('queries.get_items') }}",
+                method: 'POST',
+                data: {
+                    query_id: id,
+                    _token: '{{ csrf_token() }}'
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response) {
+                        const items = response;
+                        Swal.fire({
+                            title: 'Factory Cost',
+                            html: `
+                        <div class="row">
+                            ${items.map((item, index) => `
+                                                                <div class="col-md-12">
+                                                                    <label for="factoryCost${index}">${item.item}</label>
+                                                                    <input type="number" id="factoryCost${index}" class="form-control" value="${item.factory_cost}" required>
+                                                                </div>
+                                                            `).join('')}
+                        </div>
+                    `,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#556ee6',
+                            cancelButtonColor: '#f46a6a',
+                            confirmButtonText: 'Yes, update it!',
+                            preConfirm: () => {
+                                const factoryCosts = items.map((item, index) => {
+                                    return {
+                                        id: item.id,
+                                        factory_cost: document.getElementById(
+                                            `factoryCost${index}`).value
+                                    };
+                                });
+                                return factoryCosts;
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const factoryCosts = result.value;
+                                $.ajax({
+                                    url: "{{ route('queries.update_factory_cost') }}",
+                                    method: 'POST',
+                                    data: {
+                                        query_id: id,
+                                        factory_costs: factoryCosts,
+                                        _token: '{{ csrf_token() }}'
+                                    },
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                                            'content')
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            $('#expenseCategoryTable').DataTable().ajax
+                                                .reload();
+                                            toaster('Factory Cost Updated Successfully',
+                                                'success');
+                                        } else {
+                                            console.log(response);
+                                            toaster(response.error, 'danger');
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.log(error);
+                                        toaster('Something went wrong', 'danger');
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        console.log(response);
+                        toaster(response.error, 'danger');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    toaster('Something went wrong', 'danger');
+                }
+            });
+        };
 
         const assignMerchandiser = (id) => {
             Swal.fire({

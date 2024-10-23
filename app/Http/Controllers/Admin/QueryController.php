@@ -141,10 +141,17 @@ class QueryController extends Controller
                     }
 
 
-                    if(in_array('query.change_status', session('user_permissions')))
+                    if(in_array('query.change_status', session('user_permissions')) && ($category->status != 'Waiting For Approval' || $category->status != 'Approved'))
                     {
                         $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="changeQueryStatus(' . $category->id . ', \'' . addslashes($category->product_type->name) . '\')">
                                             <i class="ri-checkbox-circle-fill me-2"></i> Change Status
+                                        </button></li>';
+                    }
+
+                    if(in_array('query.change_status', session('user_permissions')) && $category->status == 'Approved')
+                    {
+                        $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="inputFactoryCost(' . $category->id . ')">
+                                            <i class="ri-checkbox-circle-fill me-2"></i> Input Factory Cost
                                         </button></li>';
                     }
 
@@ -169,7 +176,7 @@ class QueryController extends Controller
                         ="dropdown-item"><i class="ri-history-fill me-2"></i> Merchandiser Assign History</a></li>';
                     }
 
-                    if(in_array('query.assign_merchandiser', session('user_permissions')) && $category->status == 'Approved')
+                    if(in_array('query.assign_merchandiser', session('user_permissions')))
                     {
                         $edit_button .= '<li><button type="submit" class="dropdown-item" onclick="assignMerchandiser(' . $category->id . ')">
                                             <i class="ri-user-add-fill me-2"></i> Assign Merchandiser
@@ -199,6 +206,29 @@ class QueryController extends Controller
         }
 
         return view('admin.query.query.index', compact('merchandisers'));
+    }
+
+    public function updateFactoryCost(Request $request)
+    {
+        if ($request->ajax()) {
+            $order = Order::where('query_id', $request->query_id)->first();
+            $order_items = $order->items;
+
+            $factory_costs = $request->factory_costs;
+
+            foreach ($order_items as $item) {
+                foreach($factory_costs as $factory_cost)
+                {
+                    if($item->id == $factory_cost['id'])
+                    {
+                        $item->factory_cost = $factory_cost['factory_cost'];
+                        $item->save();
+                    }
+                }
+            }
+
+            return response()->json(['success' => 'Factory Cost Updated Successfully']);
+        }
     }
 
     public function history(Request $request, $query_id)
@@ -466,6 +496,11 @@ class QueryController extends Controller
         }
     }
 
+    public function getItems(Request $request)
+    {
+        $order = Order::with('items')->where('query_id', $request->query_id)->first();
+        return response()->json($order->items);
+    }
 
     public function update(Request $request, $query_id)
     {
